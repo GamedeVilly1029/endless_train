@@ -8,7 +8,7 @@ public class PlayerTurnUIController : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.pointerCurrentRaycast.gameObject.CompareTag("StartTurnButton"))
         {
-            dungeonMaster.ExecuteSequenceOfActions();
+            dungeonMaster.StartCoroutine(dungeonMaster.IterateThroughActionRow());
         }
     }
 }
