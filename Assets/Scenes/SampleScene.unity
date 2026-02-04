@@ -312,7 +312,6 @@ GameObject:
   m_Component:
   - component: {fileID: 222536642}
   - component: {fileID: 222536643}
-  - component: {fileID: 222536644}
   m_Layer: 0
   m_Name: Dungeon_Master
   m_TagString: Untagged
@@ -358,27 +357,10 @@ MonoBehaviour:
   - {fileID: 1980922469}
   - {fileID: 110748809}
   - {fileID: 1011068204}
-  Player: {fileID: 386429600}
-  ActionRowController: {fileID: 1806733496}
-  ActionBeltController: {fileID: 643008444}
   SomeConcreteIsActive: 0
   MonsterRefference: {fileID: 517225655}
   PrefabOfAttack: {fileID: 8602654697253743061, guid: c116f1d6ed7118adb93ba25b1234e10d, type: 3}
---- !u!114 &222536644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 222536641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1489f5b14d1c5d0b88f5bdc6d7eb2995, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActionWithUITestCreator
-  _master: {fileID: 222536643}
-  _movementActionUIPrefab: {fileID: 7344163071438620076, guid: 9afd0aa339afef095bcccd648387d18c, type: 3}
-  _attackActionUIPrefab: {fileID: 7344163071438620076, guid: b634ac6ef3d2f0fa78703080b2eb9fae, type: 3}
+  PlayerActor: {fileID: 386429601}
 --- !u!1 &249849375
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,6 +488,7 @@ GameObject:
   m_Component:
   - component: {fileID: 386429600}
   - component: {fileID: 386429599}
+  - component: {fileID: 386429601}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -560,7 +543,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: -57922517648137320, guid: acfd2babb5378438a88859fa44a35a1d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -589,6 +572,24 @@ Transform:
   - {fileID: 1746906189}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &386429601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386429598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1489f5b14d1c5d0b88f5bdc6d7eb2995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerActor
+  _master: {fileID: 222536643}
+  _movementActionUIPrefab: {fileID: 7344163071438620076, guid: 9afd0aa339afef095bcccd648387d18c, type: 3}
+  _attackActionUIPrefab: {fileID: 7344163071438620076, guid: b634ac6ef3d2f0fa78703080b2eb9fae, type: 3}
+  Transform: {fileID: 386429600}
+  ActionRowPanel: {fileID: 1806733492}
+  BeltPanel: {fileID: 643008440}
 --- !u!1 &429850703
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,7 +878,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8579519603810372059, guid: 533e5cdfd7587dd3599870e3b43e886c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1426,7 +1427,6 @@ GameObject:
   - component: {fileID: 643008442}
   - component: {fileID: 643008441}
   - component: {fileID: 643008443}
-  - component: {fileID: 643008444}
   m_Layer: 0
   m_Name: PanelForBelt
   m_TagString: Untagged
@@ -1515,18 +1515,6 @@ MonoBehaviour:
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &643008444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643008439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b74918fec351536fbf9b536afe1cf2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActionBeltController
 --- !u!1 &655888628
 GameObject:
   m_ObjectHideFlags: 0
@@ -2665,8 +2653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3d49e9e61ce5d25b33dbe82f44500d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionRowBeltClickSwitcher
-  BeltPanel: {fileID: 643008444}
-  ExecutionRow: {fileID: 1806733496}
+  master: {fileID: 222536643}
 --- !u!1 &1806733491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2679,7 +2666,6 @@ GameObject:
   - component: {fileID: 1806733495}
   - component: {fileID: 1806733494}
   - component: {fileID: 1806733493}
-  - component: {fileID: 1806733496}
   m_Layer: 0
   m_Name: PanelForActionRow
   m_TagString: Untagged
@@ -2768,18 +2754,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1806733491}
   m_CullTransparentMesh: 1
---- !u!114 &1806733496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806733491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d6a86ac69089dc18bb34c8e48b24d55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActionRowController
 --- !u!1 &1923131316
 GameObject:
   m_ObjectHideFlags: 0

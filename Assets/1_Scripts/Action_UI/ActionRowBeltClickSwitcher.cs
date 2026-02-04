@@ -4,25 +4,23 @@ using UnityEngine.EventSystems;
 
 public class ActionRowBeltClickSwitcher : MonoBehaviour, IPointerDownHandler
 {
-    public ActionBeltController BeltPanel;
-    public ActionRowController ExecutionRow;
-
+    [SerializeField] private DungeonMaster master;
     public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.pointerCurrentRaycast.gameObject.CompareTag("UIActionIcon"))
         {
             GameObject objectWasClicked = eventData.pointerCurrentRaycast.gameObject;
-            if (objectWasClicked.transform.parent == BeltPanel.transform)
+            if (objectWasClicked.transform.parent == master.PlayerActor.BeltPanel)
             {
-                ExecutionRow.ActionsInRow.Add(BeltPanel.ActionsInBelt.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
-                objectWasClicked.transform.SetParent(ExecutionRow.transform);
-                BeltPanel.ActionsInBelt.Remove(BeltPanel.ActionsInBelt.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
+                master.PlayerActor.ActionRow.Add(master.PlayerActor.Belt.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
+                objectWasClicked.transform.SetParent(master.PlayerActor.ActionRowPanel);
+                master.PlayerActor.Belt.Remove(master.PlayerActor.Belt.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
             }
-            else if (objectWasClicked.transform.parent == ExecutionRow.transform)
+            else if (objectWasClicked.transform.parent == master.PlayerActor.ActionRowPanel)
             {
-                BeltPanel.ActionsInBelt.Add(ExecutionRow.ActionsInRow.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
-                ExecutionRow.ActionsInRow.Remove(ExecutionRow.ActionsInRow.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
-                objectWasClicked.transform.SetParent(BeltPanel.transform);
+                master.PlayerActor.Belt.Add(master.PlayerActor.ActionRow.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
+                master.PlayerActor.ActionRow.Remove(master.PlayerActor.ActionRow.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
+                objectWasClicked.transform.SetParent(master.PlayerActor.BeltPanel);
             }
         }
     }
