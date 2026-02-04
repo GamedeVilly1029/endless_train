@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using UnityEngine.Rendering;
-using System;
 
 public class DungeonMaster : MonoBehaviour
 {
@@ -11,6 +9,7 @@ public class DungeonMaster : MonoBehaviour
 
     public List<Action> CurrentActionRow;
     public Action CurrentAction;
+    public IActor CurrentActor;
 
     public bool SomeConcreteIsActive;
     public MonsterActor MonsterRefference;
@@ -25,12 +24,14 @@ public class DungeonMaster : MonoBehaviour
 
     public IEnumerator IterateThroughActionRow()
     {
+        CurrentActionRow = CreateMutualActionRow();
         if (CurrentActionRow.Count > 0)
         {
             CurrentActionRow.Reverse();
             for (int i = CurrentActionRow.Count - 1; i >= 0; i--)
             {
                 CurrentAction = CurrentActionRow[i];
+                CurrentActor = CurrentAction.Actor;
                 CurrentAction.ActionConstruct.Reverse();
                 for (int j = CurrentAction.ActionConstruct.Count - 1; j >= 0; j--)
                 {
@@ -42,6 +43,7 @@ public class DungeonMaster : MonoBehaviour
 
                 CurrentActionRow[i] = null;
                 CurrentActionRow.RemoveAt(i);
+                CurrentActor = null;
             }
             CurrentAction = null;
         }
@@ -62,7 +64,6 @@ public class DungeonMaster : MonoBehaviour
                 row.Add(MonsterRefference.ActionRow[i]);
             }
         }
-
         return row;
     }
 

@@ -6,19 +6,17 @@ using UnityEngine;
 public class MonsterActor : MonoBehaviour, IActor
 {
     [SerializeField] private DungeonMaster master;
-    [SerializeField] private Transform MonsterTransform;
-    [SerializeField] private RectTransform HPBar;
-    [SerializeField] private TextMeshProUGUI HPBarText;
-    public int HP;
+    [SerializeField] private TextMeshPro HPBarText;
 
+    public int HP;
+    public Transform Transform{get {return transform;} set{}}
     public List<Action> ActionRow { get; set;} = new();
 
     private void Start()
     {
-        MonsterTransform.position = master.Cells[3].CellPosition;
+        Transform.position = master.Cells[3].CellPosition;
         master.Cells[3].IsOcupiedByEntity = true;
 
-        HPBar.position = Camera.main.WorldToScreenPoint(new Vector3(MonsterTransform.position.x, MonsterTransform.position.y + 1, 0));
         HP = 10;
 
         ActionRow.Add(CreateAction(ActionConcretes.MoveOneCellForward(master)));
@@ -36,6 +34,7 @@ public class MonsterActor : MonoBehaviour, IActor
         ActionConstructElement constructElement = new();
         constructElement.ConcreteCoroutine = concrete;
         action.ActionConstruct.Add(constructElement);
+        action.Actor = this;
 
         return action;
     }

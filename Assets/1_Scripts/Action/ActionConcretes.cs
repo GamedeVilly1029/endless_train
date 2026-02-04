@@ -6,22 +6,22 @@ public static class ActionConcretes
 {
     public static IEnumerator MoveOneCellForward(DungeonMaster master)
     {
-        Cell playerCell = master.Cells.FirstOrDefault(x => x.CellPosition == (Vector2)master.PlayerActor.Transform.position);
-        int playerCellIndex = master.Cells.IndexOf(playerCell);
+        Cell actorCell = master.Cells.FirstOrDefault(x => x.CellPosition == (Vector2)master.CurrentActor.Transform.position);
+        int cellIndex = master.Cells.IndexOf(actorCell);
         
-        if (!ActionConditions.CellAheadExists(master, playerCellIndex))
+        if (!ActionConditions.CellAheadExists(master, cellIndex))
         {
             yield break;
         }
-        else if (!ActionConditions.CellAheadIsEmpty(master, playerCellIndex))
+        else if (!ActionConditions.CellAheadIsEmpty(master, cellIndex))
         {
             yield break;
         }
         else
         {
-            master.Cells[playerCellIndex].IsOcupiedByEntity = false;
-            master.Cells[playerCellIndex + 1].IsOcupiedByEntity = true;
-            master.PlayerActor.Transform.position = master.Cells[playerCellIndex + 1].CellPosition;
+            master.Cells[cellIndex].IsOcupiedByEntity = false;
+            master.Cells[cellIndex + 1].IsOcupiedByEntity = true;
+            master.CurrentActor.Transform.position = master.Cells[cellIndex + 1].CellPosition;
             yield return new WaitForSeconds(0.5f);
         }
     }

@@ -8,7 +8,7 @@ public class PlayerActor : MonoBehaviour, IActor
     [SerializeField] private GameObject _movementActionUIPrefab;
     [SerializeField] private GameObject _attackActionUIPrefab;
 
-    public Transform Transform;
+    public Transform Transform{get{return transform;}set{}}
 
     public List<Action> ActionRow{get;set;} = new();
     public Transform ActionRowPanel;
@@ -19,11 +19,8 @@ public class PlayerActor : MonoBehaviour, IActor
     {
         Transform.position = _master.Cells[0].CellPosition;
         _master.Cells[0].IsOcupiedByEntity = true;
-        Belt.Add(CreateAction(ActionConcretes.WalkXTiles(_master, 2), _movementActionUIPrefab));
+        Belt.Add(CreateAction(ActionConcretes.WalkXTiles(_master, 1), _movementActionUIPrefab));
         Belt.Add(CreateAction(ActionConcretes.AttackEntityAhead(_master, 2), _attackActionUIPrefab));
-
-        //Fix to proper dependancy later
-        _master.CurrentActionRow = ActionRow;
     }
 
     private Action CreateAction(IEnumerator concrete, GameObject UIRepresentationPrefab)
@@ -35,6 +32,7 @@ public class PlayerActor : MonoBehaviour, IActor
         action.ActionConstruct.Add(constructElement);
 
         action.UIRepresentation = Instantiate(UIRepresentationPrefab, BeltPanel.transform);
+        action.Actor = this;
         return action;
     }
 }
