@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,10 @@ using UnityEngine;
 public class ActionConstructElement
 {
     public List<bool> ConditionsToExecuteConcrete;
-    public IEnumerator ConcreteCoroutine;
+    public Func<DungeonMaster, IEnumerator> Concrete;
 
     public IEnumerator ExecuteConcrete(DungeonMaster master)
     {
-        yield return master.StartCoroutine(ConcreteCoroutine);
+        yield return Concrete(master);
     }
 }

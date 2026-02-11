@@ -2,11 +2,20 @@ using UnityEngine;
 
 public static class ActionConditions
 {
-    public static bool CellAheadIsEmpty(DungeonMaster master, int currentCellIndex)
+    // CurrentCellIndex to the actor.
+    public static bool CellAheadIsEmpty(DungeonMaster master)
     {
-        if (CellAheadExists(master, currentCellIndex))
+        int currentCellIndex = master.CurrentActor.PositionCellIndex;
+        if (CellAheadExists(master))
         {
-            return !master.Cells[currentCellIndex + 1].IsOcupiedByEntity;
+            if (master.CurrentActor.IsFacingRight)
+            {
+                return master.Cells[currentCellIndex + 1].EnityOccupyingThisCell == null;
+            }
+            else
+            {
+                return master.Cells[currentCellIndex - 1].EnityOccupyingThisCell == null;
+            }
         }
         else
         {
@@ -15,8 +24,16 @@ public static class ActionConditions
         }
     }
 
-    public static bool CellAheadExists(DungeonMaster master, int currentCellIndex)
+    public static bool CellAheadExists(DungeonMaster master)
     {
-        return currentCellIndex + 1 < master.Cells.Count;
+        int currentCellIndex = master.CurrentActor.PositionCellIndex;
+        if (master.CurrentActor.IsFacingRight)
+        {
+            return currentCellIndex + 1 < master.Cells.Count;
+        }
+        else
+        {
+            return currentCellIndex >= 0;
+        }
     }
 }

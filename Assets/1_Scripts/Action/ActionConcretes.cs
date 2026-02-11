@@ -4,56 +4,124 @@ using System.Linq;
 
 public static class ActionConcretes
 {
-    public static IEnumerator MoveOneCellForward(DungeonMaster master)
+    public static IEnumerator MoveOneCellForward(DungeonMaster dungeonMaster)
     {
-        Cell actorCell = master.Cells.FirstOrDefault(x => x.CellPosition == (Vector2)master.CurrentActor.Transform.position);
-        int cellIndex = master.Cells.IndexOf(actorCell);
-        
-        if (!ActionConditions.CellAheadExists(master, cellIndex))
+        IActor actor = dungeonMaster.CurrentActor;
+        if (!ActionConditions.CellAheadExists(dungeonMaster))
         {
             yield break;
         }
-        else if (!ActionConditions.CellAheadIsEmpty(master, cellIndex))
+        else if (!ActionConditions.CellAheadIsEmpty(dungeonMaster))
         {
             yield break;
         }
         else
         {
-            master.Cells[cellIndex].IsOcupiedByEntity = false;
-            master.Cells[cellIndex + 1].IsOcupiedByEntity = true;
-            master.CurrentActor.Transform.position = master.Cells[cellIndex + 1].CellPosition;
-            yield return new WaitForSeconds(0.5f);
+            if (actor.IsFacingRight)
+            {
+                dungeonMaster.Cells[actor.PositionCellIndex].EnityOccupyingThisCell = null;
+                dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell = actor;
+                actor.Transform.position = dungeonMaster.Cells[actor.PositionCellIndex + 1].CellPosition;
+                yield return new WaitForSeconds(0.5f);
+            }
+            else
+            {
+                dungeonMaster.Cells[actor.PositionCellIndex].EnityOccupyingThisCell = null;
+                dungeonMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell = actor;
+                actor.Transform.position = dungeonMaster.Cells[actor.PositionCellIndex - 1].CellPosition;
+                yield return new WaitForSeconds(0.5f);
+            }
         }
     }
 
-    public static IEnumerator WalkXTiles(DungeonMaster master, int numberOfSteps)
+    public static IEnumerator WalkXTiles(DungeonMaster dungeonMaster)
     {
-        while (numberOfSteps > 0)
+        while (dungeonMaster.CurrentAction.ValueForActionConcrete > 0)
         {
-            yield return master.StartCoroutine(MoveOneCellForward(master));
-            numberOfSteps--;
+            yield return dungeonMaster.StartCoroutine(MoveOneCellForward(dungeonMaster));
+            dungeonMaster.CurrentAction.ValueForActionConcrete--;
         }
-        master.SomeConcreteIsActive = false;
     }
 
-    public static IEnumerator AttackEntityAhead(DungeonMaster master, int numberOfAttack)
+    public static IEnumerator AttackEntityAhead(DungeonMaster dungeonMaster)
     {
-        Cell playerCell = master.Cells.FirstOrDefault(x => x.CellPosition == (Vector2)master.PlayerActor.Transform.position);
-        if (!ActionConditions.CellAheadIsEmpty(master, master.Cells.IndexOf(playerCell)))
+        if (!ActionConditions.CellAheadIsEmpty(dungeonMaster))
         {
-            master.MonsterRefference.HP -= numberOfAttack;
+            if (dungeonMaster.CurrentActor.IsFacingRight)
+            {
+                IActor actorAhead = TryReturnActorAhead(dungeonMaster);
+                if (actorAhead != null)
+                {
+                    actorAhead.HP -= dungeonMaster.CurrentAction.ValueForActionConcrete; 
+                    GameObject attackViewObject = Object.Instantiate(
+                        dungeonMaster.CurrentAction.PrefabOfAttack,
+                        new Vector3(dungeonMaster.CurrentActor.Transform.position.x + 1, dungeonMaster.CurrentActor.Transform.position.y),
+                        Quaternion.identity,
+                        dungeonMaster.CurrentActor.Transform);
+                    yield return new WaitForSeconds(0.5f);
+                    Object.Destroy(attackViewObject);
+                }
+            }
+            else
+            {
+                IActor actorAhead = TryReturnActorAhead(dungeonMaster);
+                if (actorAhead != null)
+                {
+                    actorAhead.HP -= dungeonMaster.CurrentAction.ValueForActionConcrete; 
+                    GameObject attackViewObject = Object.Instantiate(
+                        dungeonMaster.CurrentAction.PrefabOfAttack,
+                        new Vector3(dungeonMaster.CurrentActor.Transform.position.x - 1, dungeonMaster.CurrentActor.Transform.position.y),
+                        Quaternion.identity,
+                        dungeonMaster.CurrentActor.Transform);
+                    yield return new WaitForSeconds(0.5f);
+                    Object.Destroy(attackViewObject);
+                }
+            }
+        }
+        else
+        {
             GameObject attackViewObject = Object.Instantiate(
-                master.PrefabOfAttack,
-                new Vector3(master.PlayerActor.Transform.position.x + 1, master.PlayerActor.Transform.position.y), 
+                dungeonMaster.CurrentAction.PrefabOfAttack,
+                new Vector3(dungeonMaster.PlayerActor.Transform.position.x + 1, dungeonMaster.PlayerActor.Transform.position.y), 
                 Quaternion.identity, 
-                master.PlayerActor.Transform);
+                dungeonMaster.PlayerActor.Transform);
             yield return new WaitForSeconds(0.5f);
             Object.Destroy(attackViewObject);
         }
+    }
+
+    public static IActor TryReturnActorAhead(DungeonMaster dungeonMaster)
+    {
+        IActor actor = dungeonMaster.CurrentActor;
+        if (ActionConditions.CellAheadExists(dungeonMaster))
+        {
+            if (actor.IsFacingRight)
+            {
+                if (dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell != null)
+                {
+                    return dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (dungeonMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell != null)
+                {
+                    return dungeonMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
         else
         {
-            yield return new WaitForSeconds(0.5f);
-            Debug.Log("Entity ahead not exists");
+            Debug.Log("Cell ahead isn't exists");
+            return null;
         }
     }
 }

@@ -5,48 +5,45 @@ using System.Collections;
 public class DungeonMaster : MonoBehaviour
 {
     [SerializeField] private List<Transform> MovementCellAnchors;
+    [SerializeField] private TurnMaster _turnMaster;
     public List<Cell> Cells;
 
     public List<Action> CurrentActionRow;
     public Action CurrentAction;
     public IActor CurrentActor;
 
-    public bool SomeConcreteIsActive;
     public MonsterActor MonsterRefference;
-    public GameObject PrefabOfAttack;
-
     public PlayerActor PlayerActor;
+
+    public List<IActor> AllMonsters;
 
     private void Start()
     {
+        AllMonsters = new();
         CreateCellPositionsDictionary();
     }
 
     public IEnumerator IterateThroughActionRow()
     {
         CurrentActionRow = CreateMutualActionRow();
-        if (CurrentActionRow.Count > 0)
+        foreach (Action action in CurrentActionRow)
         {
-            CurrentActionRow.Reverse();
-            for (int i = CurrentActionRow.Count - 1; i >= 0; i--)
+            CurrentAction = action;
+            CurrentActor = action.Actor;
+            foreach (ActionConstructElement element in action.ActionConstruct)
             {
-                CurrentAction = CurrentActionRow[i];
-                CurrentActor = CurrentAction.Actor;
-                CurrentAction.ActionConstruct.Reverse();
-                for (int j = CurrentAction.ActionConstruct.Count - 1; j >= 0; j--)
-                {
-                    yield return CurrentAction.ActionConstruct[j].ExecuteConcrete(this);
-                    CurrentAction.ActionConstruct.RemoveAt(j);
-                }
-                Destroy(CurrentActionRow[i].UIRepresentation);
-                CurrentActionRow[i].UIRepresentation = null;
-
-                CurrentActionRow[i] = null;
-                CurrentActionRow.RemoveAt(i);
-                CurrentActor = null;
+                yield return element.ExecuteConcrete(this);
             }
-            CurrentAction = null;
+            if (action.UIRepresentation != null)
+            {
+                Destroy(action.UIRepresentation);
+                action.UIRepresentation = null;
+            }
         }
+        CurrentAction = null;
+        CurrentActor = null;
+        CurrentActionRow.Clear();
+        
     }
 
     private List<Action> CreateMutualActionRow()
@@ -74,7 +71,7 @@ public class DungeonMaster : MonoBehaviour
         {
             Cell cell = new();
             cell.CellPosition = transform.position;
-            cell.IsOcupiedByEntity = false;
+            cell.EnityOccupyingThisCell = null;
             Cells.Add(cell);
         }
     }
