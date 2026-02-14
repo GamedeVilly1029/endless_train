@@ -2,22 +2,28 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MonsterActor : MonoBehaviour, IActor
+public class MonsterActor : MonoBehaviour, IActor, IMonster
 {
     [SerializeField] private DungeonMaster _dungeonMaster;
     [SerializeField] private TextMeshPro HPBarText;
+    [SerializeField] private RectTransform _actionRowPanel;
 
     public int HP{get;set;}
     public Transform Transform{get {return transform;} set{}}
     public List<Action> ActionRow { get; set;} = new();
-    public int PositionCellIndex { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public bool IsFacingRight { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public RectTransform ActionRowPanel{get{return _actionRowPanel;}set{}}
+    public int PositionCellIndex {get;set;}
+    public bool IsFacingRight {get;set;}
+    public MonsterTypes MonsterType {get;set;}
 
-    private void Start()
+    public void Initialize()
     {
-        _dungeonMaster.AllMonsters.Add(this);
-        Transform.position = _dungeonMaster.Cells[3].CellPosition;
-        _dungeonMaster.Cells[3].EnityOccupyingThisCell = this;
+        _dungeonMaster.MonstersWithActorReference.Add(this, this);
+        Transform.position = _dungeonMaster.Cells[9].CellPosition;
+        _dungeonMaster.Cells[9].EnityOccupyingThisCell = this;
+        PositionCellIndex = 9;
+        IsFacingRight = false;
+        MonsterType = MonsterTypes.glist1;
 
         HP = 10;
     }

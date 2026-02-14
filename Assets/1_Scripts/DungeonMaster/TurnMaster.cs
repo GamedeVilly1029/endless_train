@@ -26,7 +26,11 @@ public class TurnMaster : MonoBehaviour
     {
         TurnNumber += 1;
         _actionMaster.GiveActionsToPlayerBelt();
-        _actionMaster.GiveActionsToMonster1ActionRow();
+        _actionMaster.GiveActionsToMonster1ActionRow
+        (
+            _dungeonMaster.MonsterRefference, 
+            _dungeonMaster.MonstersWithActorReference[_dungeonMaster.MonsterRefference]
+        );
     }
 
     private IEnumerator EndTurn()

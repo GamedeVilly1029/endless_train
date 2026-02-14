@@ -4,20 +4,25 @@ using UnityEngine;
 public class PlayerActor : MonoBehaviour, IActor
 {
     [SerializeField] private DungeonMaster _dungeonMaster;
+    [SerializeField] private RectTransform _actionRowPanel;
+
     public Transform Transform{get{return transform;}set{}}
     public List<Action> ActionRow{get;set;} = new();
-    public Transform ActionRowPanel;
+    public RectTransform ActionRowPanel{get{return _actionRowPanel;}set{}}
     public List<Action> Belt = new();
     public Transform BeltPanel;
     public int HP{get;set;} = 10; //Example value
-    public int PositionCellIndex { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public bool IsFacingRight { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public int PositionCellIndex {get;set;}
+    public bool IsFacingRight {get;set;}
 
-    private void Start()
+    public void Initialize()
     {
         Transform.position = _dungeonMaster.Cells[0].CellPosition;
         _dungeonMaster.Cells[0].EnityOccupyingThisCell = this;
+        PositionCellIndex = 0;
+        IsFacingRight = true;
     }
+
 
     private void Update()
     {

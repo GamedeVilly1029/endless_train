@@ -15,12 +15,15 @@ public class DungeonMaster : MonoBehaviour
     public MonsterActor MonsterRefference;
     public PlayerActor PlayerActor;
 
-    public List<IActor> AllMonsters;
+    public Dictionary<IActor, IMonster> MonstersWithActorReference;
 
     private void Start()
     {
-        AllMonsters = new();
+        MonstersWithActorReference = new();
         CreateCellPositionsDictionary();
+
+        MonsterRefference.Initialize();
+        PlayerActor.Initialize();
     }
 
     public IEnumerator IterateThroughActionRow()

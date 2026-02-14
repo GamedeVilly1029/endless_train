@@ -17,20 +17,8 @@ public static class ActionConcretes
         }
         else
         {
-            if (actor.IsFacingRight)
-            {
-                dungeonMaster.Cells[actor.PositionCellIndex].EnityOccupyingThisCell = null;
-                dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell = actor;
-                actor.Transform.position = dungeonMaster.Cells[actor.PositionCellIndex + 1].CellPosition;
-                yield return new WaitForSeconds(0.5f);
-            }
-            else
-            {
-                dungeonMaster.Cells[actor.PositionCellIndex].EnityOccupyingThisCell = null;
-                dungeonMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell = actor;
-                actor.Transform.position = dungeonMaster.Cells[actor.PositionCellIndex - 1].CellPosition;
-                yield return new WaitForSeconds(0.5f);
-            }
+            ActorInWorldManipulationUtils.ChangeIndexAndPosition(dungeonMaster, actor);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -54,7 +42,7 @@ public static class ActionConcretes
                 {
                     actorAhead.HP -= dungeonMaster.CurrentAction.ValueForActionConcrete; 
                     GameObject attackViewObject = Object.Instantiate(
-                        dungeonMaster.CurrentAction.PrefabOfAttack,
+                        Resources.Load<GameObject>("AttackVisual"),
                         new Vector3(dungeonMaster.CurrentActor.Transform.position.x + 1, dungeonMaster.CurrentActor.Transform.position.y),
                         Quaternion.identity,
                         dungeonMaster.CurrentActor.Transform);
@@ -69,7 +57,7 @@ public static class ActionConcretes
                 {
                     actorAhead.HP -= dungeonMaster.CurrentAction.ValueForActionConcrete; 
                     GameObject attackViewObject = Object.Instantiate(
-                        dungeonMaster.CurrentAction.PrefabOfAttack,
+                        Resources.Load<GameObject>("AttackVisual"),
                         new Vector3(dungeonMaster.CurrentActor.Transform.position.x - 1, dungeonMaster.CurrentActor.Transform.position.y),
                         Quaternion.identity,
                         dungeonMaster.CurrentActor.Transform);
@@ -81,7 +69,7 @@ public static class ActionConcretes
         else
         {
             GameObject attackViewObject = Object.Instantiate(
-                dungeonMaster.CurrentAction.PrefabOfAttack,
+                Resources.Load<GameObject>("AttackVisual"),
                 new Vector3(dungeonMaster.PlayerActor.Transform.position.x + 1, dungeonMaster.PlayerActor.Transform.position.y), 
                 Quaternion.identity, 
                 dungeonMaster.PlayerActor.Transform);
