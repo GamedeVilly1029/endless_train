@@ -10,15 +10,17 @@ public class MonsterActor : MonoBehaviour, IActor, IMonster
 
     public int HP{get;set;}
     public Transform Transform{get {return transform;} set{}}
-    public List<Action> ActionRow { get; set;} = new();
+    public List<IAction> ActionRow { get; set;} = new();
     public RectTransform ActionRowPanel{get{return _actionRowPanel;}set{}}
     public int PositionCellIndex {get;set;}
+    public Stack<int> PositionCellIndexHistory{get;set;}
     public bool IsFacingRight {get;set;}
     public MonsterTypes MonsterType {get;set;}
 
     public void Initialize()
     {
         _dungeonMaster.MonstersWithActorReference.Add(this, this);
+        _dungeonMaster.AllActors.Add(this);
         Transform.position = _dungeonMaster.Cells[9].CellPosition;
         _dungeonMaster.Cells[9].EnityOccupyingThisCell = this;
         PositionCellIndex = 9;

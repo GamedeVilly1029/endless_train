@@ -1,25 +1,24 @@
 using UnityEngine;
 using System.Collections;
-using System.Linq;
 
 public static class ActionConcretes
 {
     public static IEnumerator MoveOneCellForward(DungeonMaster dungeonMaster)
     {
         IActor actor = dungeonMaster.CurrentActor;
-        if (!ActionConditions.CellAheadExists(dungeonMaster))
+        if (!ActionConditions.CellAheadExists(dungeonMaster, actor))
         {
             yield break;
         }
-        else if (!ActionConditions.CellAheadIsEmpty(dungeonMaster))
+        else if (!ActionConditions.CellAheadIsEmpty(dungeonMaster, actor))
         {
             yield break;
         }
         else
         {
             ActorInWorldManipulationUtils.ChangeIndexAndPosition(dungeonMaster, actor);
-            yield return new WaitForSeconds(0.5f);
         }
+        yield return new WaitForSeconds(0.5f);
     }
 
     public static IEnumerator WalkXTiles(DungeonMaster dungeonMaster)
@@ -33,7 +32,7 @@ public static class ActionConcretes
 
     public static IEnumerator AttackEntityAhead(DungeonMaster dungeonMaster)
     {
-        if (!ActionConditions.CellAheadIsEmpty(dungeonMaster))
+        if (!ActionConditions.CellAheadIsEmpty(dungeonMaster, dungeonMaster.CurrentActor))
         {
             if (dungeonMaster.CurrentActor.IsFacingRight)
             {
@@ -81,7 +80,7 @@ public static class ActionConcretes
     public static IActor TryReturnActorAhead(DungeonMaster dungeonMaster)
     {
         IActor actor = dungeonMaster.CurrentActor;
-        if (ActionConditions.CellAheadExists(dungeonMaster))
+        if (ActionConditions.CellAheadExists(dungeonMaster, actor))
         {
             if (actor.IsFacingRight)
             {
@@ -111,5 +110,45 @@ public static class ActionConcretes
             Debug.Log("Cell ahead isn't exists");
             return null;
         }
+    }
+
+    public static IEnumerator RotateActor(DungeonMaster dungeonMaster)
+    {
+        dungeonMaster.CurrentActor.IsFacingRight = !dungeonMaster.CurrentActor.IsFacingRight;
+        Debug.Log($"{dungeonMaster.CurrentActor} was rotated");
+        yield return new WaitForSeconds(0.5f);
+    }
+
+    public static IEnumerator Push(DungeonMaster dungeonMaster)
+    {
+        if (dungeonMaster.CurrentActor.IsFacingRight)
+        {
+            if (ActionConditions.CellAheadExists(dungeonMaster, dungeonMaster.CurrentActor))
+            {
+                IActor actorAhead = TryReturnActorAhead(dungeonMaster);
+                if (actorAhead != null)
+                {
+                    if (ActionConditions.AdjacentCellsExists(dungeonMaster, actorAhead))
+                    {
+                        ActorInWorldManipulationUtils.PushActor(dungeonMaster, actorAhead, dungeonMaster.CurrentActor.IsFacingRight);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (ActionConditions.CellAheadExists(dungeonMaster, dungeonMaster.CurrentActor))
+            {
+                IActor actorAhead = TryReturnActorAhead(dungeonMaster);
+                if (actorAhead != null)
+                {
+                    if (ActionConditions.AdjacentCellsExists(dungeonMaster, actorAhead))
+                    {
+                        ActorInWorldManipulationUtils.PushActor(dungeonMaster, actorAhead, dungeonMaster.CurrentActor.IsFacingRight);
+                    }
+                }
+            } 
+        }
+        yield return new WaitForSeconds(0.5f);
     }
 }

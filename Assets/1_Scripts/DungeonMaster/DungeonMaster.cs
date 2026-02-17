@@ -7,9 +7,10 @@ public class DungeonMaster : MonoBehaviour
     [SerializeField] private List<Transform> MovementCellAnchors;
     [SerializeField] private TurnMaster _turnMaster;
     public List<Cell> Cells;
+    public List<IActor> AllActors;
 
-    public List<Action> CurrentActionRow;
-    public Action CurrentAction;
+    public List<IAction> CurrentActionRow;
+    public IAction CurrentAction;
     public IActor CurrentActor;
 
     public MonsterActor MonsterRefference;
@@ -20,6 +21,7 @@ public class DungeonMaster : MonoBehaviour
     private void Start()
     {
         MonstersWithActorReference = new();
+        AllActors = new();
         CreateCellPositionsDictionary();
 
         MonsterRefference.Initialize();
@@ -29,7 +31,8 @@ public class DungeonMaster : MonoBehaviour
     public IEnumerator IterateThroughActionRow()
     {
         CurrentActionRow = CreateMutualActionRow();
-        foreach (Action action in CurrentActionRow)
+        InitializeCellIndexHistories();
+        foreach (IAction action in CurrentActionRow)
         {
             CurrentAction = action;
             CurrentActor = action.Actor;
@@ -42,16 +45,15 @@ public class DungeonMaster : MonoBehaviour
                 Destroy(action.UIRepresentation);
                 action.UIRepresentation = null;
             }
-        }
+            CurrentActor.PositionCellIndexHistory.Push(CurrentActor.PositionCellIndex);
+        }   
         CurrentAction = null;
         CurrentActor = null;
-        CurrentActionRow.Clear();
-        
     }
 
-    private List<Action> CreateMutualActionRow()
+    private List<IAction> CreateMutualActionRow()
     {
-        List<Action> row = new();
+        List<IAction> row = new();
         int maxPossibleElement = Mathf.Max(PlayerActor.ActionRow.Count, MonsterRefference.ActionRow.Count) - 1;
         for (int i = 0; i <= maxPossibleElement; i++)
         {
@@ -67,14 +69,25 @@ public class DungeonMaster : MonoBehaviour
         return row;
     }
 
+    private void InitializeCellIndexHistories()
+    {
+        foreach (IActor actor in AllActors)
+        {
+            actor.PositionCellIndexHistory = new();
+            actor.PositionCellIndexHistory.Push(actor.PositionCellIndex);
+        }
+    }
+
     private void CreateCellPositionsDictionary()
     {
         Cells = new();
         foreach (Transform transform in MovementCellAnchors)
         {
-            Cell cell = new();
-            cell.CellPosition = transform.position;
-            cell.EnityOccupyingThisCell = null;
+            Cell cell = new()
+            {
+                CellPosition = transform.position,
+                EnityOccupyingThisCell = null
+            };
             Cells.Add(cell);
         }
     }

@@ -2,11 +2,10 @@ using UnityEngine;
 
 public static class ActionConditions
 {
-    // CurrentCellIndex to the actor.
-    public static bool CellAheadIsEmpty(DungeonMaster master)
+    public static bool CellAheadIsEmpty(DungeonMaster master, IActor actor)
     {
-        int currentCellIndex = master.CurrentActor.PositionCellIndex;
-        if (CellAheadExists(master))
+        int currentCellIndex = actor.PositionCellIndex;
+        if (CellAheadExists(master, actor))
         {
             if (master.CurrentActor.IsFacingRight)
             {
@@ -24,16 +23,45 @@ public static class ActionConditions
         }
     }
 
-    public static bool CellAheadExists(DungeonMaster master)
+    public static bool CellAheadExists(DungeonMaster master, IActor actor)
     {
-        int currentCellIndex = master.CurrentActor.PositionCellIndex;
+        int currentCellIndex = actor.PositionCellIndex;
         if (master.CurrentActor.IsFacingRight)
         {
             return currentCellIndex + 1 < master.Cells.Count;
         }
         else
         {
-            return currentCellIndex >= 0;
+            return currentCellIndex > 0;
+        }
+    }
+
+    public static bool AdjacentCellsExists(DungeonMaster master, IActor actor)
+    {
+        int currentCellIndex = actor.PositionCellIndex;
+        return 0 < currentCellIndex && currentCellIndex + 1 < master.Cells.Count;
+    }
+
+    public static bool PositionIndexChangedInPreviousAction(DungeonMaster master, IActor actor)
+    {
+        if (actor.PositionCellIndexHistory.Count >= 2)
+        {
+            int lastIndex = actor.PositionCellIndexHistory.Pop();
+            int secondToLastIndex = actor.PositionCellIndexHistory.Peek();
+            actor.PositionCellIndexHistory.Push(lastIndex);
+
+            if (secondToLastIndex != lastIndex)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 }
