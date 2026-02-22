@@ -1,8 +1,10 @@
+using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using UnityEngine;
+using System;
 
-public class Strike : IAction
+
+public class HeavyWalk : IAction
 {
     public DungeonMaster DungeonMasterInstance{get;set;}
     public IActor Actor {get;set;}
@@ -14,9 +16,9 @@ public class Strike : IAction
     {
         DungeonMasterInstance = dungeonMaster;
         Actor = actor;
-        if (Resources.Load<GameObject>("AttackActionUI") != null)
+        if (Resources.Load<GameObject>("HeavyWalkActionUI") != null)
         {
-            UIRepresentation = Resources.Load<GameObject>("AttackActionUI");
+            UIRepresentation = Resources.Load<GameObject>("HeavyWalkActionUI");
         }
         else
         {
@@ -27,10 +29,16 @@ public class Strike : IAction
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new()
-        {
-            new ActionConstructElement(this, null, ActionConcretes.AttackEntityAhead, 5, ActionConcreteTag.Attack)
-        };
+        // Here, what to do.
+        ActionConstruct = new();
+        ActionConstructElement elem1 = new(this, null, ActionConcretes.AttackEntityAhead, 4, ActionConcreteTag.Attack);
+        ActionConstruct.Add(elem1);
+
+        ActionConstructElement elem2 = new(this, null, ActionConcretes.Push, 0, ActionConcreteTag.Push);
+        ActionConstruct.Add(elem2);
+        
+        ActionConstructElement elem3 = new(this, null, ActionConcretes.MoveOneCellForward, 0, ActionConcreteTag.Move);
+        ActionConstruct.Add(elem3);
     }
 
     public IAction CloneAndInstantiateUI(Transform transform)
@@ -39,8 +47,9 @@ public class Strike : IAction
         {
             DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,
-            UIRepresentation = Object.Instantiate(UIRepresentation, transform),
+            UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };
+
         actionClone.ActionConstruct = CloneActionConstruct(actionClone);
 
         return actionClone;
@@ -62,6 +71,7 @@ public class Strike : IAction
         return concretes;
     }
 
+    
     public IEnumerator ExecuteAction(DungeonMaster dungeonMaster)
     {
         TurnTemporarySuccessfulConcreteHistory = new();
@@ -71,7 +81,7 @@ public class Strike : IAction
         }
         if (UIRepresentation != null)
         {
-            Object.Destroy(UIRepresentation);
+            UnityEngine.Object.Destroy(UIRepresentation);
             UIRepresentation = null;
         }
         Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);

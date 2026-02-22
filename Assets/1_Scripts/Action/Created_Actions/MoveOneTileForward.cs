@@ -1,19 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class MoveOneTileForward : IAction
 {
-    public DungeonMaster DungeonMaster{get;set;}
+    public DungeonMaster DungeonMasterInstance{get;set;}
     public IActor Actor {get;set;}
     public GameObject UIRepresentation {get;set;}
-    public int ValueForActionConcrete {get;set;}
     public List<ActionConstructElement> ActionConstruct {get;set;}
+    public List<System.Func<DungeonMaster, ActionConstructElement, IEnumerator>> TurnTemporarySuccessfulConcreteHistory {get;set;}
 
-
-
-    public void InitializeAction(IActor actor, int valueForActionConcrete, DungeonMaster dungeonMaster)
+    public void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
     {
-        DungeonMaster = dungeonMaster;
+        DungeonMasterInstance = dungeonMaster;
         Actor = actor;
         if (Resources.Load<GameObject>("MovementActionUI") != null)
         {
@@ -23,7 +22,6 @@ public class MoveOneTileForward : IAction
         {
             Debug.LogError("Resources.Load can't find UIRepresentation Asset");
         }
-        ValueForActionConcrete = valueForActionConcrete;
         InitializeConstruct();
     }
 
@@ -31,11 +29,7 @@ public class MoveOneTileForward : IAction
     {
         ActionConstruct = new()
         {
-            new ActionConstructElement()
-            {
-                ConditionsToExecuteConcrete = null,
-                Concrete = ActionConcretes.MoveOneCellForward
-            }
+            new ActionConstructElement(this, null, ActionConcretes.MoveOneCellForward, 0, ActionConcreteTag.Move)
         };
     }
 
@@ -43,28 +37,43 @@ public class MoveOneTileForward : IAction
     {
         Strike actionClone = new()
         {
-            DungeonMaster = DungeonMaster,
+            DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
-            ValueForActionConcrete = ValueForActionConcrete,
-            ActionConstruct = CloneActionConstruct()
         };
+        actionClone.ActionConstruct = CloneActionConstruct(actionClone);
 
         return actionClone;
     }
 
-    public List<ActionConstructElement> CloneActionConstruct()
+    public List<ActionConstructElement> CloneActionConstruct(IAction actionClone)
     {
         List<ActionConstructElement> concretes = new();
         foreach (var concrete in ActionConstruct)
         {
-            var newElement = new ActionConstructElement
-            {
-                ConditionsToExecuteConcrete = concrete.ConditionsToExecuteConcrete,
-                Concrete = concrete.Concrete
-            };
-            concretes.Add(concrete);
+            var newElement = new ActionConstructElement(
+                actionClone, 
+                concrete.ConditionsToExecuteConcrete, 
+                concrete.Concrete, 
+                concrete.ConcreteValue,
+                concrete.ConcreteTag);
+            concretes.Add(newElement);
         }
         return concretes;
+    }
+
+    public IEnumerator ExecuteAction(DungeonMaster dungeonMaster)
+    {
+        TurnTemporarySuccessfulConcreteHistory = new();
+        foreach (ActionConstructElement element in ActionConstruct)
+        {
+            yield return element.ExecuteConcrete(DungeonMasterInstance);
+        }
+        if (UIRepresentation != null)
+        {
+            Object.Destroy(UIRepresentation);
+            UIRepresentation = null;
+        }
+        Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);
     }
 }

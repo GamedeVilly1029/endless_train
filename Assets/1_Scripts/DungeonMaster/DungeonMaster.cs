@@ -9,7 +9,7 @@ public class DungeonMaster : MonoBehaviour
     public List<Cell> Cells;
     public List<IActor> AllActors;
 
-    public List<IAction> CurrentActionRow;
+    public List<IAction> MutualActionRow;
     public IAction CurrentAction;
     public IActor CurrentActor;
 
@@ -30,25 +30,37 @@ public class DungeonMaster : MonoBehaviour
 
     public IEnumerator IterateThroughActionRow()
     {
-        CurrentActionRow = CreateMutualActionRow();
+        MutualActionRow = CreateMutualActionRow();
         InitializeCellIndexHistories();
-        foreach (IAction action in CurrentActionRow)
+        foreach (IAction action in MutualActionRow)
         {
             CurrentAction = action;
             CurrentActor = action.Actor;
-            foreach (ActionConstructElement element in action.ActionConstruct)
-            {
-                yield return element.ExecuteConcrete(this);
-            }
-            if (action.UIRepresentation != null)
-            {
-                Destroy(action.UIRepresentation);
-                action.UIRepresentation = null;
-            }
-            CurrentActor.PositionCellIndexHistory.Push(CurrentActor.PositionCellIndex);
+            yield return ApplyTurnBasedStatusEffects();
+            yield return CurrentAction.ExecuteAction(this);
+            CurrentActor.AddActionToFightHistory();
         }   
         CurrentAction = null;
         CurrentActor = null;
+    }
+
+    private IEnumerator ApplyTurnBasedStatusEffects()
+    {
+        List<IStatusEffect> effectsToDestroy= new();
+
+        foreach (IStatusEffect statusEffect in CurrentActor.StatusEffectsForTurn)
+        {
+            if (statusEffect.DestroyAfterApplication)
+            {
+                effectsToDestroy.Add(statusEffect);
+            }
+            Debug.Log($"Status effect {statusEffect} is applied");
+            yield return statusEffect.ApplyStatusEffect(this);
+        }
+        foreach (IStatusEffect effect in effectsToDestroy)
+        {
+            effect.SelfDestroy(this);
+        }
     }
 
     private List<IAction> CreateMutualActionRow()

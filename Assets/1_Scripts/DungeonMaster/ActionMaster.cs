@@ -5,8 +5,6 @@ using System;
 public class ActionMaster : MonoBehaviour
 {
     [SerializeField] private DungeonMaster _dungeonMaster;
-    [SerializeField] private GameObject _movementActionUIPrefab;
-    [SerializeField] private GameObject _attackActionUIPrefab;
     private List<IAction> _playerActionPrototypes;
     private Dictionary<MonsterTypes, List<IAction>> _monsterActionReferencesByType;
 
@@ -49,20 +47,32 @@ public class ActionMaster : MonoBehaviour
     {
         _playerActionPrototypes = new();
         IAction strikeAction1 = new Strike();
-        strikeAction1.InitializeAction(_dungeonMaster.PlayerActor, 5, _dungeonMaster);
+        strikeAction1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
         _playerActionPrototypes.Add(strikeAction1);
 
         IAction moveOneTileForward1 = new MoveOneTileForward();
-        moveOneTileForward1.InitializeAction(_dungeonMaster.PlayerActor, 0, _dungeonMaster);
+        moveOneTileForward1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
         _playerActionPrototypes.Add(moveOneTileForward1);
 
         IAction rotate1 = new Rotate();
-        rotate1.InitializeAction(_dungeonMaster.PlayerActor, 0, _dungeonMaster);
+        rotate1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
         _playerActionPrototypes.Add(rotate1);
 
         IAction push1 = new Push();
-        push1.InitializeAction(_dungeonMaster.PlayerActor, 0, _dungeonMaster);
+        push1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
         _playerActionPrototypes.Add(push1);
+
+        IAction kneeDash1 = new KneeDash();
+        kneeDash1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
+        _playerActionPrototypes.Add(kneeDash1);
+
+        IAction heavyWalk1 = new HeavyWalk();
+        heavyWalk1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
+        _playerActionPrototypes.Add(heavyWalk1);
+
+        IAction angryRoar1 = new AngryRoar();
+        angryRoar1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
+        _playerActionPrototypes.Add(angryRoar1);
     }
 
     private void CreateMonsterTypeReferenceSet()
@@ -76,13 +86,13 @@ public class ActionMaster : MonoBehaviour
     private List<IAction> CreateActionsForGlist1()
     {
         List<IAction> actions = new();
-        IAction moveOneTileForward1 = new MoveOneTileForward();
-        moveOneTileForward1.InitializeAction(_dungeonMaster.MonsterRefference, 0, _dungeonMaster);
-        actions.Add(moveOneTileForward1);
+        // IAction moveOneTileForward1 = new MoveOneTileForward();
+        // moveOneTileForward1.InitializeAction(_dungeonMaster.MonsterRefference, _dungeonMaster);
+        // actions.Add(moveOneTileForward1);
 
-        // IAction strike1 = new Strike();
-        // strike1.InitializeAction(_dungeonMaster.MonsterRefference, 5, _dungeonMaster);
-        // actions.Add(strike1);
+        IAction strike1 = new Strike();
+        strike1.InitializeAction(_dungeonMaster.MonsterRefference, _dungeonMaster);
+        actions.Add(strike1);
 
         return actions; 
     }

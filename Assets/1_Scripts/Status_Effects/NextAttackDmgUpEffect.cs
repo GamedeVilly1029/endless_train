@@ -1,0 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class NextAttackDmgUpEffect : IStatusEffect
+{
+    public List<StatusEffectConstructElement> StatusConstruct{get;set;}
+    public bool DestroyAfterApplication{get;set;}
+    public void InitializeStatusEffect(DungeonMaster dungeonMaster)
+    {
+        StatusConstruct = new();
+
+        StatusEffectConstructElement elem1 = new(StatusEffectConcrete.IncreaseDamageOfFirstAttackConcrete, 2);
+        StatusConstruct.Add(elem1);
+
+        DestroyAfterApplication = true;
+    }
+
+    public IEnumerator ApplyStatusEffect(DungeonMaster dungeonMaster)
+    {
+        foreach (StatusEffectConstructElement element in StatusConstruct)
+        {
+            yield return element.ExecuteStatusConcrete(dungeonMaster);
+        }
+    }
+
+    public void SelfDestroy(DungeonMaster dungeonMaster)
+    {
+        dungeonMaster.CurrentActor.StatusEffectsForTurn.Remove(this);
+    }
+}

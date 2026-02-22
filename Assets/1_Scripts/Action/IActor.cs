@@ -10,6 +10,10 @@ public interface IActor
     RectTransform ActionRowPanel{get;set;}
     int HP {get;set;}
     bool IsFacingRight{get;set;}
+    List<IStatusEffect> StatusEffectsForTurn{get;set;}
+    List<IAction> FightBasedActionHistory{get;set;}
 
     void TryToDie(int HP);
+    void AddActionToFightHistory();
+    void TakeDamage(int damageToTake);
 }

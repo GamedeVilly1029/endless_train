@@ -1,19 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System;
 
 public class KneeDash : IAction
 {
-    public DungeonMaster DungeonMaster{get;set;}
+    public DungeonMaster DungeonMasterInstance{get;set;}
     public IActor Actor {get;set;}
     public GameObject UIRepresentation {get;set;}
-    public int ValueForActionConcrete {get;set;}
     public List<ActionConstructElement> ActionConstruct {get;set;}
+    public List<Func<DungeonMaster, ActionConstructElement, IEnumerator>> TurnTemporarySuccessfulConcreteHistory {get;set;}
 
-
-
-    public void InitializeAction(IActor actor, int valueForActionConcrete, DungeonMaster dungeonMaster)
+    public void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
     {
-        DungeonMaster = dungeonMaster;
+        DungeonMasterInstance = dungeonMaster;
         Actor = actor;
         if (Resources.Load<GameObject>("KneeDashActionUI") != null)
         {
@@ -23,48 +23,72 @@ public class KneeDash : IAction
         {
             Debug.LogError("Resources.Load can't find UIRepresentationAsset");
         }
-        ValueForActionConcrete = valueForActionConcrete;
         InitializeConstruct();
     }
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new()
+        // Here, what to do.
+        ActionConstruct = new();
+        List<Func<DungeonMaster, IActor, bool>> conditions = new()
         {
-            new ActionConstructElement()
-            {
-                ConditionsToExecuteConcrete = null,
-                Concrete = ActionConcretes.AttackEntityAhead
-            }
+            ActionConditions.PositionIndexChangedInPreviousAction
         };
+        ActionConstructElement elem1 = new(this, conditions, ActionConcretes.AttackEntityAhead, 10, ActionConcreteTag.Attack);
+        ActionConstruct.Add(elem1);
+
+        conditions = new()
+        {
+            ActionConditions.ConcreteHistoryIsEmpty
+        };
+        ActionConstructElement elem2 = new(this, conditions, ActionConcretes.AttackEntityAhead, 5, ActionConcreteTag.Attack);
+        ActionConstruct.Add(elem2);
     }
 
     public IAction CloneAndInstantiateUI(Transform transform)
     {
         Strike actionClone = new()
         {
-            DungeonMaster = DungeonMaster,
+            DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,
-            UIRepresentation = Object.Instantiate(UIRepresentation, transform),
-            ValueForActionConcrete = ValueForActionConcrete,
-            ActionConstruct = CloneActionConstruct()
+            UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };
+
+        actionClone.ActionConstruct = CloneActionConstruct(actionClone);
 
         return actionClone;
     }
 
-    public List<ActionConstructElement> CloneActionConstruct()
+    public List<ActionConstructElement> CloneActionConstruct(IAction actionClone)
     {
         List<ActionConstructElement> concretes = new();
         foreach (var concrete in ActionConstruct)
         {
-            var newElement = new ActionConstructElement
-            {
-                ConditionsToExecuteConcrete = concrete.ConditionsToExecuteConcrete,
-                Concrete = concrete.Concrete
-            };
-            concretes.Add(concrete);
+            var newElement = new ActionConstructElement(
+            actionClone, 
+            concrete.ConditionsToExecuteConcrete, 
+            concrete.Concrete, 
+            concrete.ConcreteValue, 
+            concrete.ConcreteTag);
+
+            concretes.Add(newElement);
         }
         return concretes;
+    }
+
+    
+    public IEnumerator ExecuteAction(DungeonMaster dungeonMaster)
+    {
+        TurnTemporarySuccessfulConcreteHistory = new();
+        foreach (ActionConstructElement element in ActionConstruct)
+        {
+            yield return element.ExecuteConcrete(DungeonMasterInstance);
+        }
+        if (UIRepresentation != null)
+        {
+            UnityEngine.Object.Destroy(UIRepresentation);
+            UIRepresentation = null;
+        }
+        Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);
     }
 }

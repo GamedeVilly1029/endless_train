@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
-public class Strike : IAction
+
+public class AngryRoar: IAction
 {
     public DungeonMaster DungeonMasterInstance{get;set;}
     public IActor Actor {get;set;}
@@ -14,9 +15,9 @@ public class Strike : IAction
     {
         DungeonMasterInstance = dungeonMaster;
         Actor = actor;
-        if (Resources.Load<GameObject>("AttackActionUI") != null)
+        if (Resources.Load<GameObject>("AngryRoarActionUI") != null)
         {
-            UIRepresentation = Resources.Load<GameObject>("AttackActionUI");
+            UIRepresentation = Resources.Load<GameObject>("AngryRoarActionUI");
         }
         else
         {
@@ -29,7 +30,7 @@ public class Strike : IAction
     {
         ActionConstruct = new()
         {
-            new ActionConstructElement(this, null, ActionConcretes.AttackEntityAhead, 5, ActionConcreteTag.Attack)
+            new ActionConstructElement(this, null, ActionConcretes.IncreaseDamageOfNextAttackConcrete, 5, ActionConcreteTag.Skill)
         };
     }
 

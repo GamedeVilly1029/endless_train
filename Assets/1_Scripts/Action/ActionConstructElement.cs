@@ -5,26 +5,45 @@ using UnityEngine;
 
 public class ActionConstructElement
 {
-    public List<bool> ConditionsToExecuteConcrete;
-    public Func<DungeonMaster, IEnumerator> Concrete;
+    public List<Func<DungeonMaster, IActor, bool>> ConditionsToExecuteConcrete;
+    public Func<DungeonMaster, ActionConstructElement, IEnumerator> Concrete;
+    public int ConcreteValue;
+    public IAction ActionOfThisConcrete;
+    public ActionConcreteTag ConcreteTag;
+
+    public ActionConstructElement(IAction actionOfThisConcrete,
+    List<Func<DungeonMaster, IActor, bool>> conditions, 
+    Func<DungeonMaster, ActionConstructElement, IEnumerator> concrete, 
+    int concreteValue,
+    ActionConcreteTag tag
+    )
+    {
+        ActionOfThisConcrete = actionOfThisConcrete;
+        ConditionsToExecuteConcrete = conditions;
+        Concrete = concrete;
+        ConcreteValue = concreteValue;
+        ConcreteTag = tag;
+    }
 
     public IEnumerator ExecuteConcrete(DungeonMaster dungoneMaster)
     {
         if (ConditionsToExecuteConcrete == null)
         {
-            yield return Concrete(dungoneMaster);
+            ActionOfThisConcrete.TurnTemporarySuccessfulConcreteHistory.Add(Concrete);
+            yield return Concrete(dungoneMaster, this);
         }
         else
         {
-            foreach (bool condition in ConditionsToExecuteConcrete)
+            foreach (var condition in ConditionsToExecuteConcrete)
             {
-                if (condition)
+                if (!condition(dungoneMaster, ActionOfThisConcrete.Actor))
                 {
                     Debug.Log("Some conditions are false => Concrete can't be executed");
                     yield break;
                 }
             }
-            yield return Concrete(dungoneMaster);
+            ActionOfThisConcrete.TurnTemporarySuccessfulConcreteHistory.Add(Concrete);
+            yield return Concrete(dungoneMaster, this);
         }
     }
 }

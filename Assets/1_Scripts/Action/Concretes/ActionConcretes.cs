@@ -3,7 +3,7 @@ using System.Collections;
 
 public static class ActionConcretes
 {
-    public static IEnumerator MoveOneCellForward(DungeonMaster dungeonMaster)
+    public static IEnumerator MoveOneCellForward(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
         IActor actor = dungeonMaster.CurrentActor;
         if (!ActionConditions.CellAheadExists(dungeonMaster, actor))
@@ -12,6 +12,7 @@ public static class ActionConcretes
         }
         else if (!ActionConditions.CellAheadIsEmpty(dungeonMaster, actor))
         {
+            Debug.Log("Cell ahead isn't empty");
             yield break;
         }
         else
@@ -21,25 +22,26 @@ public static class ActionConcretes
         yield return new WaitForSeconds(0.5f);
     }
 
-    public static IEnumerator WalkXTiles(DungeonMaster dungeonMaster)
+    public static IEnumerator WalkXTiles(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
-        while (dungeonMaster.CurrentAction.ValueForActionConcrete > 0)
+        int stepsToSubtract = element.ConcreteValue;
+        while (stepsToSubtract > 0)
         {
-            yield return dungeonMaster.StartCoroutine(MoveOneCellForward(dungeonMaster));
-            dungeonMaster.CurrentAction.ValueForActionConcrete--;
+            yield return dungeonMaster.StartCoroutine(MoveOneCellForward(dungeonMaster, element));
+            stepsToSubtract--;
         }
     }
 
-    public static IEnumerator AttackEntityAhead(DungeonMaster dungeonMaster)
+    public static IEnumerator AttackEntityAhead(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
         if (!ActionConditions.CellAheadIsEmpty(dungeonMaster, dungeonMaster.CurrentActor))
         {
             if (dungeonMaster.CurrentActor.IsFacingRight)
             {
-                IActor actorAhead = TryReturnActorAhead(dungeonMaster);
+                IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
                 if (actorAhead != null)
                 {
-                    actorAhead.HP -= dungeonMaster.CurrentAction.ValueForActionConcrete; 
+                    actorAhead.TakeDamage(element.ConcreteValue); 
                     GameObject attackViewObject = Object.Instantiate(
                         Resources.Load<GameObject>("AttackVisual"),
                         new Vector3(dungeonMaster.CurrentActor.Transform.position.x + 1, dungeonMaster.CurrentActor.Transform.position.y),
@@ -51,10 +53,10 @@ public static class ActionConcretes
             }
             else
             {
-                IActor actorAhead = TryReturnActorAhead(dungeonMaster);
+                IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
                 if (actorAhead != null)
                 {
-                    actorAhead.HP -= dungeonMaster.CurrentAction.ValueForActionConcrete; 
+                    actorAhead.TakeDamage(element.ConcreteValue); 
                     GameObject attackViewObject = Object.Instantiate(
                         Resources.Load<GameObject>("AttackVisual"),
                         new Vector3(dungeonMaster.CurrentActor.Transform.position.x - 1, dungeonMaster.CurrentActor.Transform.position.y),
@@ -77,7 +79,7 @@ public static class ActionConcretes
         }
     }
 
-    public static IActor TryReturnActorAhead(DungeonMaster dungeonMaster)
+    public static IActor TryReturnActorAhead(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
         IActor actor = dungeonMaster.CurrentActor;
         if (ActionConditions.CellAheadExists(dungeonMaster, actor))
@@ -112,20 +114,20 @@ public static class ActionConcretes
         }
     }
 
-    public static IEnumerator RotateActor(DungeonMaster dungeonMaster)
+    public static IEnumerator RotateActor(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
         dungeonMaster.CurrentActor.IsFacingRight = !dungeonMaster.CurrentActor.IsFacingRight;
         Debug.Log($"{dungeonMaster.CurrentActor} was rotated");
         yield return new WaitForSeconds(0.5f);
     }
 
-    public static IEnumerator Push(DungeonMaster dungeonMaster)
+    public static IEnumerator Push(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
         if (dungeonMaster.CurrentActor.IsFacingRight)
         {
             if (ActionConditions.CellAheadExists(dungeonMaster, dungeonMaster.CurrentActor))
             {
-                IActor actorAhead = TryReturnActorAhead(dungeonMaster);
+                IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
                 if (actorAhead != null)
                 {
                     if (ActionConditions.AdjacentCellsExists(dungeonMaster, actorAhead))
@@ -139,7 +141,7 @@ public static class ActionConcretes
         {
             if (ActionConditions.CellAheadExists(dungeonMaster, dungeonMaster.CurrentActor))
             {
-                IActor actorAhead = TryReturnActorAhead(dungeonMaster);
+                IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
                 if (actorAhead != null)
                 {
                     if (ActionConditions.AdjacentCellsExists(dungeonMaster, actorAhead))
@@ -149,6 +151,16 @@ public static class ActionConcretes
                 }
             } 
         }
+        yield return new WaitForSeconds(0.5f);
+    }
+
+    public static IEnumerator IncreaseDamageOfNextAttackConcrete(DungeonMaster dungeonMaster, ActionConstructElement element)
+    {
+        IStatusEffect dmgIncreaseEffect = new NextAttackDmgUpEffect();
+        dmgIncreaseEffect.InitializeStatusEffect(dungeonMaster);
+
+        dungeonMaster.CurrentActor.StatusEffectsForTurn.Add(dmgIncreaseEffect);
+        Debug.Log("Damage of following attack is increased");
         yield return new WaitForSeconds(0.5f);
     }
 }

@@ -2,18 +2,18 @@ using UnityEngine;
 
 public static class ActionConditions
 {
-    public static bool CellAheadIsEmpty(DungeonMaster master, IActor actor)
+    public static bool CellAheadIsEmpty(DungeonMaster dungonMaster, IActor actor)
     {
         int currentCellIndex = actor.PositionCellIndex;
-        if (CellAheadExists(master, actor))
+        if (CellAheadExists(dungonMaster, actor))
         {
-            if (master.CurrentActor.IsFacingRight)
+            if (dungonMaster.CurrentActor.IsFacingRight)
             {
-                return master.Cells[currentCellIndex + 1].EnityOccupyingThisCell == null;
+                return dungonMaster.Cells[currentCellIndex + 1].EnityOccupyingThisCell == null;
             }
             else
             {
-                return master.Cells[currentCellIndex - 1].EnityOccupyingThisCell == null;
+                return dungonMaster.Cells[currentCellIndex - 1].EnityOccupyingThisCell == null;
             }
         }
         else
@@ -23,12 +23,12 @@ public static class ActionConditions
         }
     }
 
-    public static bool CellAheadExists(DungeonMaster master, IActor actor)
+    public static bool CellAheadExists(DungeonMaster dungeonMaster, IActor actor)
     {
         int currentCellIndex = actor.PositionCellIndex;
-        if (master.CurrentActor.IsFacingRight)
+        if (dungeonMaster.CurrentActor.IsFacingRight)
         {
-            return currentCellIndex + 1 < master.Cells.Count;
+            return currentCellIndex + 1 < dungeonMaster.Cells.Count;
         }
         else
         {
@@ -36,10 +36,10 @@ public static class ActionConditions
         }
     }
 
-    public static bool AdjacentCellsExists(DungeonMaster master, IActor actor)
+    public static bool AdjacentCellsExists(DungeonMaster dungeonMaster, IActor actor)
     {
         int currentCellIndex = actor.PositionCellIndex;
-        return 0 < currentCellIndex && currentCellIndex + 1 < master.Cells.Count;
+        return 0 < currentCellIndex && currentCellIndex + 1 < dungeonMaster.Cells.Count;
     }
 
     public static bool PositionIndexChangedInPreviousAction(DungeonMaster master, IActor actor)
@@ -63,5 +63,10 @@ public static class ActionConditions
         {
             return false;
         }
+    }
+
+    public static bool ConcreteHistoryIsEmpty(DungeonMaster dungeonMaster, IActor actor)
+    {
+        return dungeonMaster.CurrentAction.TurnTemporarySuccessfulConcreteHistory.Count == 0;
     }
 }

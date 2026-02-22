@@ -16,18 +16,20 @@ public class MonsterActor : MonoBehaviour, IActor, IMonster
     public Stack<int> PositionCellIndexHistory{get;set;}
     public bool IsFacingRight {get;set;}
     public MonsterTypes MonsterType {get;set;}
+    public List<IStatusEffect> StatusEffectsForTurn {get;set;}
+    public List<IAction> FightBasedActionHistory{get;set;}
 
     public void Initialize()
     {
         _dungeonMaster.MonstersWithActorReference.Add(this, this);
         _dungeonMaster.AllActors.Add(this);
-        Transform.position = _dungeonMaster.Cells[9].CellPosition;
-        _dungeonMaster.Cells[9].EnityOccupyingThisCell = this;
-        PositionCellIndex = 9;
+        Transform.position = _dungeonMaster.Cells[1].CellPosition;
+        _dungeonMaster.Cells[1].EnityOccupyingThisCell = this;
+        PositionCellIndex = 1;
         IsFacingRight = false;
         MonsterType = MonsterTypes.glist1;
-
-        HP = 10;
+        StatusEffectsForTurn = new();
+        HP = 99;
     }
 
     private void Update()
@@ -40,8 +42,19 @@ public class MonsterActor : MonoBehaviour, IActor, IMonster
     {
         if (HP <= 0)
         {
-            Debug.Log("Death");
+            _dungeonMaster.AllActors.Remove(this);
+            _dungeonMaster.Cells[PositionCellIndex].EnityOccupyingThisCell = null;
             Destroy(gameObject);
         }
+    }
+
+    public void AddActionToFightHistory()
+    {
+        FightBasedActionHistory = new();
+    }
+
+    public void TakeDamage(int damageToTake)
+    {
+        HP -= damageToTake;
     }
 }
