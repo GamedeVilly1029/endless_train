@@ -69,4 +69,18 @@ public static class ActionConditions
     {
         return dungeonMaster.CurrentAction.TurnTemporarySuccessfulConcreteHistory.Count == 0;
     }
+
+    public static bool LastActionIsNotThisAction(DungeonMaster dungeonMaster, IActor actor)
+    {
+        if (dungeonMaster.CurrentActor.FightBasedActionHistory == null)
+        {
+            return true;
+        }
+        return dungeonMaster.CurrentActor.FightBasedActionHistory[^1].GetType() != dungeonMaster.CurrentAction.GetType();
+    }
+
+    public static bool ConcreteHistoryHasOnly1Concrete(DungeonMaster dungeonMaster, IActor actor)
+    {
+        return dungeonMaster.CurrentAction.TurnTemporarySuccessfulConcreteHistory.Count == 1;
+    }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,10 +11,12 @@ public interface IActor
     RectTransform ActionRowPanel{get;set;}
     int HP {get;set;}
     bool IsFacingRight{get;set;}
-    List<IStatusEffect> StatusEffectsForTurn{get;set;}
     List<IAction> FightBasedActionHistory{get;set;}
+
+    List<IStatusEffect> StatusEffectsForTurn{get;set;}
+    List<IStatusEffect> StatusEffectsBeforeTakingDamage{get;set;}
 
     void TryToDie(int HP);
     void AddActionToFightHistory();
-    void TakeDamage(int damageToTake);
+    IEnumerator TakeDamage(int damageToTake);
 }

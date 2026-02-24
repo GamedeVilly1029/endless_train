@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Linq;
+using UnityEditor.Experimental.GraphView;
 
 public static class ActionConcretes
 {
@@ -41,7 +43,7 @@ public static class ActionConcretes
                 IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
                 if (actorAhead != null)
                 {
-                    actorAhead.TakeDamage(element.ConcreteValue); 
+                    yield return actorAhead.TakeDamage(element.ConcreteValue); 
                     GameObject attackViewObject = Object.Instantiate(
                         Resources.Load<GameObject>("AttackVisual"),
                         new Vector3(dungeonMaster.CurrentActor.Transform.position.x + 1, dungeonMaster.CurrentActor.Transform.position.y),
@@ -56,7 +58,7 @@ public static class ActionConcretes
                 IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
                 if (actorAhead != null)
                 {
-                    actorAhead.TakeDamage(element.ConcreteValue); 
+                    yield return actorAhead.TakeDamage(element.ConcreteValue); 
                     GameObject attackViewObject = Object.Instantiate(
                         Resources.Load<GameObject>("AttackVisual"),
                         new Vector3(dungeonMaster.CurrentActor.Transform.position.x - 1, dungeonMaster.CurrentActor.Transform.position.y),
@@ -162,5 +164,41 @@ public static class ActionConcretes
         dungeonMaster.CurrentActor.StatusEffectsForTurn.Add(dmgIncreaseEffect);
         Debug.Log("Damage of following attack is increased");
         yield return new WaitForSeconds(0.5f);
+    }
+
+    public static IEnumerator RemoveTantrumVulnerability(DungeonMaster dungeonMaster, ActionConstructElement element)
+    {
+        for (int i = dungeonMaster.CurrentActor.StatusEffectsBeforeTakingDamage.Count - 1; i >= 0; i--)
+        {
+            if (dungeonMaster.CurrentActor.StatusEffectsBeforeTakingDamage[i] is TantrumVulnerabilityEffect)
+            {
+                dungeonMaster.CurrentActor.StatusEffectsBeforeTakingDamage.RemoveAt(i);
+            }
+        }
+        yield return null;
+    }
+
+    public static IEnumerator AddTantrumVulnerability(DungeonMaster dungeonMaster, ActionConstructElement element)
+    {
+        TantrumVulnerabilityEffect tantrum = new TantrumVulnerabilityEffect();
+        tantrum.InitializeStatusEffect(dungeonMaster);
+        dungeonMaster.CurrentActor.StatusEffectsBeforeTakingDamage.Add(tantrum);
+        yield return null;
+    }
+
+    public static IEnumerator TantrumStrike(DungeonMaster dungeonMaster, ActionConstructElement element)
+    {
+        for (int i = dungeonMaster.CurrentActor.FightBasedActionHistory.Count - 1; i >= 0; i--)
+        {
+            if (dungeonMaster.CurrentActor.FightBasedActionHistory[i] is Tantrum)
+            {
+                yield return AttackEntityAhead(dungeonMaster, element);
+            }
+            else
+            {
+                break;
+            }
+        }
+        yield return AttackEntityAhead(dungeonMaster, element);
     }
 }

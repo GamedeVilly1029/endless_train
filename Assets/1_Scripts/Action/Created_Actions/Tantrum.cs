@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class KneeDash : IAction
+public class Tantrum : IAction
 {
     public DungeonMaster DungeonMasterInstance{get;set;}
     public IActor Actor {get;set;}
@@ -15,9 +15,9 @@ public class KneeDash : IAction
     {
         DungeonMasterInstance = dungeonMaster;
         Actor = actor;
-        if (Resources.Load<GameObject>("KneeDashActionUI") != null)
+        if (Resources.Load<GameObject>("TantrumActionUI") != null)
         {
-            UIRepresentation = Resources.Load<GameObject>("KneeDashActionUI");
+            UIRepresentation = Resources.Load<GameObject>("TantrumActionUI");
         }
         else
         {
@@ -31,22 +31,40 @@ public class KneeDash : IAction
         ActionConstruct = new();
         List<Func<DungeonMaster, IActor, bool>> conditions = new()
         {
-            ActionConditions.PositionIndexChangedInPreviousAction
+            ActionConditions.LastActionIsNotThisAction
         };
-        ActionConstructElement elem1 = new(this, conditions, ActionConcretes.AttackEntityAhead, 10, ActionConcreteTag.Attack);
-        ActionConstruct.Add(elem1);
+
+        ActionConstructElement removeVulnerable = new(this, conditions, ActionConcretes.RemoveTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        ActionConstruct.Add(removeVulnerable);
+
+        ActionConstructElement strike = new(this, conditions, ActionConcretes.AttackEntityAhead, 2, ActionConcreteTag.Attack);
+        ActionConstruct.Add(strike);
+
+        ActionConstructElement add1Vulnerability = new(this, conditions, ActionConcretes.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        ActionConstruct.Add(add1Vulnerability);
+
 
         conditions = new()
         {
             ActionConditions.ConcreteHistoryIsEmpty
         };
-        ActionConstructElement elem2 = new(this, conditions, ActionConcretes.AttackEntityAhead, 5, ActionConcreteTag.Attack);
-        ActionConstruct.Add(elem2);
+
+        ActionConstructElement tantrumStrike = new(this, conditions, ActionConcretes.TantrumStrike, 2, ActionConcreteTag.Attack);
+        ActionConstruct.Add(tantrumStrike);
+
+
+        conditions = new()
+        {
+            ActionConditions.ConcreteHistoryHasOnly1Concrete
+        };
+
+        add1Vulnerability = new(this, conditions, ActionConcretes.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        ActionConstruct.Add(add1Vulnerability);
     }
 
     public IAction CloneAndInstantiateUI(Transform transform)
     {
-        KneeDash actionClone = new()
+        Tantrum actionClone = new()
         {
             DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,

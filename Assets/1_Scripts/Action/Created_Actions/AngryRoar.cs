@@ -36,7 +36,7 @@ public class AngryRoar: IAction
 
     public IAction CloneAndInstantiateUI(Transform transform)
     {
-        Strike actionClone = new()
+        AngryRoar actionClone = new()
         {
             DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,

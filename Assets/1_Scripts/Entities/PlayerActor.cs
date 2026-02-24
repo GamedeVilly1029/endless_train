@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,13 +14,13 @@ public class PlayerActor : MonoBehaviour, IActor
     public RectTransform ActionRowPanel{get{return _actionRowPanel;}set{}}
     public List<IAction> Belt = new();
     public Transform BeltPanel;
-    public int HP{get;set;} = 10; //Example value
+    public int HP{get;set;} = 99; //Example value
     public int PositionCellIndex {get;set;}
     public Stack<int> PositionCellIndexHistory{get;set;}
     public bool IsFacingRight {get;set;}
     public List<IStatusEffect> StatusEffectsForTurn {get;set;}
     public List<IAction> FightBasedActionHistory{get;set;}
-
+    public List<IStatusEffect> StatusEffectsBeforeTakingDamage {get;set;}
 
     public void Initialize()
     {
@@ -29,6 +30,7 @@ public class PlayerActor : MonoBehaviour, IActor
         PositionCellIndex = 0;
         IsFacingRight = true;
         StatusEffectsForTurn = new();
+        StatusEffectsBeforeTakingDamage = new();
     }
 
 
@@ -63,8 +65,13 @@ public class PlayerActor : MonoBehaviour, IActor
         }
     }
 
-    public void TakeDamage(int damageToTake)
+    public IEnumerator TakeDamage(int damageToTake)
     {
+        Debug.Log(StatusEffectsBeforeTakingDamage.Count);
+        foreach (IStatusEffect statusEffect in StatusEffectsBeforeTakingDamage)
+        {
+            yield return statusEffect.ApplyStatusEffect(_dungeonMaster);
+        }
         HP -= damageToTake;
     }
 }

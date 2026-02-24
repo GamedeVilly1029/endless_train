@@ -34,7 +34,7 @@ public class Push : IAction
 
     public IAction CloneAndInstantiateUI(Transform transform)
     {
-        Strike actionClone = new()
+        Push actionClone = new()
         {
             DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,

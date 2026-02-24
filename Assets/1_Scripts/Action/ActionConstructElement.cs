@@ -25,25 +25,25 @@ public class ActionConstructElement
         ConcreteTag = tag;
     }
 
-    public IEnumerator ExecuteConcrete(DungeonMaster dungoneMaster)
+    public IEnumerator ExecuteConcrete(DungeonMaster dungeonMaster)
     {
         if (ConditionsToExecuteConcrete == null)
         {
             ActionOfThisConcrete.TurnTemporarySuccessfulConcreteHistory.Add(Concrete);
-            yield return Concrete(dungoneMaster, this);
+            yield return Concrete(dungeonMaster, this);
         }
         else
         {
             foreach (var condition in ConditionsToExecuteConcrete)
             {
-                if (!condition(dungoneMaster, ActionOfThisConcrete.Actor))
+                if (!condition(dungeonMaster, ActionOfThisConcrete.Actor))
                 {
-                    Debug.Log("Some conditions are false => Concrete can't be executed");
+                    // Debug.Log($"condition: {condition.Method.Name}, interupts Concrete: {Concrete.Method.Name} from execution");
                     yield break;
                 }
             }
             ActionOfThisConcrete.TurnTemporarySuccessfulConcreteHistory.Add(Concrete);
-            yield return Concrete(dungoneMaster, this);
+            yield return Concrete(dungeonMaster, this);
         }
     }
 }

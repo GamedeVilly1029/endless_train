@@ -35,7 +35,7 @@ public class MoveOneTileForward : IAction
 
     public IAction CloneAndInstantiateUI(Transform transform)
     {
-        Strike actionClone = new()
+        MoveOneTileForward actionClone = new()
         {
             DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,

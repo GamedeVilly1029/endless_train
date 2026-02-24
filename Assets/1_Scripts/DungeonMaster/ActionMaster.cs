@@ -73,6 +73,10 @@ public class ActionMaster : MonoBehaviour
         IAction angryRoar1 = new AngryRoar();
         angryRoar1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
         _playerActionPrototypes.Add(angryRoar1);
+
+        IAction tantrum1 = new Tantrum();
+        tantrum1.InitializeAction(_dungeonMaster.PlayerActor, _dungeonMaster);
+        _playerActionPrototypes.Add(tantrum1);
     }
 
     private void CreateMonsterTypeReferenceSet()

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class MonsterActor : MonoBehaviour, IActor, IMonster
     public MonsterTypes MonsterType {get;set;}
     public List<IStatusEffect> StatusEffectsForTurn {get;set;}
     public List<IAction> FightBasedActionHistory{get;set;}
+    public List<IStatusEffect> StatusEffectsBeforeTakingDamage {get;set;}
 
     public void Initialize()
     {
@@ -29,6 +31,7 @@ public class MonsterActor : MonoBehaviour, IActor, IMonster
         IsFacingRight = false;
         MonsterType = MonsterTypes.glist1;
         StatusEffectsForTurn = new();
+        StatusEffectsBeforeTakingDamage = new();
         HP = 99;
     }
 
@@ -53,8 +56,12 @@ public class MonsterActor : MonoBehaviour, IActor, IMonster
         FightBasedActionHistory = new();
     }
 
-    public void TakeDamage(int damageToTake)
+    public IEnumerator TakeDamage(int damageToTake)
     {
+        foreach (IStatusEffect statusEffect in StatusEffectsBeforeTakingDamage)
+        {
+            yield return statusEffect.ApplyStatusEffect(_dungeonMaster);
+        }
         HP -= damageToTake;
     }
 }

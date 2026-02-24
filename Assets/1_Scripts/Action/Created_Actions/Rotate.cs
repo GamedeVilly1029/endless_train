@@ -35,7 +35,7 @@ public class Rotate : IAction
 
     public IAction CloneAndInstantiateUI(Transform transform)
     {
-        Strike actionClone = new()
+        Rotate actionClone = new()
         {
             DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,

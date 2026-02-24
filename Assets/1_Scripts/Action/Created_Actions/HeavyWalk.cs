@@ -43,7 +43,7 @@ public class HeavyWalk : IAction
 
     public IAction CloneAndInstantiateUI(Transform transform)
     {
-        Strike actionClone = new()
+        HeavyWalk actionClone = new()
         {
             DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,

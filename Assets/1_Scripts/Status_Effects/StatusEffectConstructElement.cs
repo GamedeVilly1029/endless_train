@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StatusEffectConstructElement
@@ -15,7 +16,6 @@ public class StatusEffectConstructElement
 
     public IEnumerator ExecuteStatusConcrete(DungeonMaster dungeonMaster)
     {
-        Debug.Log("Status effect concrete is executed");
         yield return StatusConcrete(dungeonMaster, this);
     }
 }
