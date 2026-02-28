@@ -14,7 +14,8 @@ public class PlayerActor : MonoBehaviour, IActor
     public RectTransform ActionRowPanel{get{return _actionRowPanel;}set{}}
     public List<IAction> Belt = new();
     public Transform BeltPanel;
-    public int HP{get;set;} = 99; //Example value
+    public int MaxHP{get;set;} = 99;
+    public int CurrentHP{get;set;}
     public int PositionCellIndex {get;set;}
     public Stack<int> PositionCellIndexHistory{get;set;}
     public bool IsFacingRight {get;set;}
@@ -31,18 +32,20 @@ public class PlayerActor : MonoBehaviour, IActor
         IsFacingRight = true;
         StatusEffectsForTurn = new();
         StatusEffectsBeforeTakingDamage = new();
+        MaxHP = 99;
+        CurrentHP = MaxHP;
     }
 
 
     private void Update()
     {
-        TryToDie(HP);
-        HPBarText.text = HP.ToString();
+        TryToDie(CurrentHP);
+        HPBarText.text = CurrentHP.ToString();
     }
 
     public void TryToDie(int HP)
     {
-        if (this.HP <= 0)
+        if (CurrentHP <= 0)
         {
             _dungeonMaster.AllActors.Remove(this);
             _dungeonMaster.Cells[PositionCellIndex].EnityOccupyingThisCell = null;
@@ -65,13 +68,16 @@ public class PlayerActor : MonoBehaviour, IActor
         }
     }
 
-    public IEnumerator TakeDamage(int damageToTake)
+    public IEnumerator RunBeforeDamageStatuses()
     {
-        Debug.Log(StatusEffectsBeforeTakingDamage.Count);
         foreach (IStatusEffect statusEffect in StatusEffectsBeforeTakingDamage)
         {
             yield return statusEffect.ApplyStatusEffect(_dungeonMaster);
         }
-        HP -= damageToTake;
+    }
+
+    public IEnumerator SubtractDamageFromHP(int damageToTake)
+    {
+        yield return CurrentHP -= damageToTake;
     }
 }

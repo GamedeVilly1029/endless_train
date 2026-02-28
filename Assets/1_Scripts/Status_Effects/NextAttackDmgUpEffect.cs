@@ -10,7 +10,7 @@ public class NextAttackDmgUpEffect : IStatusEffect
     {
         StatusConstruct = new();
 
-        StatusEffectConstructElement elem1 = new(StatusEffectConcrete.IncreaseDamageOfFirstAttackConcrete, 2);
+        StatusEffectConstructElement elem1 = new(StatusEffectConcrete.IncreaseDamageOfFirstAttackConcrete, 2, dungeonMaster.CurrentActor);
         StatusConstruct.Add(elem1);
 
         DestroyAfterApplication = true;

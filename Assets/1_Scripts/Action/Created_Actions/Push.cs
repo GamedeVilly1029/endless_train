@@ -75,9 +75,4 @@ public class Push : IAction
         }
         Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);
     }
-
-    IEnumerator IAction.ExecuteAction(DungeonMaster dungeonMaster)
-    {
-        throw new System.NotImplementedException();
-    }
 }

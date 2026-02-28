@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public static class StatusEffectConcrete
 {
@@ -11,6 +12,6 @@ public static class StatusEffectConcrete
 
     public static IEnumerator TakeDamage(DungeonMaster dungeonMaster, StatusEffectConstructElement element)
     {
-        yield return dungeonMaster.CurrentActor.TakeDamage(element.StatusConcreteValue);
+        yield return element.Actor.SubtractDamageFromHP(element.StatusConcreteValue);
     }
 }

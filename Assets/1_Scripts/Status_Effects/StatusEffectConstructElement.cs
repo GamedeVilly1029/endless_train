@@ -7,11 +7,13 @@ public class StatusEffectConstructElement
 {
     public Func<DungeonMaster, StatusEffectConstructElement, IEnumerator> StatusConcrete;
     public int StatusConcreteValue;
+    public IActor Actor;
 
-    public StatusEffectConstructElement(Func<DungeonMaster, StatusEffectConstructElement, IEnumerator> concrete, int value)
+    public StatusEffectConstructElement(Func<DungeonMaster, StatusEffectConstructElement, IEnumerator> concrete, int value, IActor actor)
     {
         StatusConcrete = concrete;
         StatusConcreteValue = value;
+        Actor = actor;
     }
 
     public IEnumerator ExecuteStatusConcrete(DungeonMaster dungeonMaster)

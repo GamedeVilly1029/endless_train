@@ -9,7 +9,8 @@ public interface IActor
     Stack<int> PositionCellIndexHistory {get;set;}
     List<IAction> ActionRow {get;set;}
     RectTransform ActionRowPanel{get;set;}
-    int HP {get;set;}
+    int MaxHP{get;set;}
+    int CurrentHP {get;set;}
     bool IsFacingRight{get;set;}
     List<IAction> FightBasedActionHistory{get;set;}
 
@@ -18,5 +19,6 @@ public interface IActor
 
     void TryToDie(int HP);
     void AddActionToFightHistory();
-    IEnumerator TakeDamage(int damageToTake);
+    IEnumerator RunBeforeDamageStatuses();
+    IEnumerator SubtractDamageFromHP(int damageToTake);
 }

@@ -13,8 +13,8 @@ public class DungeonMaster : MonoBehaviour
     public IAction CurrentAction;
     public IActor CurrentActor;
 
-    public MonsterActor MonsterRefference;
-    public PlayerActor PlayerActor;
+    public Mechanic Mechanic;
+    public PlayerActor Player;
 
     public Dictionary<IActor, IMonster> MonstersWithActorReference;
 
@@ -24,8 +24,8 @@ public class DungeonMaster : MonoBehaviour
         AllActors = new();
         CreateCellPositionsDictionary();
 
-        MonsterRefference.Initialize();
-        PlayerActor.Initialize();
+        Mechanic.Initialize();
+        Player.Initialize();
     }
 
     public IEnumerator IterateThroughActionRow()
@@ -66,16 +66,16 @@ public class DungeonMaster : MonoBehaviour
     private List<IAction> CreateMutualActionRow()
     {
         List<IAction> row = new();
-        int maxPossibleElement = Mathf.Max(PlayerActor.ActionRow.Count, MonsterRefference.ActionRow.Count) - 1;
+        int maxPossibleElement = Mathf.Max(Player.ActionRow.Count, Mechanic.ActionRow.Count) - 1;
         for (int i = 0; i <= maxPossibleElement; i++)
         {
-            if (i <= PlayerActor.ActionRow.Count - 1)
+            if (i <= Player.ActionRow.Count - 1)
             {
-                row.Add(PlayerActor.ActionRow[i]);
+                row.Add(Player.ActionRow[i]);
             }
-            if (i <= MonsterRefference.ActionRow.Count - 1)
+            if (i <= Mechanic.ActionRow.Count - 1)
             {
-                row.Add(MonsterRefference.ActionRow[i]);
+                row.Add(Mechanic.ActionRow[i]);
             }
         }
         return row;

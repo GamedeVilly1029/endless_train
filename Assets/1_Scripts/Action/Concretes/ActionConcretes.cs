@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Linq;
-using UnityEditor.Experimental.GraphView;
 
 public static class ActionConcretes
 {
@@ -43,7 +41,9 @@ public static class ActionConcretes
                 IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
                 if (actorAhead != null)
                 {
-                    yield return actorAhead.TakeDamage(element.ConcreteValue); 
+                    yield return actorAhead.SubtractDamageFromHP(element.ConcreteValue);
+                    yield return actorAhead.RunBeforeDamageStatuses(); 
+
                     GameObject attackViewObject = Object.Instantiate(
                         Resources.Load<GameObject>("AttackVisual"),
                         new Vector3(dungeonMaster.CurrentActor.Transform.position.x + 1, dungeonMaster.CurrentActor.Transform.position.y),
@@ -58,7 +58,9 @@ public static class ActionConcretes
                 IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
                 if (actorAhead != null)
                 {
-                    yield return actorAhead.TakeDamage(element.ConcreteValue); 
+                    yield return actorAhead.SubtractDamageFromHP(element.ConcreteValue);
+                    yield return actorAhead.RunBeforeDamageStatuses(); 
+
                     GameObject attackViewObject = Object.Instantiate(
                         Resources.Load<GameObject>("AttackVisual"),
                         new Vector3(dungeonMaster.CurrentActor.Transform.position.x - 1, dungeonMaster.CurrentActor.Transform.position.y),
@@ -73,9 +75,9 @@ public static class ActionConcretes
         {
             GameObject attackViewObject = Object.Instantiate(
                 Resources.Load<GameObject>("AttackVisual"),
-                new Vector3(dungeonMaster.PlayerActor.Transform.position.x + 1, dungeonMaster.PlayerActor.Transform.position.y), 
+                new Vector3(dungeonMaster.CurrentActor.Transform.position.x + 1, dungeonMaster.CurrentActor.Transform.position.y), 
                 Quaternion.identity, 
-                dungeonMaster.PlayerActor.Transform);
+                dungeonMaster.CurrentActor.Transform);
             yield return new WaitForSeconds(0.5f);
             Object.Destroy(attackViewObject);
         }

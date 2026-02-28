@@ -10,17 +10,17 @@ public class ActionRowBeltClickSwitcher : MonoBehaviour, IPointerDownHandler
         if (eventData.pointerCurrentRaycast.gameObject.CompareTag("UIActionIcon"))
         {
             GameObject objectWasClicked = eventData.pointerCurrentRaycast.gameObject;
-            if (objectWasClicked.transform.parent == master.PlayerActor.BeltPanel)
+            if (objectWasClicked.transform.parent == master.Player.BeltPanel)
             {
-                master.PlayerActor.ActionRow.Add(master.PlayerActor.Belt.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
-                objectWasClicked.transform.SetParent(master.PlayerActor.ActionRowPanel);
-                master.PlayerActor.Belt.Remove(master.PlayerActor.Belt.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
+                master.Player.ActionRow.Add(master.Player.Belt.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
+                objectWasClicked.transform.SetParent(master.Player.ActionRowPanel);
+                master.Player.Belt.Remove(master.Player.Belt.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
             }
-            else if (objectWasClicked.transform.parent == master.PlayerActor.ActionRowPanel)
+            else if (objectWasClicked.transform.parent == master.Player.ActionRowPanel)
             {
-                master.PlayerActor.Belt.Add(master.PlayerActor.ActionRow.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
-                master.PlayerActor.ActionRow.Remove(master.PlayerActor.ActionRow.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
-                objectWasClicked.transform.SetParent(master.PlayerActor.BeltPanel);
+                master.Player.Belt.Add(master.Player.ActionRow.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
+                master.Player.ActionRow.Remove(master.Player.ActionRow.FirstOrDefault(x => x.UIRepresentation == objectWasClicked));
+                objectWasClicked.transform.SetParent(master.Player.BeltPanel);
             }
         }
     }

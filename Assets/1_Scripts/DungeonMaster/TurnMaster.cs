@@ -26,13 +26,10 @@ public class TurnMaster : MonoBehaviour
     {
         TurnNumber += 1;
         _actionMaster.GiveActionsToPlayerBelt();
-        if (_dungeonMaster.MonsterRefference != null)
+
+        if (_dungeonMaster.Mechanic != null)
         {
-            _actionMaster.GiveActionsToMonster1ActionRow
-            (
-                _dungeonMaster.MonsterRefference,
-                _dungeonMaster.MonstersWithActorReference[_dungeonMaster.MonsterRefference]
-            );
+            _actionMaster.GiveActionsToMechanic();
         }
     }
 

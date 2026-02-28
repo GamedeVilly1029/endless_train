@@ -360,8 +360,8 @@ MonoBehaviour:
   - {fileID: 110748809}
   - {fileID: 1011068204}
   _turnMaster: {fileID: 222536645}
-  Mechanic: {fileID: 455832082}
-  Player: {fileID: 386429601}
+  MonsterRefference: {fileID: 455832082}
+  PlayerActor: {fileID: 386429601}
 --- !u!114 &222536644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,7 +375,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionMaster
   _dungeonMaster: {fileID: 222536643}
-  _mechanicPatternPicker: {fileID: 455832083}
 --- !u!114 &222536645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1279,9 +1278,8 @@ GameObject:
   - component: {fileID: 455832080}
   - component: {fileID: 455832081}
   - component: {fileID: 455832082}
-  - component: {fileID: 455832083}
   m_Layer: 0
-  m_Name: Mechanic
+  m_Name: Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1378,20 +1376,6 @@ MonoBehaviour:
   _dungeonMaster: {fileID: 222536643}
   HPBarText: {fileID: 877680669}
   _actionRowPanel: {fileID: 1394383436}
---- !u!114 &455832083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455832079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fabbdc9785187db6b923c685eece122d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MechanicPatternPicker
-  Mechanic: {fileID: 455832082}
-  DungeonMasterInst: {fileID: 222536643}
 --- !u!1 &469934905
 GameObject:
   m_ObjectHideFlags: 0
