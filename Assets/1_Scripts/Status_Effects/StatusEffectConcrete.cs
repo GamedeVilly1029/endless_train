@@ -7,7 +7,11 @@ public static class StatusEffectConcrete
     public static IEnumerator IncreaseDamageOfFirstAttackConcrete(DungeonMaster dungeonMaster, StatusEffectConstructElement element)
     {
         ActionConstructElement constructElement = StatusEffectLowLevelFunctionality.ReturnAttackConcrete(StatusEffectLowLevelFunctionality.ExtractCurrentActorActions(dungeonMaster));
-        yield return constructElement.ConcreteValue += element.StatusConcreteValue;
+        if (constructElement!= null)
+        {
+            yield return constructElement.ConcreteValue += element.StatusConcreteValue;
+        }
+        yield return null;
     }
 
     public static IEnumerator TakeDamage(DungeonMaster dungeonMaster, StatusEffectConstructElement element)
