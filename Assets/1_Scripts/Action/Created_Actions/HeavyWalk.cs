@@ -1,18 +1,9 @@
 using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
-using System;
 
-
-public class HeavyWalk : IAction
+public class HeavyWalk : BaseAction 
 {
-    public DungeonMaster DungeonMasterInstance{get;set;}
-    public IActor Actor {get;set;}
-    public GameObject UIRepresentation {get;set;}
-    public List<ActionConstructElement> ActionConstruct {get;set;}
-    public List<System.Func<DungeonMaster, ActionConstructElement, IEnumerator>> TurnTemporarySuccessfulConcreteHistory {get;set;}
 
-    public void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
     {
         DungeonMasterInstance = dungeonMaster;
         Actor = actor;
@@ -31,17 +22,17 @@ public class HeavyWalk : IAction
     {
         // Here, what to do.
         ActionConstruct = new();
-        ActionConstructElement elem1 = new(this, null, ActionConcretes.AttackEntityAhead, 4, ActionConcreteTag.Attack);
+        ActionConstructElement elem1 = new(this, null, ActionConcrete.HitActorAhead, 4, ActionConcreteTag.Attack);
         ActionConstruct.Add(elem1);
 
-        ActionConstructElement elem2 = new(this, null, ActionConcretes.Push, 0, ActionConcreteTag.Push);
+        ActionConstructElement elem2 = new(this, null, ActionConcrete.Push, 0, ActionConcreteTag.Push);
         ActionConstruct.Add(elem2);
         
-        ActionConstructElement elem3 = new(this, null, ActionConcretes.MoveOneCellForward, 0, ActionConcreteTag.Move);
+        ActionConstructElement elem3 = new(this, null, ActionConcrete.WalkXTiles, 1, ActionConcreteTag.Move);
         ActionConstruct.Add(elem3);
     }
 
-    public IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CloneAndInstantiateUI(Transform transform)
     {
         HeavyWalk actionClone = new()
         {
@@ -53,37 +44,5 @@ public class HeavyWalk : IAction
         actionClone.ActionConstruct = CloneActionConstruct(actionClone);
 
         return actionClone;
-    }
-
-    public List<ActionConstructElement> CloneActionConstruct(IAction actionClone)
-    {
-        List<ActionConstructElement> concretes = new();
-        foreach (var concrete in ActionConstruct)
-        {
-            var newElement = new ActionConstructElement(
-                actionClone, 
-                concrete.ConditionsToExecuteConcrete, 
-                concrete.Concrete, 
-                concrete.ConcreteValue,
-                concrete.ConcreteTag);
-            concretes.Add(newElement);
-        }
-        return concretes;
-    }
-
-    
-    public IEnumerator ExecuteAction(DungeonMaster dungeonMaster)
-    {
-        TurnTemporarySuccessfulConcreteHistory = new();
-        foreach (ActionConstructElement element in ActionConstruct)
-        {
-            yield return element.ExecuteConcrete(DungeonMasterInstance);
-        }
-        if (UIRepresentation != null)
-        {
-            UnityEngine.Object.Destroy(UIRepresentation);
-            UIRepresentation = null;
-        }
-        Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);
     }
 }

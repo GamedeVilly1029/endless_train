@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class BeltUIController : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private DungeonMaster _dungeonMaster;
-    [SerializeField] private ActionRowUI _playerActionRow;
+    [SerializeField] private ActionRow _playerActionRow;
 
     private GameObject _objectWasClicked;
 
@@ -19,26 +19,28 @@ public class BeltUIController : MonoBehaviour, IPointerDownHandler
             {
                 FromBeltToRow();
                 _playerActionRow.OnActionAdd.Invoke();
+                FindFirstObjectByType<AudioMaster>().PlaySound("equipAction");
             }
-            else if (_objectWasClicked.transform.parent == _dungeonMaster.Player.ActionRowPanel)
+            else if (_objectWasClicked.transform.parent == _playerActionRow.Panel)
             {
                 FromRowToBelt();
                 _playerActionRow.OnActionRemove.Invoke();
+                FindFirstObjectByType<AudioMaster>().PlaySound("unequipAction");
             }
         }
     }
 
     private void FromBeltToRow()
     {
-        _dungeonMaster.Player.ActionRow.Add(_dungeonMaster.Player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
-        _objectWasClicked.transform.SetParent(_dungeonMaster.Player.ActionRowPanel);
+        _playerActionRow.Actions.Add(_dungeonMaster.Player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
+        _objectWasClicked.transform.SetParent(_playerActionRow.Panel);
         _dungeonMaster.Player.Belt.Remove(_dungeonMaster.Player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
     }
 
     private void FromRowToBelt()
     {
-        _dungeonMaster.Player.Belt.Add(_dungeonMaster.Player.ActionRow.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
+        _dungeonMaster.Player.Belt.Add(_playerActionRow.Actions.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
         _objectWasClicked.transform.SetParent(_dungeonMaster.Player.BeltPanel);
-        _dungeonMaster.Player.ActionRow.Remove(_dungeonMaster.Player.ActionRow.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
+        _playerActionRow.Actions.Remove(_playerActionRow.Actions.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
     }
 }

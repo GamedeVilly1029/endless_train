@@ -16,7 +16,7 @@ public class ActionMaster : MonoBehaviour
 
     public void GiveActionsToPlayerBelt()
     {
-        _dungeonMaster.Player.ActionRow.Clear();
+        _dungeonMaster.Player.ActionRowInst.Actions.Clear();
 
         foreach (IAction actionWithUI in _dungeonMaster.Player.Belt)
         {
@@ -34,8 +34,8 @@ public class ActionMaster : MonoBehaviour
 
     public void GiveActionsToMechanic()
     {
-        _dungeonMaster.Mechanic.ActionRow.Clear();
-        _dungeonMaster.Mechanic.ActionRow = _mechanicPatternPicker.ReturnPattern();
+        _dungeonMaster.Mechanic.ActionRowInst.Actions.Clear();
+        _dungeonMaster.Mechanic.ActionRowInst.Actions= _mechanicPatternPicker.ReturnPattern();
     }
 
     private void CreatePlayerActionsPrototype()

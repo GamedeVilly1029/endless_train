@@ -24,11 +24,11 @@ public class MechanicPatternPicker : MonoBehaviour, IPatternPicker
         {
             if (PlayerAhead(DungeonMasterInst, DungeonMasterInst.Player, Mechanic))
             {
-                return CopyActionSet(approach, DungeonMasterInst.Mechanic.ActionRowPanel);
+                return CopyActionSet(approach, DungeonMasterInst.Mechanic.ActionRowInst.Panel);
             }
             else
             {
-                return CopyActionSet(rotate, DungeonMasterInst.Mechanic.ActionRowPanel);
+                return CopyActionSet(rotate, DungeonMasterInst.Mechanic.ActionRowInst.Panel);
             }
         }
 
@@ -37,20 +37,20 @@ public class MechanicPatternPicker : MonoBehaviour, IPatternPicker
             int randomInt = UnityEngine.Random.Range(1, 4);
             if (randomInt == 1)
             {
-                return CopyActionSet(chase, DungeonMasterInst.Mechanic.ActionRowPanel);
+                return CopyActionSet(chase, DungeonMasterInst.Mechanic.ActionRowInst.Panel);
             }
             else if (randomInt == 2)
             {
-                return CopyActionSet(heavyPunch, DungeonMasterInst.Mechanic.ActionRowPanel);
+                return CopyActionSet(heavyPunch, DungeonMasterInst.Mechanic.ActionRowInst.Panel);
             }
             else if (randomInt == 3)
             {
-                return CopyActionSet(chasingPunch, DungeonMasterInst.Mechanic.ActionRowPanel);
+                return CopyActionSet(chasingPunch, DungeonMasterInst.Mechanic.ActionRowInst.Panel);
             }
         }
         else
         {
-            return CopyActionSet(tantrums, DungeonMasterInst.Mechanic.ActionRowPanel);
+            return CopyActionSet(tantrums, DungeonMasterInst.Mechanic.ActionRowInst.Panel);
         }
 
         Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
@@ -169,6 +169,7 @@ public class MechanicPatternPicker : MonoBehaviour, IPatternPicker
         {
            IAction copy = action.CloneAndInstantiateUI(UIPanel);
            copies.Add(copy);
+           Mechanic.ActionRowInst.OnActionAdd.Invoke();
         }
         return copies;
     }

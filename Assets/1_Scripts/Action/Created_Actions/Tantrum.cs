@@ -3,15 +3,9 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class Tantrum : IAction
+public class Tantrum : BaseAction
 {
-    public DungeonMaster DungeonMasterInstance{get;set;}
-    public IActor Actor {get;set;}
-    public GameObject UIRepresentation {get;set;}
-    public List<ActionConstructElement> ActionConstruct {get;set;}
-    public List<Func<DungeonMaster, ActionConstructElement, IEnumerator>> TurnTemporarySuccessfulConcreteHistory {get;set;}
-
-    public void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
     {
         DungeonMasterInstance = dungeonMaster;
         Actor = actor;
@@ -34,13 +28,13 @@ public class Tantrum : IAction
             ActionConditions.LastActionIsNotThisAction
         };
 
-        ActionConstructElement removeVulnerable = new(this, conditions, ActionConcretes.RemoveTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        ActionConstructElement removeVulnerable = new(this, conditions, ActionConcrete.RemoveTantrumVulnerability, 0, ActionConcreteTag.Attack);
         ActionConstruct.Add(removeVulnerable);
 
-        ActionConstructElement strike = new(this, conditions, ActionConcretes.AttackEntityAhead, 2, ActionConcreteTag.Attack);
+        ActionConstructElement strike = new(this, conditions, ActionConcrete.HitActorAhead, 2, ActionConcreteTag.Attack);
         ActionConstruct.Add(strike);
 
-        ActionConstructElement add1Vulnerability = new(this, conditions, ActionConcretes.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        ActionConstructElement add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);
         ActionConstruct.Add(add1Vulnerability);
 
 
@@ -49,7 +43,7 @@ public class Tantrum : IAction
             ActionConditions.ConcreteHistoryIsEmpty
         };
 
-        ActionConstructElement tantrumStrike = new(this, conditions, ActionConcretes.TantrumStrike, 2, ActionConcreteTag.Attack);
+        ActionConstructElement tantrumStrike = new(this, conditions, ActionConcrete.TantrumStrike, 2, ActionConcreteTag.Attack);
         ActionConstruct.Add(tantrumStrike);
 
 
@@ -58,11 +52,11 @@ public class Tantrum : IAction
             ActionConditions.ConcreteHistoryHasOnly1Concrete
         };
 
-        add1Vulnerability = new(this, conditions, ActionConcretes.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);
         ActionConstruct.Add(add1Vulnerability);
     }
 
-    public IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CloneAndInstantiateUI(Transform transform)
     {
         Tantrum actionClone = new()
         {
@@ -74,38 +68,5 @@ public class Tantrum : IAction
         actionClone.ActionConstruct = CloneActionConstruct(actionClone);
 
         return actionClone;
-    }
-
-    public List<ActionConstructElement> CloneActionConstruct(IAction actionClone)
-    {
-        List<ActionConstructElement> concretes = new();
-        foreach (var concrete in ActionConstruct)
-        {
-            var newElement = new ActionConstructElement(
-            actionClone, 
-            concrete.ConditionsToExecuteConcrete, 
-            concrete.Concrete, 
-            concrete.ConcreteValue, 
-            concrete.ConcreteTag);
-
-            concretes.Add(newElement);
-        }
-        return concretes;
-    }
-
-    
-    public IEnumerator ExecuteAction(DungeonMaster dungeonMaster)
-    {
-        TurnTemporarySuccessfulConcreteHistory = new();
-        foreach (ActionConstructElement element in ActionConstruct)
-        {
-            yield return element.ExecuteConcrete(DungeonMasterInstance);
-        }
-        if (UIRepresentation != null)
-        {
-            UnityEngine.Object.Destroy(UIRepresentation);
-            UIRepresentation = null;
-        }
-        Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);
     }
 }

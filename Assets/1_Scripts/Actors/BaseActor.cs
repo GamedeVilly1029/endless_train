@@ -9,10 +9,10 @@ public class BaseActor : MonoBehaviour, IActor
     public RectTransform ActionRowPanelInstance;
     public TextMeshPro HPBarText;
     public SpriteRenderer SpriteRend;
+    public ActionRow ActionRowSetter;
 
     public Transform Transform{get{return transform;}set{}}
-    public List<IAction> ActionRow{get;set;} = new();
-    public RectTransform ActionRowPanel{get{return ActionRowPanelInstance;}set{}}
+    public ActionRow ActionRowInst {get{return ActionRowSetter;}set{}}
     public int MaxHP{get;set;}
     public int CurrentHP{get;set;}
     public int PositionCellIndex {get;set;}

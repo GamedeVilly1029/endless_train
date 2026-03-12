@@ -241,7 +241,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1755853855}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &222536643
@@ -661,6 +662,7 @@ GameObject:
   - component: {fileID: 386429600}
   - component: {fileID: 386429599}
   - component: {fileID: 386429601}
+  - component: {fileID: 386429602}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -761,7 +763,29 @@ MonoBehaviour:
   ActionRowPanelInstance: {fileID: 420041290}
   HPBarText: {fileID: 392940034}
   SpriteRend: {fileID: 386429599}
+  ActionRowSetter: {fileID: 386429602}
   BeltPanel: {fileID: 643008440}
+--- !u!114 &386429602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386429598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9081235ebf4a09951ad61935df7bc331, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActionRowUI
+  _actor: {fileID: 386429601}
+  offsetOfThePanel: 130
+  Panel: {fileID: 420041290}
+  OnActionAdd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnActionRemove:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &392940031
 GameObject:
   m_ObjectHideFlags: 0
@@ -1187,6 +1211,7 @@ GameObject:
   - component: {fileID: 455832080}
   - component: {fileID: 455832082}
   - component: {fileID: 455832083}
+  - component: {fileID: 455832084}
   m_Layer: 0
   m_Name: Mechanic
   m_TagString: Untagged
@@ -1227,6 +1252,7 @@ MonoBehaviour:
   ActionRowPanelInstance: {fileID: 1394383436}
   HPBarText: {fileID: 877680669}
   SpriteRend: {fileID: 1976283634}
+  ActionRowSetter: {fileID: 455832084}
 --- !u!114 &455832083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1241,6 +1267,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MechanicPatternPicker
   Mechanic: {fileID: 455832082}
   DungeonMasterInst: {fileID: 222536643}
+--- !u!114 &455832084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455832079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9081235ebf4a09951ad61935df7bc331, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActionRowUI
+  _actor: {fileID: 455832082}
+  offsetOfThePanel: 250
+  Panel: {fileID: 1394383436}
+  OnActionAdd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnActionRemove:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &518971006
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,8 +2206,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionRowUI
   _actor: {fileID: 455832082}
-  _panel: {fileID: 1394383436}
   offsetOfThePanel: 250
+  Panel: {fileID: 1394383436}
   OnActionAdd:
     m_PersistentCalls:
       m_Calls: []
@@ -2613,8 +2660,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 672, y: 219}
-  m_SizeDelta: {x: 130, y: 130}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 130, y: 0}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1394383437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2671,7 +2718,7 @@ MonoBehaviour:
     m_Top: 10
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_StartCorner: 0
+  m_StartCorner: 2
   m_StartAxis: 0
   m_CellSize: {x: 110, y: 110}
   m_Spacing: {x: 10, y: 10}
@@ -3042,7 +3089,6 @@ GameObject:
   - component: {fileID: 1746906191}
   - component: {fileID: 1746906190}
   - component: {fileID: 1746906193}
-  - component: {fileID: 1746906194}
   m_Layer: 0
   m_Name: ActionUICanvas
   m_TagString: Untagged
@@ -3147,28 +3193,87 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionRowBeltClickSwitcher
   _dungeonMaster: {fileID: 222536643}
-  _playerActionRow: {fileID: 1746906194}
---- !u!114 &1746906194
+  _playerActionRow: {fileID: 386429602}
+--- !u!1 &1755853854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1755853855}
+  - component: {fileID: 1755853856}
+  m_Layer: 0
+  m_Name: Audio_Master
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1755853855
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755853854}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 222536642}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1755853856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1746906188}
+  m_GameObject: {fileID: 1755853854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9081235ebf4a09951ad61935df7bc331, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b21d70b919616050baad647522f87f2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActionRowUI
-  _actor: {fileID: 386429601}
-  _panel: {fileID: 420041290}
-  offsetOfThePanel: 130
-  OnActionAdd:
-    m_PersistentCalls:
-      m_Calls: []
-  OnActionRemove:
-    m_PersistentCalls:
-      m_Calls: []
+  m_EditorClassIdentifier: Assembly-CSharp::AudioMaster
+  Sounds:
+  - Name: ambience
+    Clip: {fileID: 8300000, guid: a4716ecfd4b0a995ea494c4c54577693, type: 3}
+    Loop: 1
+    Volume: 1
+    Source: {fileID: 0}
+  - Name: hit
+    Clip: {fileID: 8300000, guid: 21470f4414104b5ee9149dff7f7d08ad, type: 3}
+    Loop: 0
+    Volume: 0.5
+    Source: {fileID: 0}
+  - Name: swing
+    Clip: {fileID: 8300000, guid: 15a9f10b8c9018ec9b2bb0105e7510e1, type: 3}
+    Loop: 0
+    Volume: 0.735
+    Source: {fileID: 0}
+  - Name: step
+    Clip: {fileID: 8300000, guid: 97f73eebb536350d0ad18061d4142d10, type: 3}
+    Loop: 0
+    Volume: 0.572
+    Source: {fileID: 0}
+  - Name: equipAction
+    Clip: {fileID: 8300000, guid: c5265bc63bd61c661872ded6f6963ac2, type: 3}
+    Loop: 0
+    Volume: 0.572
+    Source: {fileID: 0}
+  - Name: unequipAction
+    Clip: {fileID: 8300000, guid: 58453d1d1ad3d085ca3427270b3aab37, type: 3}
+    Loop: 0
+    Volume: 0.572
+    Source: {fileID: 0}
+  - Name: push
+    Clip: {fileID: 8300000, guid: fa55626cee8825b21912d6d1db92259a, type: 3}
+    Loop: 0
+    Volume: 0.627
+    Source: {fileID: 0}
 --- !u!1 &1923131316
 GameObject:
   m_ObjectHideFlags: 0

@@ -66,16 +66,16 @@ public class DungeonMaster : MonoBehaviour
     private List<IAction> CreateMutualActionRow()
     {
         List<IAction> row = new();
-        int maxPossibleElement = Mathf.Max(Player.ActionRow.Count, Mechanic.ActionRow.Count) - 1;
+        int maxPossibleElement = Mathf.Max(Player.ActionRowInst.Actions.Count, Mechanic.ActionRowInst.Actions.Count) - 1;
         for (int i = 0; i <= maxPossibleElement; i++)
         {
-            if (i <= Player.ActionRow.Count - 1)
+            if (i <= Player.ActionRowInst.Actions.Count - 1)
             {
-                row.Add(Player.ActionRow[i]);
+                row.Add(Player.ActionRowInst.Actions[i]);
             }
-            if (i <= Mechanic.ActionRow.Count - 1)
+            if (i <= Mechanic.ActionRowInst.Actions.Count - 1)
             {
-                row.Add(Mechanic.ActionRow[i]);
+                row.Add(Mechanic.ActionRowInst.Actions[i]);
             }
         }
         return row;
