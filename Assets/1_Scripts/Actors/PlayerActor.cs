@@ -9,9 +9,9 @@ public class PlayerActor : BaseActor
     public new void Initialize()
     {
         DungeonMasterInstance.AllActors.Add(this);
-        Transform.position = DungeonMasterInstance.Cells[0].CellPosition;
-        DungeonMasterInstance.Cells[0].EnityOccupyingThisCell = this;
-        PositionCellIndex = 0;
+        Transform.position = DungeonMasterInstance.Cells[4].CellPosition;
+        DungeonMasterInstance.Cells[4].EnityOccupyingThisCell = this;
+        PositionCellIndex = 4;
         IsFacingRight = true;
         StatusEffectsForTurn = new();
         StatusEffectsBeforeTakingDamage = new();

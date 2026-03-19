@@ -19,7 +19,7 @@ public static class LowLevelConcrete
         }
         else
         {
-            ActorPosManipulation.ChangeIndexAndPosition(dungeonMaster, actor);
+            yield return ActorPosManipulation.ChangeIndexAndPosition(dungeonMaster, actor, Resources.Load<MoveData>("StepData"));
         }
         yield return Pause;
     }

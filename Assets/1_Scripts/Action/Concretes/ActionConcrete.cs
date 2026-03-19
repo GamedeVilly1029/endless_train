@@ -49,7 +49,7 @@ public static class ActionConcrete
             {
                 if (ActionConditions.AdjacentCellsExists(dungeonMaster, actorAhead))
                 {
-                    ActorPosManipulation.PushActor(dungeonMaster, actorAhead, dungeonMaster.CurrentActor.IsFacingRight);
+                    yield return ActorPosManipulation.PushActor(dungeonMaster, actorAhead, dungeonMaster.CurrentActor.IsFacingRight);
                 }
             }
         }

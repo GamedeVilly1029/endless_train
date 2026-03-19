@@ -1253,7 +1253,6 @@ MonoBehaviour:
   HPBarText: {fileID: 877680669}
   SpriteRend: {fileID: 1976283634}
   ActionRowSetter: {fileID: 455832084}
-  GraphicTransform: {fileID: 1976283633}
 --- !u!114 &455832083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3377,7 +3376,7 @@ GameObject:
   - component: {fileID: 1976283633}
   - component: {fileID: 1976283634}
   m_Layer: 0
-  m_Name: GraphicObject
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
