@@ -22,7 +22,7 @@ public class HeavyWalk : BaseAction
     {
         // Here, what to do.
         ActionConstruct = new();
-        ActionConstructElement elem1 = new(this, null, ActionConcrete.HitActorAhead, 4, ActionConcreteTag.Attack);
+        ActionConstructElement elem1 = new(this, null, ActionConcrete.StrikeConcrete, 4, ActionConcreteTag.Attack);
         ActionConstruct.Add(elem1);
 
         ActionConstructElement elem2 = new(this, null, ActionConcrete.Push, 0, ActionConcreteTag.Push);

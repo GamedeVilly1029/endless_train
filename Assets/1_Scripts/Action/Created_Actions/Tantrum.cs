@@ -31,7 +31,7 @@ public class Tantrum : BaseAction
         ActionConstructElement removeVulnerable = new(this, conditions, ActionConcrete.RemoveTantrumVulnerability, 0, ActionConcreteTag.Attack);
         ActionConstruct.Add(removeVulnerable);
 
-        ActionConstructElement strike = new(this, conditions, ActionConcrete.HitActorAhead, 2, ActionConcreteTag.Attack);
+        ActionConstructElement strike = new(this, conditions, ActionConcrete.StrikeConcrete, 2, ActionConcreteTag.Attack);
         ActionConstruct.Add(strike);
 
         ActionConstructElement add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);

@@ -26,14 +26,14 @@ public class KneeDash : BaseAction
         {
             ActionConditions.PositionIndexChangedInPreviousAction
         };
-        ActionConstructElement elem1 = new(this, conditions, ActionConcrete.HitActorAhead, 10, ActionConcreteTag.Attack);
+        ActionConstructElement elem1 = new(this, conditions, ActionConcrete.StrikeConcrete, 10, ActionConcreteTag.Attack);
         ActionConstruct.Add(elem1);
 
         conditions = new()
         {
             ActionConditions.ConcreteHistoryIsEmpty
         };
-        ActionConstructElement elem2 = new(this, conditions, ActionConcrete.HitActorAhead, 5, ActionConcreteTag.Attack);
+        ActionConstructElement elem2 = new(this, conditions, ActionConcrete.StrikeConcrete, 5, ActionConcreteTag.Attack);
         ActionConstruct.Add(elem2);
     }
 

@@ -58,21 +58,7 @@ public static class LowLevelConcrete
             return null;
         }
     }
-
-    public static IEnumerator HitActorAhead(DungeonMaster dungeonMaster, ActionConstructElement element)
-    {
-        if (!ActionConditions.CellAheadIsEmpty(dungeonMaster, dungeonMaster.CurrentActor))
-        {
-            yield return AttackEntityAhead(dungeonMaster, element);
-        }
-        else
-        {
-            GameObject attackViewObject = DrawStrikeUI(dungeonMaster);
-            Object.FindFirstObjectByType<AudioMaster>().PlaySound("swing");
-            yield return Pause;
-            Object.Destroy(attackViewObject);
-        }
-    }
+  
     public static IEnumerator AttackEntityAhead(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
         IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
@@ -81,33 +67,18 @@ public static class LowLevelConcrete
             yield return actorAhead.SubtractDamageFromHP(element.ConcreteValue);
             yield return actorAhead.RunBeforeDamageStatuses();
 
-            GameObject attackViewObject = DrawStrikeUI(dungeonMaster);
             Object.FindFirstObjectByType<AudioMaster>().PlaySound("swing");
+            ParticlePlayer.StartStrike(dungeonMaster.CurrentActor);
             yield return Pause;
             Object.FindFirstObjectByType<AudioMaster>().PlaySound("hit");
-            Object.Destroy(attackViewObject);
-        }
-    }
-
-    public static GameObject DrawStrikeUI(DungeonMaster dungeonMaster)
-    {
-        GameObject attackViewObject;
-        if (dungeonMaster.CurrentActor.IsFacingRight)
-        {
-            attackViewObject = Object.Instantiate(
-                Resources.Load<GameObject>("AttackVisual"),
-                new Vector3(dungeonMaster.CurrentActor.Transform.position.x + 1, dungeonMaster.CurrentActor.Transform.position.y),
-                Quaternion.identity,
-                dungeonMaster.CurrentActor.Transform);
+            ParticlePlayer.StopStrike(dungeonMaster.CurrentActor);
         }
         else
         {
-            attackViewObject = Object.Instantiate(
-                Resources.Load<GameObject>("AttackVisual"),
-                new Vector3(dungeonMaster.CurrentActor.Transform.position.x - 1, dungeonMaster.CurrentActor.Transform.position.y),
-                Quaternion.identity,
-                dungeonMaster.CurrentActor.Transform);
+            Object.FindFirstObjectByType<AudioMaster>().PlaySound("swing");
+            ParticlePlayer.StartStrike(dungeonMaster.CurrentActor);
+            yield return Pause;
+            ParticlePlayer.StopStrike(dungeonMaster.CurrentActor);
         }
-        return attackViewObject;
     }
 }

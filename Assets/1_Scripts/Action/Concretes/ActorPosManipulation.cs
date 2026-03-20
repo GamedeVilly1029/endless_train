@@ -54,7 +54,7 @@ public static class ActorPosManipulation
         yield return StepFlat(actorToPush, start, end);
         actorToPush.Transform.position = end;
 
-        // ParticlePlayer.StopBePushed(actorToPush);
+        ParticlePlayer.StopBePushed(actorToPush);
     }
 
     private static Vector2 DeterminePushEnd_AdjustInfo(DungeonMaster dungeonMaster, IActor actorToPush, bool pushRight)

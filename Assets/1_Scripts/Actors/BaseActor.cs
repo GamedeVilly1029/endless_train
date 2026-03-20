@@ -12,6 +12,7 @@ public class BaseActor : MonoBehaviour, IActor
     public ActionRow ActionRowSetter;
 
     public Transform Transform{get{return transform;}set{}}
+    public Transform GraphicTransform;
     public ActionRow ActionRowInst {get{return ActionRowSetter;}set{}}
     public int MaxHP{get;set;}
     public int CurrentHP{get;set;}

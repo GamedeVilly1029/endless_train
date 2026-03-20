@@ -764,6 +764,7 @@ MonoBehaviour:
   HPBarText: {fileID: 392940034}
   SpriteRend: {fileID: 386429599}
   ActionRowSetter: {fileID: 386429602}
+  GraphicTransform: {fileID: 386429600}
   BeltPanel: {fileID: 643008440}
 --- !u!114 &386429602
 MonoBehaviour:

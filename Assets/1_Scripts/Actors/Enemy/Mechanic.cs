@@ -4,7 +4,6 @@ using UnityEngine;
 public class Mechanic : BaseActor, IMonster
 {
     public MonsterTypes MonsterType {get;set;}
-    public Transform GraphicTransform;
 
     public new void Initialize()
     {

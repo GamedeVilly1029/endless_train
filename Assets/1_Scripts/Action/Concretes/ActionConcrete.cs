@@ -3,7 +3,6 @@ using System.Collections;
 
 public static class ActionConcrete
 {
-
     public static IEnumerator WalkXTiles(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
         int stepsToSubtract = element.ConcreteValue;
@@ -17,19 +16,9 @@ public static class ActionConcrete
         }
     }
 
-    public static IEnumerator HitActorAhead(DungeonMaster dungeonMaster, ActionConstructElement element)
+    public static IEnumerator StrikeConcrete(DungeonMaster dungeonMaster, ActionConstructElement element)
     {
-        if (!ActionConditions.CellAheadIsEmpty(dungeonMaster, dungeonMaster.CurrentActor))
-        {
-            yield return LowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
-        }
-        else
-        {
-            GameObject attackViewObject = LowLevelConcrete.DrawStrikeUI(dungeonMaster);
-            Object.FindFirstObjectByType<AudioMaster>().PlaySound("swing");
-            yield return LowLevelConcrete.Pause;
-            Object.Destroy(attackViewObject);
-        }
+        yield return LowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
     }
 
 
@@ -93,13 +82,13 @@ public static class ActionConcrete
         {
             if (dungeonMaster.CurrentActor.FightBasedActionHistory[i] is Tantrum)
             {
-                yield return HitActorAhead(dungeonMaster, element);
+                yield return LowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
             }
             else
             {
                 break;
             }
         }
-        yield return HitActorAhead(dungeonMaster, element);
+        yield return LowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
     }
 }
