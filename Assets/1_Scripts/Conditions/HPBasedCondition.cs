@@ -3,9 +3,10 @@ using UnityEngine;
 
 public static class HPBasedCondition
 {
-    public static bool CurrentHPIsMoreThanXPercent(int maxHP, int currentHP, int percent)
+    public static bool CurrentHPIsMoreThanXPercent(float maxHP, float currentHP, float percent)
     {
         float maxHPPart = maxHP / 100 * percent;
+
         return currentHP > maxHPPart;
     }
 }

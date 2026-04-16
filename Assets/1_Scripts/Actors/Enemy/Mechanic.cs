@@ -1,29 +1,23 @@
 using TMPro;
 using UnityEngine;
 
-public class Mechanic : BaseActor, IMonster
+public class Mechanic : BaseActor
 {
-    public MonsterTypes MonsterType {get;set;}
-
-    public new void Initialize()
+    public override void Initialize()
     {
-        DungeonMasterInstance.MonstersWithActorReference.Add(this, this);
-        DungeonMasterInstance.AllActors.Add(this);
-        Transform.position = DungeonMasterInstance.Cells[5].CellPosition;
+        TransformReference.position = DungeonMasterInstance.Cells[5].CellPosition;
         DungeonMasterInstance.Cells[5].EnityOccupyingThisCell = this;
         PositionCellIndex = 5;
-        IsFacingRight = false;
-        MonsterType = MonsterTypes.glist1;
         StatusEffectsForTurn = new();
         StatusEffectsBeforeTakingDamage = new();
-        MaxHP = 99;
+        MaxHP = 50;
         CurrentHP = MaxHP;
+        TransformReference.rotation = Quaternion.Euler(0f, 0f, 0f);
     }
 
     private void Update()
     {
         HPBarText.text = CurrentHP.ToString();
         TryToDie(CurrentHP);
-        SpriteRend.flipX = !IsFacingRight;
     }
 }

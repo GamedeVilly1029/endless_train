@@ -1,14 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 using System;
 
 public class Tantrum : BaseAction
 {
-    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeChildAction()
     {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
+        CooldownMax = 0;
+        Cooldown = 0;
         if (Resources.Load<GameObject>("TantrumActionUI") != null)
         {
             UIRepresentation = Resources.Load<GameObject>("TantrumActionUI");
@@ -25,38 +24,38 @@ public class Tantrum : BaseAction
         ActionConstruct = new();
         List<Func<DungeonMaster, IActor, bool>> conditions = new()
         {
-            ActionConditions.LastActionIsNotThisAction
+            HistoryBasedCondition.LastActionIsNotThisAction
         };
 
-        ActionConstructElement removeVulnerable = new(this, conditions, ActionConcrete.RemoveTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        BaseConstructElement removeVulnerable = new(this, conditions, ActionConcrete.RemoveTantrumVulnerability, ActionConcreteTag.Attack);
         ActionConstruct.Add(removeVulnerable);
 
-        ActionConstructElement strike = new(this, conditions, ActionConcrete.StrikeConcrete, 2, ActionConcreteTag.Attack);
+        ValueConstructElement strike = new(this, conditions, ActionConcrete.StrikeConcrete, ActionConcreteTag.Attack, 2);
         ActionConstruct.Add(strike);
 
-        ActionConstructElement add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        BaseConstructElement add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, ActionConcreteTag.Attack);
         ActionConstruct.Add(add1Vulnerability);
 
 
         conditions = new()
         {
-            ActionConditions.ConcreteHistoryIsEmpty
+            HistoryBasedCondition.ConcreteHistoryIsEmpty
         };
 
-        ActionConstructElement tantrumStrike = new(this, conditions, ActionConcrete.TantrumStrike, 2, ActionConcreteTag.Attack);
+        ValueConstructElement tantrumStrike = new(this, conditions, ActionConcrete.TantrumStrike, ActionConcreteTag.Attack, 2);
         ActionConstruct.Add(tantrumStrike);
 
 
         conditions = new()
         {
-            ActionConditions.ConcreteHistoryHasOnly1Concrete
+            HistoryBasedCondition.ConcreteHistoryHasOnly1Concrete
         };
 
-        add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, 0, ActionConcreteTag.Attack);
+        add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, ActionConcreteTag.Attack);
         ActionConstruct.Add(add1Vulnerability);
     }
 
-    public override IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CreateClone(Transform transform)
     {
         Tantrum actionClone = new()
         {

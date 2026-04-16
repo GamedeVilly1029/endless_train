@@ -3,10 +3,10 @@ using UnityEngine;
 public class Rotate : BaseAction 
 {
     
-    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeChildAction()
     {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
+        CooldownMax = 0;
+        Cooldown = 0;
         if (Resources.Load<GameObject>("RotateActionUI") != null)
         {
             UIRepresentation = Resources.Load<GameObject>("RotateActionUI");
@@ -22,11 +22,11 @@ public class Rotate : BaseAction
     {
         ActionConstruct = new()
         {
-            new ActionConstructElement(this, null, ActionConcrete.RotateActor, 0, ActionConcreteTag.Move)
+            new BaseConstructElement(this, null, ActionConcrete.RotateConcrete, ActionConcreteTag.Move)
         };
     }
 
-    public override IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CreateClone(Transform transform)
     {
         Rotate actionClone = new()
         {

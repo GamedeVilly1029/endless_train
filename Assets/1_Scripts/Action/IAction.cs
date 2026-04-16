@@ -5,14 +5,19 @@ using System.Collections;
 
 public interface IAction
 {
-    public DungeonMaster DungeonMasterInstance{get;set;}
-    public IActor Actor{get;set;}
-    public GameObject UIRepresentation{get;set;}
-    public List<ActionConstructElement> ActionConstruct{get;set;}
-    public List<Func<DungeonMaster, ActionConstructElement, IEnumerator>> TurnTemporarySuccessfulConcreteHistory{get;set;}
+    IAction ActionCloneReference{get;set;}
+    DungeonMaster DungeonMasterInstance{get;set;}
+    IActor Actor{get;set;}
+    GameObject UIRepresentation{get;set;}
+    List<IConstructElement> ActionConstruct{get;set;}
+    List<Func<DungeonMaster, IConstructElement, IEnumerator>> TurnTemporarySuccessfulConcreteHistory{get;set;}
+    int CooldownMax{get;set;}
+    int Cooldown{get;set;}
 
-    public IEnumerator ExecuteAction(DungeonMaster dungeonMaster);
-    public void InitializeAction(IActor actor, DungeonMaster dungeonMaster);
-    public IAction CloneAndInstantiateUI(Transform transform);
-    public List<ActionConstructElement> CloneActionConstruct(IAction actionClone);
+    IEnumerator ExecuteAction(DungeonMaster dungeonMaster);
+    void InitializeAction(IActor actor, DungeonMaster dungeonMaster);
+    IAction CloneAndInstantiateUI(Transform transform, IAction actionCloneReference);
+    IAction CreateClone(Transform transform);
+    void SetReferenceAction(IAction actionCloneReference, IAction actionClone);
+    List<IConstructElement> CloneActionConstruct(IAction actionClone);
 }

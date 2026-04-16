@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class AngryRoar: BaseAction 
 {
-    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeChildAction()
     {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
+        CooldownMax = 1;
+        Cooldown = 0;
         if (Resources.Load<GameObject>("AngryRoarActionUI") != null)
         {
             UIRepresentation = Resources.Load<GameObject>("AngryRoarActionUI");
@@ -21,11 +21,11 @@ public class AngryRoar: BaseAction
     {
         ActionConstruct = new()
         {
-            new ActionConstructElement(this, null, ActionConcrete.IncreaseDamageOfNextAttack, 5, ActionConcreteTag.Skill)
+            new ValueConstructElement(this, null, ActionConcrete.IncreaseDamageOfNextAttack, ActionConcreteTag.Skill, 5)
         };
     }
 
-    public override IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CreateClone(Transform transform)
     {
         AngryRoar actionClone = new()
         {

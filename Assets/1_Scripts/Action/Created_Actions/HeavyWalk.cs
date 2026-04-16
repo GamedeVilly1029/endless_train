@@ -3,10 +3,10 @@ using UnityEngine;
 public class HeavyWalk : BaseAction 
 {
 
-    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeChildAction()
     {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
+        CooldownMax = 1;
+        Cooldown = 0;
         if (Resources.Load<GameObject>("HeavyWalkActionUI") != null)
         {
             UIRepresentation = Resources.Load<GameObject>("HeavyWalkActionUI");
@@ -22,17 +22,17 @@ public class HeavyWalk : BaseAction
     {
         // Here, what to do.
         ActionConstruct = new();
-        ActionConstructElement elem1 = new(this, null, ActionConcrete.StrikeConcrete, 4, ActionConcreteTag.Attack);
+        ValueConstructElement elem1 = new(this, null, ActionConcrete.StrikeConcrete, ActionConcreteTag.Attack, 4);
         ActionConstruct.Add(elem1);
 
-        ActionConstructElement elem2 = new(this, null, ActionConcrete.Push, 0, ActionConcreteTag.Push);
+        BaseConstructElement elem2 = new(this, null, ActionConcrete.Push, ActionConcreteTag.Push);
         ActionConstruct.Add(elem2);
         
-        ActionConstructElement elem3 = new(this, null, ActionConcrete.WalkXTiles, 1, ActionConcreteTag.Move);
+        ValueConstructElement elem3 = new(this, null, ActionConcrete.WalkXTilesForward, ActionConcreteTag.Move, 1);
         ActionConstruct.Add(elem3);
     }
 
-    public override IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CreateClone(Transform transform)
     {
         HeavyWalk actionClone = new()
         {

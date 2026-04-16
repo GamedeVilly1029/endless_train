@@ -1,35 +1,55 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class LowLevelConcrete
 {
     public static WaitForSeconds Pause = new WaitForSeconds(0.5f);
 
-    public static IEnumerator MoveOneCellForward(DungeonMaster dungeonMaster, ActionConstructElement element)
+    public static IEnumerator MoveOneCellForward(DungeonMaster dungeonMaster, IConstructElement element)
     {
         IActor actor = dungeonMaster.CurrentActor;
-        if (!ActionConditions.CellAheadExists(dungeonMaster, actor))
+        if (!CellBasedCondition.CellAheadExists(dungeonMaster, actor))
         {
             yield break;
         }
-        else if (!ActionConditions.CellAheadIsEmpty(dungeonMaster, actor))
+        else if (!CellBasedCondition.CellAheadIsEmpty(dungeonMaster, actor))
         {
             Debug.Log("Cell ahead isn't empty");
             yield break;
         }
         else
         {
-            yield return ActorPosManipulation.ChangeIndexAndPosition(dungeonMaster, actor, Resources.Load<MoveData>("StepData"));
+            yield return ActorPosManipulation.StepForwardOrBackwards(dungeonMaster, actor, Resources.Load<MoveData>("StepData"), true);
         }
         yield return Pause;
     }
 
-    public static IActor TryReturnActorAhead(DungeonMaster dungeonMaster, ActionConstructElement element)
+    public static IEnumerator MoveOneCellBackwards(DungeonMaster dungeonMaster, IConstructElement element)
     {
         IActor actor = dungeonMaster.CurrentActor;
-        if (ActionConditions.CellAheadExists(dungeonMaster, actor))
+        if (!CellBasedCondition.CellBehindExists(dungeonMaster, actor))
         {
-            if (actor.IsFacingRight)
+            yield break;
+        }
+        else if (!CellBasedCondition.CellBehindIsEmpty(dungeonMaster, actor))
+        {
+            Debug.Log("Cell ahead isn't empty");
+            yield break;
+        }
+        else
+        {
+            yield return ActorPosManipulation.StepForwardOrBackwards(dungeonMaster, actor, Resources.Load<MoveData>("StepData"), false);
+        }
+        yield return Pause;
+    }
+
+    public static IActor TryReturnActorAhead(DungeonMaster dungeonMaster, IConstructElement element)
+    {
+        IActor actor = dungeonMaster.CurrentActor;
+        if (CellBasedCondition.CellAheadExists(dungeonMaster, actor))
+        {
+            if (actor.IsFacingRight())
             {
                 if (dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell != null)
                 {
@@ -59,12 +79,13 @@ public static class LowLevelConcrete
         }
     }
   
-    public static IEnumerator AttackEntityAhead(DungeonMaster dungeonMaster, ActionConstructElement element)
+    public static IEnumerator AttackEntityAhead(DungeonMaster dungeonMaster, IConstructElement element)
     {
-        IActor actorAhead = TryReturnActorAhead(dungeonMaster, element);
+        ValueConstructElement casted = element as ValueConstructElement;
+        IActor actorAhead = TryReturnActorAhead(dungeonMaster, casted);
         if (actorAhead != null)
         {
-            yield return actorAhead.SubtractDamageFromHP(element.ConcreteValue);
+            yield return actorAhead.SubtractDamageFromHP(casted.ConcreteValue);
             yield return actorAhead.RunBeforeDamageStatuses();
 
             Object.FindFirstObjectByType<AudioMaster>().PlaySound("swing");

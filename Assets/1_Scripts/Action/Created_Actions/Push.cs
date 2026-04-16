@@ -1,10 +1,10 @@
 using UnityEngine;
 public class Push : BaseAction
 {
-    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeChildAction()
     {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
+        CooldownMax = 1;
+        Cooldown = 0;
         if (Resources.Load<GameObject>("PushActionUI") != null)
         {
             UIRepresentation = Resources.Load<GameObject>("PushActionUI");
@@ -20,11 +20,11 @@ public class Push : BaseAction
     {
         ActionConstruct = new()
         {
-            new ActionConstructElement(this, null, ActionConcrete.Push, 0, ActionConcreteTag.Push)
+            new BaseConstructElement(this, null, ActionConcrete.Push, ActionConcreteTag.Push)
         };
     }
 
-    public override IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CreateClone(Transform transform)
     {
         Push actionClone = new()
         {

@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Strike : BaseAction 
 {
-    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeChildAction()
     {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
+        CooldownMax = 0;
+        Cooldown = 0;
         if (Resources.Load<GameObject>("AttackActionUI") != null)
         {
             UIRepresentation = Resources.Load<GameObject>("AttackActionUI");
@@ -21,11 +21,11 @@ public class Strike : BaseAction
     {
         ActionConstruct = new()
         {
-            new ActionConstructElement(this, null, ActionConcrete.StrikeConcrete, 5, ActionConcreteTag.Attack)
+            new ValueConstructElement(this, null, ActionConcrete.StrikeConcrete, ActionConcreteTag.Attack, 5)
         };
     }
 
-    public override IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CreateClone(Transform transform)
     {
         Strike actionClone = new()
         {

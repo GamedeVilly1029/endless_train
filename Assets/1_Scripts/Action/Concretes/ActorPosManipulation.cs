@@ -3,19 +3,27 @@ using UnityEngine;
 
 public static class ActorPosManipulation
 {
-    public static IEnumerator ChangeIndexAndPosition(DungeonMaster dungeonMaster, IActor actor, MoveData moveData)
+    public static IEnumerator StepForwardOrBackwards(DungeonMaster dungeonMaster, IActor actor, MoveData moveData, bool forward)
     {
         dungeonMaster.Cells[actor.PositionCellIndex].EnityOccupyingThisCell = null;
         Vector2 start = dungeonMaster.Cells[actor.PositionCellIndex].CellPosition;
-        Vector2 end = DetermineEnd_AdjustInfo(dungeonMaster, actor);
+        Vector2 end;
+        if (forward)
+        {
+            end = StepForwardCalculator(dungeonMaster, actor);
+        }
+        else
+        {
+            end = StepBackwardsCalculator(dungeonMaster, actor);
+        }
 
         yield return StepArc(actor, moveData, start, end);
-        actor.Transform.position = end;
+        actor.TransformReference.position = end;
     }
 
-    private static Vector2 DetermineEnd_AdjustInfo(DungeonMaster dungeonMaster, IActor actor)
+    private static Vector2 StepForwardCalculator(DungeonMaster dungeonMaster, IActor actor)
     {
-        if (actor.IsFacingRight)
+        if (actor.IsFacingRight())
         {
             dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell = actor;
             actor.PositionCellIndex += 1;
@@ -28,6 +36,23 @@ public static class ActorPosManipulation
             return dungeonMaster.Cells[actor.PositionCellIndex].CellPosition;
         }
     }
+
+    private static Vector2 StepBackwardsCalculator(DungeonMaster dungeonMaster, IActor actor)
+    {
+        if (actor.IsFacingRight())
+        {
+            dungeonMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell = actor;
+            actor.PositionCellIndex -= 1;
+            return dungeonMaster.Cells[actor.PositionCellIndex].CellPosition;
+        }
+        else
+        {
+            dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell = actor;
+            actor.PositionCellIndex += 1;
+            return dungeonMaster.Cells[actor.PositionCellIndex].CellPosition;
+        }
+    }
+
     private static IEnumerator StepArc(IActor actor, MoveData moveData, Vector2 start, Vector2 end)
     {
         float timePast = 0;
@@ -37,13 +62,13 @@ public static class ActorPosManipulation
             Vector2 newPos = Vector2.Lerp(start, end, normalizedTime);
             newPos.y = start.y + moveData.Curve.Evaluate(normalizedTime);
 
-            actor.Transform.position = newPos;
+            actor.TransformReference.position = newPos;
             timePast += Time.deltaTime;
             yield return null;
         }
     }
 
-    public static IEnumerator PushActor(DungeonMaster dungeonMaster, IActor actorToPush, bool pushRight)
+    public static IEnumerator BePushed(DungeonMaster dungeonMaster, IActor actorToPush, bool pushRight)
     {
         dungeonMaster.Cells[actorToPush.PositionCellIndex].EnityOccupyingThisCell = null;
         Vector2 start = dungeonMaster.Cells[actorToPush.PositionCellIndex].CellPosition;
@@ -52,7 +77,7 @@ public static class ActorPosManipulation
         ParticlePlayer.StartBePushed(actorToPush);
 
         yield return StepFlat(actorToPush, start, end);
-        actorToPush.Transform.position = end;
+        actorToPush.TransformReference.position = end;
 
         ParticlePlayer.StopBePushed(actorToPush);
     }
@@ -81,9 +106,24 @@ public static class ActorPosManipulation
             float normalizedTime = timePast / 0.2f;
             Vector2 newPos = Vector2.Lerp(start, end, normalizedTime);
 
-            actor.Transform.position = newPos;
+            actor.TransformReference.position = newPos;
             timePast += Time.deltaTime;
             yield return null;
         }
+    }
+
+    public static IEnumerator RotateActor(IActor actor)
+    {
+        Quaternion start = actor.TransformReference.rotation;
+        Quaternion target = actor.IsFacingRight() ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
+        float timePast = 0;
+        while (timePast < 0.25)
+        {
+            float normalizedTime = timePast / 0.25f;
+            actor.TransformReference.rotation = Quaternion.Slerp(start, target, normalizedTime);
+            timePast += Time.deltaTime;
+            yield return null;
+        }
+        actor.TransformReference.rotation = target;
     }
 }

@@ -1,10 +1,10 @@
-using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BeltUIController : MonoBehaviour, IPointerDownHandler
 {
+    [SerializeField] private PlayerActor _player;
     [SerializeField] private DungeonMaster _dungeonMaster;
     [SerializeField] private ActionRow _playerActionRow;
 
@@ -15,32 +15,41 @@ public class BeltUIController : MonoBehaviour, IPointerDownHandler
         if (eventData.pointerCurrentRaycast.gameObject.CompareTag("UIActionIcon"))
         {
             _objectWasClicked = eventData.pointerCurrentRaycast.gameObject;
-            if (_objectWasClicked.transform.parent == _dungeonMaster.Player.BeltPanel)
+            if (_objectWasClicked.transform.parent == _player.BeltPanel)
             {
-                FromBeltToRow();
-                _playerActionRow.OnActionAdd.Invoke();
-                FindFirstObjectByType<AudioMaster>().PlaySound("equipAction");
+                if (_player.ActionInRowCount == _player.ActionInRowLimit)
+                {
+                    Debug.Log("At action number limit");
+                }
+                else
+                {
+                    FromBeltToRow();
+                    _playerActionRow.OnActionAdd.Invoke();
+                    FindFirstObjectByType<AudioMaster>().PlaySound("equipAction");
+                    _player.ActionInRowCount += 1;
+                }
             }
             else if (_objectWasClicked.transform.parent == _playerActionRow.Panel)
             {
                 FromRowToBelt();
                 _playerActionRow.OnActionRemove.Invoke();
                 FindFirstObjectByType<AudioMaster>().PlaySound("unequipAction");
+                _player.ActionInRowCount -= 1;
             }
         }
     }
 
     private void FromBeltToRow()
     {
-        _playerActionRow.Actions.Add(_dungeonMaster.Player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
+        _playerActionRow.Actions.Add(_player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
         _objectWasClicked.transform.SetParent(_playerActionRow.Panel);
-        _dungeonMaster.Player.Belt.Remove(_dungeonMaster.Player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
+        _dungeonMaster.Player.Belt.Remove(_player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
     }
 
     private void FromRowToBelt()
     {
-        _dungeonMaster.Player.Belt.Add(_playerActionRow.Actions.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
-        _objectWasClicked.transform.SetParent(_dungeonMaster.Player.BeltPanel);
+        _player.Belt.Add(_playerActionRow.Actions.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
+        _objectWasClicked.transform.SetParent(_player.BeltPanel);
         _playerActionRow.Actions.Remove(_playerActionRow.Actions.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
     }
 }

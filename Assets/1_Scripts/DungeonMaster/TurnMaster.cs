@@ -25,12 +25,13 @@ public class TurnMaster : MonoBehaviour
     private void StartTurn()
     {
         TurnNumber += 1;
-        _actionMaster.GiveActionsToPlayerBelt();
 
-        if (_dungeonMaster.Mechanic != null)
+        foreach (IActor actor in _dungeonMaster.AllActors)
         {
-            _actionMaster.GiveActionsToMechanic();
+            actor.PatternPicker.FillActionRowOrBelt();
         }
+
+        _dungeonMaster.Player.ActionInRowCount = 0;
     }
 
     private IEnumerator EndTurn()

@@ -2,15 +2,27 @@ using UnityEngine;
 
 public static class ParticlePlayer
 {
+    private static string _mechanicBePushedName = "MechanicBePushed";
+    private static string _charBePushedName = "CharBePushed";
+    private static string _spiderBePushedName = "SpiderBePushed";
+
+    private static string _StrikeName = "Strike";
+    private static string _PushName = "Push";
+    private static string _CryName = "Cry";
+
     public static void StartBePushed(IActor actor)
     {
         if (actor is Mechanic)
         {
-            StartPushingMechanic(actor as Mechanic);
+            ParticleLowLevel.StartRenderParticles(actor, "ParticleInfoContainers/Mechanic/BePushed", _mechanicBePushedName);
         }
         else if (actor is PlayerActor)
         {
-            StartPushingChar(actor as PlayerActor);
+            ParticleLowLevel.StartRenderParticles(actor, "ParticleInfoContainers/Char/BePushed", _charBePushedName);
+        }
+        else if (actor is Spider)
+        {
+            ParticleLowLevel.StartRenderParticles(actor, "ParticleInfoContainers/Spider/BePushed", _spiderBePushedName);
         }
         else
         {
@@ -22,11 +34,15 @@ public static class ParticlePlayer
     {
         if (actor is Mechanic)
         {
-            StopPushingMechanic(actor as Mechanic);
+            ParticleLowLevel.StopRenderParticles(actor, _mechanicBePushedName);
         }
         else if (actor is PlayerActor)
         {
-            StopPushingChar(actor as PlayerActor);
+            ParticleLowLevel.StopRenderParticles(actor, _charBePushedName);
+        }
+        else if (actor is Spider)
+        {
+            ParticleLowLevel.StopRenderParticles(actor, _spiderBePushedName);
         }
         else
         {
@@ -36,246 +52,31 @@ public static class ParticlePlayer
 
     public static void StartStrike(IActor actor)
     {
-        if (actor is Mechanic)
-        {
-            StartStrikeMechanic(actor as Mechanic);
-        }
-        else if (actor is PlayerActor)
-        {
-            StartStrikeChar(actor as PlayerActor);
-        }
-        else
-        {
-            Debug.LogWarning("Not Implemented for other characters");
-        }
+        ParticleLowLevel.StartRenderParticles(actor, "ParticleInfoContainers/Shared/Strike", _StrikeName);
     }
+
     public static void StopStrike(IActor actor)
     {
-        if (actor is Mechanic)
-        {
-            StopStrikeMechanic(actor as Mechanic);
-        }
-        else if (actor is PlayerActor)
-        {
-            StopStrikeChar(actor as PlayerActor);
-        }
-        else
-        {
-            Debug.LogWarning("Not Implemented for other characters");
-        }
-    }
-    private static void StartPushingMechanic(Mechanic mechanic)
-    {
-        ParticleInfoContainer info = Resources.Load<ParticleInfoContainer>("ParticleInfoContainers/Mechanic/BePushed");
-        ParticleSystem particles = Object.Instantiate(info.Particles, mechanic.GraphicTransform.transform);
-
-        var main = particles.main;
-        main.startSize3D = true;
-
-        var x = main.startSizeX;
-        var y = main.startSizeY;
-
-        x.constant *= mechanic.Transform.localScale.x;
-        y.constant *= mechanic.Transform.localScale.y;
-
-        main.startSizeX = x;
-        main.startSizeY = y;
-
-        main.startRotation3D = true;
-        var rotY = main.startRotationY;
-        if (mechanic.IsFacingRight)
-        {
-            rotY.constant = 0;
-        }
-        else
-        {
-            rotY.constant = Mathf.Deg2Rad * 180f;
-        }
-        main.startRotationY = rotY;
-
-        particles.gameObject.name = "MechanicBePushedParticles";
-    }
-        
-    private static void StopPushingMechanic(Mechanic mechanic)
-    {
-        Transform transformWithParticles = null;
-        foreach (Transform child in mechanic.GraphicTransform.transform)
-        {
-            if (child.name == "MechanicBePushedParticles")
-            {
-                transformWithParticles = child;
-                break;
-            }
-        }
-
-        if (transformWithParticles == null)
-        {
-            Debug.LogError("There's no particle system for this method to stop");
-            return;
-        }
-
-        ParticleSystem particles = transformWithParticles.GetComponent<ParticleSystem>();
-        particles.Stop(); 
+        ParticleLowLevel.StopRenderParticles(actor, _StrikeName);
     }
 
-
-    private static void StartPushingChar(PlayerActor player)
+    public static void StartPush(IActor actor)
     {
-        ParticleInfoContainer info = Resources.Load<ParticleInfoContainer>("ParticleInfoContainers/Char/BePushed");
-        ParticleSystem particles = Object.Instantiate(info.Particles, player.GraphicTransform.transform);
-
-        var main = particles.main;
-        main.startSize3D = true;
-
-        var x = main.startSizeX;
-        var y = main.startSizeY;
-
-        x.constant *= player.Transform.localScale.x;
-        y.constant *= player.Transform.localScale.y;
-
-        main.startSizeX = x;
-        main.startSizeY = y;
-
-        main.startRotation3D = true;
-        var rotY = main.startRotationY;
-        if (player.IsFacingRight)
-        {
-            rotY.constant = 0;
-        }
-        else
-        {
-            rotY.constant = Mathf.Deg2Rad * 180f;
-        }
-        main.startRotationY = rotY;
-
-        particles.gameObject.name = "CharBePushedParticles";
-    }
-        
-    private static void StopPushingChar(PlayerActor player)
-    {
-        Transform transformWithParticles = null;
-        foreach (Transform child in player.GraphicTransform.transform)
-        {
-            if (child.name == "CharBePushedParticles")
-            {
-                transformWithParticles = child;
-                break;
-            }
-        }
-
-        if (transformWithParticles == null)
-        {
-            Debug.LogError("There's no particle system for this method to stop");
-            return;
-        }
-
-        ParticleSystem particles = transformWithParticles.GetComponent<ParticleSystem>();
-        particles.Stop(); 
+        ParticleLowLevel.StartRenderParticles(actor, "ParticleInfoContainers/Shared/Push", _PushName);
     }
 
-    private static void StartStrikeChar(PlayerActor player)
+    public static void StopPush(IActor actor)
     {
-        ParticleInfoContainer info = Resources.Load<ParticleInfoContainer>("ParticleInfoContainers/Char/Strike");
-        ParticleSystem particles = Object.Instantiate(info.Particles, player.GraphicTransform.transform);
-
-        var main = particles.main;
-        main.startSize3D = true;
-
-        var x = main.startSizeX;
-        var y = main.startSizeY;
-
-        x.constant *= player.Transform.localScale.x;
-        y.constant *= player.Transform.localScale.y;
-
-        main.startSizeX = x;
-        main.startSizeY = y;
-
-        main.startRotation3D = true;
-        var rotY = main.startRotationY;
-        if (player.IsFacingRight)
-        {
-            rotY.constant = 0;
-        }
-        else
-        {
-            rotY.constant = Mathf.Deg2Rad * 180f;
-        }
-        main.startRotationY = rotY;
-        particles.gameObject.name = "CharStrikeParticles";
+        ParticleLowLevel.StopRenderParticles(actor, _PushName);
     }
 
-    private static void StopStrikeChar(PlayerActor player)
+    public static void StartBattleCry(IActor actor)
     {
-        Transform transformWithParticles = null;
-        foreach (Transform child in player.GraphicTransform.transform)
-        {
-            if (child.name == "CharStrikeParticles")
-            {
-                transformWithParticles = child;
-                break;
-            }
-        }
-
-        if (transformWithParticles == null)
-        {
-            Debug.LogError("There's no particle system for this method to stop");
-            return;
-        }
-
-        ParticleSystem particles = transformWithParticles.GetComponent<ParticleSystem>();
-        particles.Stop(); 
+        ParticleLowLevel.StartRenderParticles(actor, "ParticleInfoContainers/Shared/BattleCry", _CryName);
     }
 
-        private static void StartStrikeMechanic(Mechanic mechanic)
+    public static void StopBattleCry(IActor actor)
     {
-        ParticleInfoContainer info = Resources.Load<ParticleInfoContainer>("ParticleInfoContainers/Mechanic/Strike");
-        ParticleSystem particles = Object.Instantiate(info.Particles, mechanic.GraphicTransform.transform);
-
-        var main = particles.main;
-        main.startSize3D = true;
-
-        var x = main.startSizeX;
-        var y = main.startSizeY;
-
-        x.constant *= mechanic.Transform.localScale.x;
-        y.constant *= mechanic.Transform.localScale.y;
-
-        main.startSizeX = x;
-        main.startSizeY = y;
-
-        main.startRotation3D = true;
-        var rotY = main.startRotationY;
-        if (mechanic.IsFacingRight)
-        {
-            rotY.constant = 0;
-        }
-        else
-        {
-            rotY.constant = Mathf.Deg2Rad * 180f;
-        }
-        main.startRotationY = rotY;
-        particles.gameObject.name = "MechanicStrikeParticles";
-    }
-
-    private static void StopStrikeMechanic(Mechanic mechanic)
-    {
-        Transform transformWithParticles = null;
-        foreach (Transform child in mechanic.GraphicTransform.transform)
-        {
-            if (child.name == "MechanicStrikeParticles")
-            {
-                transformWithParticles = child;
-                break;
-            }
-        }
-
-        if (transformWithParticles == null)
-        {
-            Debug.LogError("There's no particle system for this method to stop");
-            return;
-        }
-
-        ParticleSystem particles = transformWithParticles.GetComponent<ParticleSystem>();
-        particles.Stop(); 
+        ParticleLowLevel.StopRenderParticles(actor, _CryName);
     }
 }

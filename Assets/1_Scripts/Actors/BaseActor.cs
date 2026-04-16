@@ -10,26 +10,24 @@ public class BaseActor : MonoBehaviour, IActor
     public TextMeshPro HPBarText;
     public SpriteRenderer SpriteRend;
     public ActionRow ActionRowSetter;
+    public Transform GraphicTransformInstance;
+    public BasePatternPicker PatternPickerSetter;
 
-    public Transform Transform{get{return transform;}set{}}
-    public Transform GraphicTransform;
+    public Transform TransformReference{get{return transform;}set{}}
     public ActionRow ActionRowInst {get{return ActionRowSetter;}set{}}
     public int MaxHP{get;set;}
     public int CurrentHP{get;set;}
     public int PositionCellIndex {get;set;}
     public Stack<int> PositionCellIndexHistory{get;set;}
-    public bool IsFacingRight {get;set;}
     public List<IStatusEffect> StatusEffectsForTurn {get;set;}
     public List<IAction> FightBasedActionHistory{get;set;}
     public List<IStatusEffect> StatusEffectsBeforeTakingDamage {get;set;}
+    Transform IActor.GraphicTransform {get {return GraphicTransformInstance;}set{}}
+    public BasePatternPicker PatternPicker{get {return PatternPickerSetter;} set{}}
 
-    public void Initialize()
+    public virtual void Initialize()
     {
-        DungeonMasterInstance.AllActors.Add(this);
-        StatusEffectsForTurn = new();
-        StatusEffectsBeforeTakingDamage = new();
-        MaxHP = 99;
-        CurrentHP = MaxHP;
+        Debug.LogError("Base class Initialization was called - call concrete class initialization instead");
     }
 
 
@@ -37,7 +35,6 @@ public class BaseActor : MonoBehaviour, IActor
     {
         TryToDie(CurrentHP);
         HPBarText.text = CurrentHP.ToString();
-        SpriteRend.flipX = !IsFacingRight;
     }
 
     public void TryToDie(int HP)
@@ -76,5 +73,46 @@ public class BaseActor : MonoBehaviour, IActor
     public IEnumerator SubtractDamageFromHP(int damageToTake)
     {
         yield return CurrentHP -= damageToTake;
+    }
+
+    public bool IsFacingRight()
+    {
+        float y = TransformReference.eulerAngles.y;
+        return Mathf.Abs(Mathf.DeltaAngle(y, 0)) < 1f;
+    }
+
+    public IAction ReturnFirstActionInRow()
+    {
+        if (ActionRowInst.Actions.Count > 0)
+        {
+            return ActionRowInst.Actions[0];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public IEnumerator TriggerTurnBasedStatusEffects()
+    {
+        List<IStatusEffect> effectsToDestroy = new();
+
+        foreach (IStatusEffect statusEffect in StatusEffectsForTurn)
+        {
+            if (statusEffect.DestroyAfterApplication)
+            {
+                effectsToDestroy.Add(statusEffect);
+            }
+            yield return statusEffect.ApplyStatusEffect(DungeonMasterInstance);
+        }
+        foreach (IStatusEffect effect in effectsToDestroy)
+        {
+            effect.SelfDestroy(DungeonMasterInstance);
+        }
+    }
+
+    public void InitializeCellIndexHistories(){
+        PositionCellIndexHistory = new();
+        PositionCellIndexHistory.Push(PositionCellIndex);
     }
 }

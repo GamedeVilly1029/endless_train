@@ -23,7 +23,7 @@ public class ActionRow : MonoBehaviour
 
     void Update()
     {
-        _actorPositionScreen = Camera.main.WorldToScreenPoint(_actor.Transform.position);
+        _actorPositionScreen = Camera.main.WorldToScreenPoint(_actor.TransformReference.position);
         Panel.position = new Vector2(_actorPositionScreen.x, _actorPositionScreen.y + offsetOfThePanel);
     }
 

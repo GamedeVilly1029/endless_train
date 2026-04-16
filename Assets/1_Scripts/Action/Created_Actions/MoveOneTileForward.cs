@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class MoveOneTileForward : BaseAction 
 {
-    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeChildAction()
     {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
+        CooldownMax = 0;
+        Cooldown = 0;
         if (Resources.Load<GameObject>("MovementActionUI") != null)
         {
             UIRepresentation = Resources.Load<GameObject>("MovementActionUI");
@@ -19,13 +19,12 @@ public class MoveOneTileForward : BaseAction
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new()
-        {
-            new ActionConstructElement(this, null, ActionConcrete.WalkXTiles, 1, ActionConcreteTag.Move)
-        };
+        ActionConstruct = new();
+        ValueConstructElement moveForward = new(this, null, ActionConcrete.WalkXTilesForward, ActionConcreteTag.Move, 1);
+        ActionConstruct.Add(moveForward);
     }
 
-    public override IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CreateClone(Transform transform)
     {
         MoveOneTileForward actionClone = new()
         {

@@ -6,88 +6,92 @@ public class DungeonMaster : MonoBehaviour
 {
     [SerializeField] private List<Transform> MovementCellAnchors;
     [SerializeField] private TurnMaster _turnMaster;
-    public List<Cell> Cells;
-    public List<IActor> AllActors;
+    [SerializeField] private ActionMaster _actionMaster;
 
-    public List<IAction> MutualActionRow;
+    [HideInInspector] public PlayerActor Player;
+    public List<BaseActor> AllActors;
+
     public IAction CurrentAction;
     public IActor CurrentActor;
 
-    public Mechanic Mechanic;
-    public PlayerActor Player;
+    [HideInInspector] public List<Cell> Cells;
 
-    public Dictionary<IActor, IMonster> MonstersWithActorReference;
+    private bool _noActionsLeft;
+    private List<IAction> _playerActions;
 
     private void Start()
     {
-        MonstersWithActorReference = new();
-        AllActors = new();
         CreateCellPositionsDictionary();
-
-        Mechanic.Initialize();
-        Player.Initialize();
+        InitializeActors();
     }
 
     public IEnumerator IterateThroughActionRow()
     {
-        MutualActionRow = CreateMutualActionRow();
-        InitializeCellIndexHistories();
-        foreach (IAction action in MutualActionRow)
-        {
-            CurrentAction = action;
-            CurrentActor = action.Actor;
-            yield return ApplyTurnBasedStatusEffects();
-            yield return CurrentAction.ExecuteAction(this);
-            CurrentActor.AddActionToFightHistory();
-        }   
-        CurrentAction = null;
-        CurrentActor = null;
+        BeforeIteration();
+        yield return Iteration();
+        AfterIteration();
     }
 
-    private IEnumerator ApplyTurnBasedStatusEffects()
+    private void BeforeIteration()
     {
-        List<IStatusEffect> effectsToDestroy= new();
-
-        foreach (IStatusEffect statusEffect in CurrentActor.StatusEffectsForTurn)
-        {
-            if (statusEffect.DestroyAfterApplication)
-            {
-                effectsToDestroy.Add(statusEffect);
-            }
-            Debug.Log($"Status effect {statusEffect} is applied");
-            yield return statusEffect.ApplyStatusEffect(this);
-        }
-        foreach (IStatusEffect effect in effectsToDestroy)
-        {
-            effect.SelfDestroy(this);
-        }
-    }
-
-    private List<IAction> CreateMutualActionRow()
-    {
-        List<IAction> row = new();
-        int maxPossibleElement = Mathf.Max(Player.ActionRowInst.Actions.Count, Mechanic.ActionRowInst.Actions.Count) - 1;
-        for (int i = 0; i <= maxPossibleElement; i++)
-        {
-            if (i <= Player.ActionRowInst.Actions.Count - 1)
-            {
-                row.Add(Player.ActionRowInst.Actions[i]);
-            }
-            if (i <= Mechanic.ActionRowInst.Actions.Count - 1)
-            {
-                row.Add(Mechanic.ActionRowInst.Actions[i]);
-            }
-        }
-        return row;
-    }
-
-    private void InitializeCellIndexHistories()
-    {
+        PutPlayerOnTop();
+        _playerActions = new();
         foreach (IActor actor in AllActors)
         {
-            actor.PositionCellIndexHistory = new();
-            actor.PositionCellIndexHistory.Push(actor.PositionCellIndex);
+            actor.InitializeCellIndexHistories();
         }
+        _noActionsLeft = false;
+    }
+
+    private IEnumerator ProcessAction(IActor actor)
+    {
+        CurrentActor = actor;
+        yield return actor.TriggerTurnBasedStatusEffects();
+        if (actor is PlayerActor)
+        {
+        _playerActions.Add(CurrentAction.ActionCloneReference);
+        }
+        yield return CurrentAction.ExecuteAction(this);
+        actor.AddActionToFightHistory();
+    }
+
+    private IEnumerator Iteration()
+    {
+        while (!_noActionsLeft)
+        {
+            foreach (IActor actor in AllActors)
+            {
+                CurrentAction = actor.ReturnFirstActionInRow();
+                if (CurrentAction != null)
+                {
+                    yield return ProcessAction(actor);
+                }
+            }
+
+            _noActionsLeft = true;
+            foreach (IActor actor in AllActors)
+            {
+                if (actor.ReturnFirstActionInRow() != null)
+                {
+                    _noActionsLeft = false;
+                }
+            }
+        }
+    }
+
+    private void AfterIteration()
+    {
+        CurrentAction = null;
+        CurrentActor = null;
+
+        PlayerBeltPatternPicker cooldownDecreaser = Player.PatternPicker as PlayerBeltPatternPicker;
+        cooldownDecreaser.DecreaseCooldown(_playerActions);
+    }
+
+    private void PutPlayerOnTop()
+    {
+        AllActors.Remove(Player);
+        AllActors.Insert(0, Player);
     }
 
     private void CreateCellPositionsDictionary()
@@ -101,6 +105,22 @@ public class DungeonMaster : MonoBehaviour
                 EnityOccupyingThisCell = null
             };
             Cells.Add(cell);
+        }
+    }
+
+    private void InitializeActors()
+    {
+        foreach (IActor actor in AllActors)
+        {
+            actor.Initialize();
+            if (actor is PlayerActor)
+            {
+                Player = actor as PlayerActor;
+            }
+        }
+        if (Player == null)
+        {
+            Debug.Log("Player actor is null, fix that ;3");
         }
     }
 }

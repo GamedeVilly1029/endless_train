@@ -4,10 +4,10 @@ using System;
 
 public class KneeDash : BaseAction
 {
-    public override void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public override void InitializeChildAction()
     {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
+        CooldownMax = 1;
+        Cooldown = 0;
         if (Resources.Load<GameObject>("KneeDashActionUI") != null)
         {
             UIRepresentation = Resources.Load<GameObject>("KneeDashActionUI");
@@ -24,20 +24,20 @@ public class KneeDash : BaseAction
         ActionConstruct = new();
         List<Func<DungeonMaster, IActor, bool>> conditions = new()
         {
-            ActionConditions.PositionIndexChangedInPreviousAction
+            HistoryBasedCondition.PositionIndexChangedInPreviousAction
         };
-        ActionConstructElement elem1 = new(this, conditions, ActionConcrete.StrikeConcrete, 10, ActionConcreteTag.Attack);
+        ValueConstructElement elem1 = new(this, conditions, ActionConcrete.StrikeConcrete, ActionConcreteTag.Attack, 10);
         ActionConstruct.Add(elem1);
 
         conditions = new()
         {
-            ActionConditions.ConcreteHistoryIsEmpty
+            HistoryBasedCondition.ConcreteHistoryIsEmpty
         };
-        ActionConstructElement elem2 = new(this, conditions, ActionConcrete.StrikeConcrete, 5, ActionConcreteTag.Attack);
+        ValueConstructElement elem2 = new(this, conditions, ActionConcrete.StrikeConcrete, ActionConcreteTag.Attack, 5);
         ActionConstruct.Add(elem2);
     }
 
-    public override IAction CloneAndInstantiateUI(Transform transform)
+    public override IAction CreateClone(Transform transform)
     {
         KneeDash actionClone = new()
         {
