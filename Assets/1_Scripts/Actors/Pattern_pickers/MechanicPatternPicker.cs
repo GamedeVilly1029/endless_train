@@ -7,30 +7,46 @@ public class MechanicPatternPicker : BasePatternPicker
     public Mechanic MechanicInstance;
     public DungeonMaster DungeonMasterInst;
 
-    public List<IAction> approach;
-    public List<IAction> rotate;
-    public List<IAction> chase;
-    public List<IAction> heavyPunch;
-    public List<IAction> chasingPunch;
-    public List<IAction> tantrums;
+    private List<IAction> _approach;
+    private List<IAction> _rotate;
+    private List<IAction> _chase;
+    private List<IAction> _heavyPunch;
+    private List<IAction> _chasingPunch;
+    private List<IAction> _tantrums;
+    private List<IAction> _retreat;
+
+    private int _playerWasInCarriageLeft = 0;
     
     public override void FillActionRowOrBelt()
     {
         MechanicInstance.ActionRowInst.Actions.Clear();
 
         Func<float, float, float, bool> HPmoreThan30Percent = HPBasedCondition.CurrentHPIsMoreThanXPercent;
-        Func<DungeonMaster, IActor, IActor, int, bool> PlayerInRange = CellBasedCondition.ActorInRangeOfXCells;
+        Func<DungeonMaster, IActor, IActor, int, bool> PlayerKeepsDistance = CellBasedCondition.ActorInRangeOfXCellsFromOtherActor;
         Func<DungeonMaster, IActor, IActor, bool> PlayerAhead = CellBasedCondition.ActorIsOnCellsAhead;
+
+        Func<DungeonMaster, IActor, int, int, bool> ActorInTheCarriageLeft = CellBasedCondition.ActorInRangeOfCells;
 
         if (!PlayerAhead(DungeonMasterInst, DungeonMasterInst.Player, MechanicInstance))
         {
-            MechanicInstance.ActionRowInst.Actions = CopyActionSet(rotate, MechanicInstance.ActionRowInst.Panel);
+            MechanicInstance.ActionRowInst.Actions = CopyActionSet(_rotate, MechanicInstance.ActionRowInst.Panel);
             return;
         }
 
-        if (!PlayerInRange(DungeonMasterInst, DungeonMasterInst.Player, MechanicInstance, 2))
+        if (!PlayerKeepsDistance(DungeonMasterInst, DungeonMasterInst.Player, MechanicInstance, 2))
         {
-            MechanicInstance.ActionRowInst.Actions = CopyActionSet(approach, MechanicInstance.ActionRowInst.Panel);
+            MechanicInstance.ActionRowInst.Actions = CopyActionSet(_approach, MechanicInstance.ActionRowInst.Panel);
+            return;
+        }
+
+        if (
+        ActorInTheCarriageLeft(DungeonMasterInst, DungeonMasterInst.Player, 0, 3) && 
+        ActorInTheCarriageLeft(DungeonMasterInst, MechanicInstance, 0, 3) &&
+        _playerWasInCarriageLeft < 2
+        )
+        {
+            MechanicInstance.ActionRowInst.Actions = CopyActionSet(_retreat, MechanicInstance.ActionRowInst.Panel);
+            _playerWasInCarriageLeft += 1;
             return;
         }
 
@@ -39,23 +55,23 @@ public class MechanicPatternPicker : BasePatternPicker
             int randomInt = UnityEngine.Random.Range(1, 4);
             if (randomInt == 1)
             {
-                MechanicInstance.ActionRowInst.Actions = CopyActionSet(chase, MechanicInstance.ActionRowInst.Panel);
+                MechanicInstance.ActionRowInst.Actions = CopyActionSet(_chase, MechanicInstance.ActionRowInst.Panel);
                 return;
             }
             else if (randomInt == 2)
             {
-                MechanicInstance.ActionRowInst.Actions = CopyActionSet(heavyPunch, MechanicInstance.ActionRowInst.Panel);
+                MechanicInstance.ActionRowInst.Actions = CopyActionSet(_heavyPunch, MechanicInstance.ActionRowInst.Panel);
                 return;
             }
             else if (randomInt == 3)
             {
-                MechanicInstance.ActionRowInst.Actions = CopyActionSet(chasingPunch, MechanicInstance.ActionRowInst.Panel);
+                MechanicInstance.ActionRowInst.Actions = CopyActionSet(_chasingPunch, MechanicInstance.ActionRowInst.Panel);
                 return;
             }
         }
         else
         {
-            MechanicInstance.ActionRowInst.Actions = CopyActionSet(tantrums, MechanicInstance.ActionRowInst.Panel);
+            MechanicInstance.ActionRowInst.Actions = CopyActionSet(_tantrums, MechanicInstance.ActionRowInst.Panel);
             return;
         }
 
@@ -66,12 +82,13 @@ public class MechanicPatternPicker : BasePatternPicker
 
     public override void InitializeActionPrototypes()
     {
-        approach = InitializeApproach();
-        rotate = InitializeRotate();
-        chase = InitializeChase();
-        heavyPunch = InitializeHeavyPunch();
-        chasingPunch = InitializeChasingPunch();
-        tantrums = InitializeTantrum();
+        _approach = InitializeApproach();
+        _rotate = InitializeRotate();
+        _chase = InitializeChase();
+        _heavyPunch = InitializeHeavyPunch();
+        _chasingPunch = InitializeChasingPunch();
+        _tantrums = InitializeTantrum();
+        _retreat = InitializeRetreat();
     }
 
     private List<IAction> InitializeApproach()
@@ -158,6 +175,21 @@ public class MechanicPatternPicker : BasePatternPicker
         return actions;
     }
 
+    private List<IAction> InitializeRetreat()
+    {
+        List<IAction> actions = new();
+
+        IAction moveBack = new MoveOneTileBackwards();
+        moveBack.InitializeAction(MechanicInstance, DungeonMasterInst);
+        actions.Add(moveBack);
+
+        IAction moveBack1 = new MoveOneTileBackwards();
+        moveBack1.InitializeAction(MechanicInstance, DungeonMasterInst);
+        actions.Add(moveBack1);
+
+        return actions;
+    }
+
     private List<IAction> CopyActionSet(List<IAction> set, RectTransform UIPanel)
     {
         List<IAction> copies = new();
@@ -165,7 +197,6 @@ public class MechanicPatternPicker : BasePatternPicker
         {
            IAction copy = action.CloneAndInstantiateUI(UIPanel, action);
            copies.Add(copy);
-        //    MechanicInstance.ActionRowInst.OnActionAdd.Invoke();
         }
         return copies;
     }

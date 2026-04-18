@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseAction: IAction
 {
-    public IAction ActionCloneReference{get;set;} = null;
+    public IAction PrototypeAction{get;set;} = null;
     public DungeonMaster DungeonMasterInstance{get;set;}
     public IActor Actor {get;set;}
     public GameObject UIRepresentation {get;set;}
@@ -30,10 +30,10 @@ public class BaseAction: IAction
         Actor = actor;
     }
 
-    public IAction CloneAndInstantiateUI(Transform transform, IAction actionCloneReference)
+    public IAction CloneAndInstantiateUI(Transform transform, IAction prototypeAction)
     {
         IAction clone = CreateClone(transform);
-        SetReferenceAction(actionCloneReference, clone);
+        SetReferenceAction(prototypeAction, clone);
         if (transform == Actor.ActionRowInst.Panel) // Automatically adds UI place for the ET_Action.
         {
             Actor.ActionRowInst.OnActionAdd.Invoke();
@@ -48,9 +48,9 @@ public class BaseAction: IAction
         return null;
     }
     
-    public void SetReferenceAction(IAction actionCloneReference, IAction actionClone)
+    public void SetReferenceAction(IAction prototype, IAction actionClone)
     {
-        actionClone.ActionCloneReference = actionCloneReference;
+        actionClone.PrototypeAction = prototype;
     }
 
     public List<IConstructElement> CloneActionConstruct(IAction actionClone)
@@ -71,24 +71,18 @@ public class BaseAction: IAction
         {
             yield return element.Execute(DungeonMasterInstance);
         }
-        Actor.ActionRowInst.Actions.Remove(this);
-        if (UIRepresentation != null)
-        {
-            Object.Destroy(UIRepresentation);
-            UIRepresentation = null;
-        }
         Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);
-        Actor.ActionRowInst.OnActionRemove.Invoke();
-        SetCooldown(ActionCloneReference.Actor);
+        ActionManipulationMethods.RemoveFromActionRowAndShrinkIt(this);
+        SetCooldown(PrototypeAction.Actor);
     }
 
     private void SetCooldown(IActor actor)
     {
         if (actor is PlayerActor)
         {
-            if (ActionCloneReference != null)
+            if (PrototypeAction != null)
             {
-                ActionCloneReference.Cooldown = ActionCloneReference.CooldownMax;
+                PrototypeAction.Cooldown = PrototypeAction.CooldownMax;
             }
             else
             {

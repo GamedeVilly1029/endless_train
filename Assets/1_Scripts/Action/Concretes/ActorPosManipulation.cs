@@ -53,6 +53,23 @@ public static class ActorPosManipulation
         }
     }
 
+    public static IEnumerator Slide(DungeonMaster dungeonMaster, IActor actor, int destinationCellIDX)
+    {
+        Vector2 start = dungeonMaster.Cells[actor.PositionCellIndex].CellPosition;
+        Vector2 end = dungeonMaster.Cells[destinationCellIDX].CellPosition;
+
+        dungeonMaster.Cells[actor.PositionCellIndex].EnityOccupyingThisCell = null;
+        dungeonMaster.Cells[destinationCellIDX].EnityOccupyingThisCell = actor;
+        actor.PositionCellIndex = destinationCellIDX;
+
+        ParticlePlayer.StartSlide(actor);
+        Object.FindFirstObjectByType<AudioMaster>().PlaySound("slide");
+        yield return StepFlat(actor, start, end, 0.2f);
+        actor.TransformReference.position = end;
+        ParticlePlayer.StopSlide(actor);
+    }
+
+
     private static IEnumerator StepArc(IActor actor, MoveData moveData, Vector2 start, Vector2 end)
     {
         float timePast = 0;
@@ -76,7 +93,7 @@ public static class ActorPosManipulation
 
         ParticlePlayer.StartBePushed(actorToPush);
 
-        yield return StepFlat(actorToPush, start, end);
+        yield return StepFlat(actorToPush, start, end, 0.2f);
         actorToPush.TransformReference.position = end;
 
         ParticlePlayer.StopBePushed(actorToPush);
@@ -98,12 +115,12 @@ public static class ActorPosManipulation
         }
     }
 
-    private static IEnumerator StepFlat(IActor actor, Vector2 start, Vector2 end)
+    private static IEnumerator StepFlat(IActor actor, Vector2 start, Vector2 end, float stepDuration)
     {
         float timePast = 0;
-        while (timePast <= 0.2f)
+        while (timePast <= stepDuration)
         {
-            float normalizedTime = timePast / 0.2f;
+            float normalizedTime = timePast / stepDuration;
             Vector2 newPos = Vector2.Lerp(start, end, normalizedTime);
 
             actor.TransformReference.position = newPos;

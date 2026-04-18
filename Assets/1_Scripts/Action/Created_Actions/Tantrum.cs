@@ -27,13 +27,13 @@ public class Tantrum : BaseAction
             HistoryBasedCondition.LastActionIsNotThisAction
         };
 
-        BaseConstructElement removeVulnerable = new(this, conditions, ActionConcrete.RemoveTantrumVulnerability, ActionConcreteTag.Attack);
+        BaseConstructElement removeVulnerable = new(this, conditions, SkillConcrete.RemoveTantrumVulnerability, ActionConcreteTag.Attack);
         ActionConstruct.Add(removeVulnerable);
 
-        ValueConstructElement strike = new(this, conditions, ActionConcrete.StrikeConcrete, ActionConcreteTag.Attack, 2);
+        ValueConstructElement strike = new(this, conditions, AttackConcrete.StrikeConcrete, ActionConcreteTag.Attack, 2);
         ActionConstruct.Add(strike);
 
-        BaseConstructElement add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, ActionConcreteTag.Attack);
+        BaseConstructElement add1Vulnerability = new(this, conditions, SkillConcrete.AddTantrumVulnerability, ActionConcreteTag.Attack);
         ActionConstruct.Add(add1Vulnerability);
 
 
@@ -42,7 +42,7 @@ public class Tantrum : BaseAction
             HistoryBasedCondition.ConcreteHistoryIsEmpty
         };
 
-        ValueConstructElement tantrumStrike = new(this, conditions, ActionConcrete.TantrumStrike, ActionConcreteTag.Attack, 2);
+        ValueConstructElement tantrumStrike = new(this, conditions, AttackConcrete.TantrumStrike, ActionConcreteTag.Attack, 2);
         ActionConstruct.Add(tantrumStrike);
 
 
@@ -51,7 +51,7 @@ public class Tantrum : BaseAction
             HistoryBasedCondition.ConcreteHistoryHasOnly1Concrete
         };
 
-        add1Vulnerability = new(this, conditions, ActionConcrete.AddTantrumVulnerability, ActionConcreteTag.Attack);
+        add1Vulnerability = new(this, conditions, SkillConcrete.AddTantrumVulnerability, ActionConcreteTag.Attack);
         ActionConstruct.Add(add1Vulnerability);
     }
 

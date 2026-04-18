@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public static class CellBasedCondition
@@ -30,7 +31,7 @@ public static class CellBasedCondition
         return false;
     }
 
-    public static bool ActorInRangeOfXCells(DungeonMaster dungeonMaster, IActor actorToFind, IActor caster, int range)
+    public static bool ActorInRangeOfXCellsFromOtherActor(DungeonMaster dungeonMaster, IActor actorToFind, IActor caster, int range)
     {
         int cellIndex = caster.PositionCellIndex;
 
@@ -128,5 +129,45 @@ public static class CellBasedCondition
     {
         int currentCellIndex = actor.PositionCellIndex;
         return 0 < currentCellIndex && currentCellIndex + 1 < dungeonMaster.Cells.Count;
+    }
+
+    public static bool ActorInRangeOfCells(DungeonMaster dungeonMaster, IActor actor, int start, int end)
+    {
+        for (int i = start; i <= end; i++)
+        {
+            if (actor.PositionCellIndex == i)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool ActorInRangeOfCellsAhead(DungeonMaster dungeonMaster, IActor actorToFind, IActor caster)
+    {
+        int cellIndex = caster.PositionCellIndex;
+        bool facingRight = caster.IsFacingRight();
+
+        if (facingRight)
+        {
+            for (int i = cellIndex; i < dungeonMaster.Cells.Count - 1; i++)
+            {
+                if (dungeonMaster.Cells[i].EnityOccupyingThisCell == actorToFind)
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            for (int i = cellIndex; i >= 0; i--)
+            {
+                if (dungeonMaster.Cells[i].EnityOccupyingThisCell == actorToFind)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

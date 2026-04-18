@@ -54,13 +54,18 @@ TemporaryDependencyNodeTargetIdentifier=netstandard2.1
 [sourceFiles]
 Assets/1_Scripts/Action/
  ActionConcreteTag.cs
+ ActionManipulationMethods.cs
  ActionRow.cs
  BaseAction.cs
  Concretes/
-  ActionAdditionConcrete.cs
-  ActionConcrete.cs
   ActionRowManipulation.cs
   ActorPosManipulation.cs
+  ConcreteVariations/
+   ActionAdditionConcrete.cs
+   AttackConcrete.cs
+   MovementConcrete.cs
+   PushConcrete.cs
+   SkillConcrete.cs
   LowLevelConcrete.cs
  Constructs/ElementVariations/
   ActionAssignmentConstructElement.cs
@@ -70,6 +75,7 @@ Assets/1_Scripts/Action/
  Created_Actions/
   AngryRoar.cs
   BeStunned.cs
+  Dash.cs
   HeavyWalk.cs
   KneeDash.cs
   MoveOneTileBackwards.cs
@@ -83,42 +89,41 @@ Assets/1_Scripts/Action/
  Particles/
   ParticleLowLevel.cs
   ParticlePlayer.cs
-Assets/1_Scripts/
- Action_UI/BeltUIController.cs
- Actors/
-  BaseActor.cs
-  Enemy/
-   Mechanic.cs
-   Pattern_pickers/
-    BasePatternPicker.cs
-    MechanicPatternPicker.cs
-    SpiderPatternPicker.cs
-   Spider.cs
-  IActor.cs
-  PlayerActor.cs
- Audio/
-  AudioMaster.cs
-  Sound.cs
- Conditions/
-  CellBasedCondition.cs
-  HistoryBasedCondition.cs
-  HPBasedCondition.cs
- DungeonMaster/
-  ActionMaster.cs
-  Cell.cs
-  DungeonMaster.cs
+Assets/1_Scripts/Actors/
+ BaseActor.cs
+ BeltUIController.cs
+ Enemy/
+  Mechanic.cs
+  Spider.cs
+ IActor.cs
+ Pattern_pickers/
+  BasePatternPicker.cs
+  MechanicPatternPicker.cs
   PlayerBeltPatternPicker.cs
-  TurnMaster.cs
- Status_Effects/
-  IStatusEffect.cs
-  NextAttackDmgUpEffect.cs
-  StatusEffectConcrete.cs
-  StatusEffectConstructElement.cs
-  StatusEffectLowLevelFunctionality.cs
-  TantrumVulnerabilityEffect.cs
- UI/
-  PlayerTurnUIController.cs
-  TurnCounterUI.cs
+  SpiderPatternPicker.cs
+ PlayerActor.cs
+Assets/1_Scripts/Audio/
+ AudioMaster.cs
+ Sound.cs
+Assets/1_Scripts/Conditions/
+ CellBasedCondition.cs
+ HistoryBasedCondition.cs
+ HPBasedCondition.cs
+Assets/1_Scripts/DungeonMaster/
+ ActionMaster.cs
+ Cell.cs
+ DungeonMaster.cs
+ TurnMaster.cs
+Assets/1_Scripts/Status_Effects/
+ IStatusEffect.cs
+ NextAttackDmgUpEffect.cs
+ StatusEffectConcrete.cs
+ StatusEffectConstructElement.cs
+ StatusEffectLowLevelFunctionality.cs
+ TantrumVulnerabilityEffect.cs
+Assets/1_Scripts/UI/
+ PlayerTurnUIController.cs
+ TurnCounterUI.cs
 Assets/2_Prefabs_and_scriptables/
  MoveData.cs
  ParticleInfoContainer.cs
@@ -461,6 +466,7 @@ Library/ScriptAssemblies/
  Unity.VisualStudio.Editor.dll
  UnityEditor.UI.dll
  UnityEngine.UI.dll
+Temp/bin/Debug/SingularityGroup.HotReload.Runtime.Public.dll
 
 [analyzerReferences]
 ../

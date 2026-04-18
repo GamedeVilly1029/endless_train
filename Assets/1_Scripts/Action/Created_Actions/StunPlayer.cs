@@ -24,7 +24,7 @@ public class StunPlayer : BaseAction
     private void InitializeConstruct()
     {
         ActionConstruct = new();
-        ActionAssignmentConstructElement stunPlayer = new(this, null, ActionAdditionConcrete.AddActionToPlayerRowStart, ActionConcreteTag.Move, _beStunned);
+        ActionAssignmentConstructElement stunPlayer = new(this, null, ActionAdditionConcrete.ChangeNextActionOfPlayer, ActionConcreteTag.Move, _beStunned);
         ActionConstruct.Add(stunPlayer);
     }
 

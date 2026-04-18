@@ -22,7 +22,7 @@ public class Rotate : BaseAction
     {
         ActionConstruct = new()
         {
-            new BaseConstructElement(this, null, ActionConcrete.RotateConcrete, ActionConcreteTag.Move)
+            new BaseConstructElement(this, null, MovementConcrete.RotateConcrete, ActionConcreteTag.Move)
         };
     }
 

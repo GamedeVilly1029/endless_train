@@ -21,7 +21,7 @@ public class BeStunned : BaseAction
     {
         ActionConstruct = new();
 
-        BaseConstructElement beStunned = new(this, null, ActionConcrete.BeStunned, ActionConcreteTag.Skill);
+        BaseConstructElement beStunned = new(this, null, SkillConcrete.BeStunned, ActionConcreteTag.Skill);
         ActionConstruct.Add(beStunned);
     }
 

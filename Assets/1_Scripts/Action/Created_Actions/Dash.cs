@@ -1,18 +1,20 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveOneTileForward : BaseAction 
+public class Dash: BaseAction
 {
     public override void InitializeChildAction()
     {
         CooldownMax = 0;
         Cooldown = 0;
-        if (Resources.Load<GameObject>("MovementActionUI") != null)
+        if (Resources.Load<GameObject>("DashActionUI") != null)
         {
-            UIRepresentation = Resources.Load<GameObject>("MovementActionUI");
+            UIRepresentation = Resources.Load<GameObject>("DashActionUI");
         }
         else
         {
-            Debug.LogError("Resources.Load can't find UIRepresentation Asset");
+            Debug.LogError("Resources.Load can't find UIRepresentationAsset");
         }
         InitializeConstruct();
     }
@@ -20,18 +22,20 @@ public class MoveOneTileForward : BaseAction
     private void InitializeConstruct()
     {
         ActionConstruct = new();
-        ValueConstructElement moveForward = new(this, null, MovementConcrete.WalkXTilesForward, ActionConcreteTag.Move, 1);
-        ActionConstruct.Add(moveForward);
+        ValueConstructElement charge = new(this, null, MovementConcrete.DashConcrete, ActionConcreteTag.Attack, 4);
+
+        ActionConstruct.Add(charge);
     }
 
     public override IAction CreateClone(Transform transform)
     {
-        MoveOneTileForward actionClone = new()
+        Dash actionClone = new()
         {
             DungeonMasterInstance = DungeonMasterInstance,
             Actor = Actor,
-            UIRepresentation = Object.Instantiate(UIRepresentation, transform),
+            UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };
+
         actionClone.ActionConstruct = CloneActionConstruct(actionClone);
 
         return actionClone;

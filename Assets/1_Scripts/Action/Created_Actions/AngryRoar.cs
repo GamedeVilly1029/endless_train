@@ -21,7 +21,7 @@ public class AngryRoar: BaseAction
     {
         ActionConstruct = new()
         {
-            new ValueConstructElement(this, null, ActionConcrete.IncreaseDamageOfNextAttack, ActionConcreteTag.Skill, 5)
+            new ValueConstructElement(this, null, SkillConcrete.IncreaseDamageOfNextAttack, ActionConcreteTag.Skill, 5)
         };
     }
 

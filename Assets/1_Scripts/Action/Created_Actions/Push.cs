@@ -20,7 +20,7 @@ public class Push : BaseAction
     {
         ActionConstruct = new()
         {
-            new BaseConstructElement(this, null, ActionConcrete.Push, ActionConcreteTag.Push)
+            new BaseConstructElement(this, null, PushConcrete.Push, ActionConcreteTag.Push)
         };
     }
 

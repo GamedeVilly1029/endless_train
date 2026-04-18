@@ -49,7 +49,7 @@ public class DungeonMaster : MonoBehaviour
         yield return actor.TriggerTurnBasedStatusEffects();
         if (actor is PlayerActor)
         {
-        _playerActions.Add(CurrentAction.ActionCloneReference);
+        _playerActions.Add(CurrentAction.PrototypeAction);
         }
         yield return CurrentAction.ExecuteAction(this);
         actor.AddActionToFightHistory();

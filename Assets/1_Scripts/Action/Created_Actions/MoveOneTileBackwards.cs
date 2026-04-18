@@ -23,7 +23,7 @@ public class MoveOneTileBackwards : BaseAction
     {
         ActionConstruct = new()
         {
-            new ValueConstructElement(this, null, ActionConcrete.WalkXTilesBackwards, ActionConcreteTag.Move, 1)
+            new ValueConstructElement(this, null, MovementConcrete.WalkXTilesBackwards, ActionConcreteTag.Move, 1)
         };
     }
     public override IAction CreateClone(Transform transform)

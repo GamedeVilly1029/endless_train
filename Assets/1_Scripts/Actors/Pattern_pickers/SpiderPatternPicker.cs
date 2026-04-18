@@ -16,7 +16,7 @@ public class SpiderPatternPicker : BasePatternPicker
         SpiderInstance.ActionRowInst.Actions.Clear();
 
         Func<float, float, float, bool> HPmoreThan30Percent = HPBasedCondition.CurrentHPIsMoreThanXPercent;
-        Func<DungeonMaster, IActor, IActor, int, bool> PlayerInRange = CellBasedCondition.ActorInRangeOfXCells;
+        Func<DungeonMaster, IActor, IActor, int, bool> PlayerInRange = CellBasedCondition.ActorInRangeOfXCellsFromOtherActor;
         Func<DungeonMaster, IActor, IActor, bool> PlayerAhead = CellBasedCondition.ActorIsOnCellsAhead;
 
         if (!PlayerAhead(DungeonMasterInst, DungeonMasterInst.Player, SpiderInstance))
@@ -90,6 +90,10 @@ public class SpiderPatternPicker : BasePatternPicker
         heavyWalk.InitializeAction(SpiderInstance, DungeonMasterInst);
         actions.Add(heavyWalk);
 
+        IAction stunPlayer = new StunPlayer();
+        stunPlayer.InitializeAction(SpiderInstance, DungeonMasterInst);
+        actions.Add(stunPlayer);
+
         IAction strike = new Strike();
         strike.InitializeAction(SpiderInstance, DungeonMasterInst);
         actions.Add(strike);
@@ -102,9 +106,9 @@ public class SpiderPatternPicker : BasePatternPicker
         moveBack.InitializeAction(SpiderInstance, DungeonMasterInst);
         actions.Add(moveBack);
 
-        IAction moveBack1 = new MoveOneTileBackwards();
-        moveBack1.InitializeAction(SpiderInstance, DungeonMasterInst);
-        actions.Add(moveBack1);
+        // IAction moveBack1 = new MoveOneTileBackwards();
+        // moveBack1.InitializeAction(SpiderInstance, DungeonMasterInst);
+        // actions.Add(moveBack1);
 
         return actions;
     }

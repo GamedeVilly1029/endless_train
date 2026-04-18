@@ -5,7 +5,7 @@ using System.Collections;
 
 public interface IAction
 {
-    IAction ActionCloneReference{get;set;}
+    IAction PrototypeAction{get;set;}
     DungeonMaster DungeonMasterInstance{get;set;}
     IActor Actor{get;set;}
     GameObject UIRepresentation{get;set;}

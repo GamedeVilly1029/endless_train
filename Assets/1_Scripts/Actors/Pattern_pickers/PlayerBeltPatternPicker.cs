@@ -59,9 +59,9 @@ public class PlayerBeltPatternPicker : BasePatternPicker
         push1.InitializeAction(_dungeonMaster.Player, _dungeonMaster);
         actions.Add(push1);
 
-        IAction stunPlayer = new StunPlayer();
-        stunPlayer.InitializeAction(_dungeonMaster.Player, _dungeonMaster);
-        actions.Add(stunPlayer);
+        IAction dash = new Dash();
+        dash.InitializeAction(_dungeonMaster.Player, _dungeonMaster);
+        actions.Add(dash);
 
         return actions;
     }

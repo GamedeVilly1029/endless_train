@@ -21,7 +21,7 @@ public class Strike : BaseAction
     {
         ActionConstruct = new()
         {
-            new ValueConstructElement(this, null, ActionConcrete.StrikeConcrete, ActionConcreteTag.Attack, 5)
+            new ValueConstructElement(this, null, AttackConcrete.StrikeConcrete, ActionConcreteTag.Attack, 5)
         };
     }
 

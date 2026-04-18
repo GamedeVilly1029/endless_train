@@ -273,7 +273,7 @@ MonoBehaviour:
   Player: {fileID: 0}
   AllActors:
   - {fileID: 386429601}
-  - {fileID: 395373030}
+  - {fileID: 6317996266282258702}
 --- !u!114 &222536644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,7 +930,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &395373030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3265,6 +3265,11 @@ MonoBehaviour:
     Loop: 0
     Volume: 0.627
     Source: {fileID: 0}
+  - Name: slide
+    Clip: {fileID: 8300000, guid: faa778b36cc5157898c29d800a9b3907, type: 3}
+    Loop: 0
+    Volume: 0.504
+    Source: {fileID: 0}
 --- !u!1 &1811678987
 GameObject:
   m_ObjectHideFlags: 0
@@ -3903,7 +3908,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &3312323100805340373
 MonoBehaviour:
   m_ObjectHideFlags: 0

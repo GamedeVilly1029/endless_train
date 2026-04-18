@@ -10,14 +10,14 @@ public class PlayerActor : BaseActor
 
     public override void Initialize()
     {
-        TransformReference.position = DungeonMasterInstance.Cells[4].CellPosition;
-        DungeonMasterInstance.Cells[4].EnityOccupyingThisCell = this;
-        PositionCellIndex = 4;
+        TransformReference.position = DungeonMasterInstance.Cells[9].CellPosition;
+        DungeonMasterInstance.Cells[9].EnityOccupyingThisCell = this;
+        PositionCellIndex = 9;
         StatusEffectsForTurn = new();
         StatusEffectsBeforeTakingDamage = new();
         MaxHP = 99;
         CurrentHP = MaxHP;
-        TransformReference.rotation = Quaternion.Euler(0f, 0f, 0f);
+        TransformReference.rotation = Quaternion.Euler(0f, 180f, 0f);
     }
 
 
