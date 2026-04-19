@@ -8,7 +8,8 @@ public class Mechanic : BaseActor
         TransformReference.position = DungeonMasterInstance.Cells[5].CellPosition;
         DungeonMasterInstance.Cells[5].EnityOccupyingThisCell = this;
         PositionCellIndex = 5;
-        StatusEffectsForTurn = new();
+        StatusEffectsDuringTurn = new();
+        StatusEffectsBeforeTurn = new();
         StatusEffectsBeforeTakingDamage = new();
         MaxHP = 50;
         CurrentHP = MaxHP;

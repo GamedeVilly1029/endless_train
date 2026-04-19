@@ -2,23 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TantrumVulnerabilityEffect : IStatusEffect
+public class StunFirstActionEffect : IStatusEffect
 {
-public List<StatusEffectConstructElement> StatusConstruct{get;set;}
+    public List<IStatusEffectConstructElement> StatusConstruct{get;set;}
     public bool DestroyAfterApplication{get;set;}
     public void InitializeStatusEffect(DungeonMaster dungeonMaster)
     {
         StatusConstruct = new();
 
-        StatusEffectConstructElement elem1 = new(StatusEffectConcrete.TakeDamage, 2, dungeonMaster.CurrentActor);
+        ValueStatusEffectConstructElement elem1 = new(StatusEffectConcrete.IncreaseDamageOfFirstAttackConcrete, 2, dungeonMaster.Player);
         StatusConstruct.Add(elem1);
 
-        DestroyAfterApplication = false;
+        DestroyAfterApplication = true;
     }
 
     public IEnumerator ApplyStatusEffect(DungeonMaster dungeonMaster)
     {
-        foreach (StatusEffectConstructElement element in StatusConstruct)
+        foreach (IStatusEffectConstructElement element in StatusConstruct)
         {
             yield return element.ExecuteStatusConcrete(dungeonMaster);
         }
@@ -26,6 +26,6 @@ public List<StatusEffectConstructElement> StatusConstruct{get;set;}
 
     public void SelfDestroy(DungeonMaster dungeonMaster)
     {
-        dungeonMaster.CurrentActor.StatusEffectsForTurn.Remove(this);
+        dungeonMaster.CurrentActor.StatusEffectsDuringTurn.Remove(this);
     }
 }

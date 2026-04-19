@@ -9,8 +9,8 @@ public static class SkillConcrete
         IStatusEffect dmgIncreaseEffect = new NextAttackDmgUpEffect();
         dmgIncreaseEffect.InitializeStatusEffect(dungeonMaster);
 
-        dungeonMaster.CurrentActor.StatusEffectsForTurn.Add(dmgIncreaseEffect);
-        yield return LowLevelConcrete.Pause;
+        dungeonMaster.CurrentActor.StatusEffectsDuringTurn.Add(dmgIncreaseEffect);
+        yield return GlobalLowLevelConcrete.Pause;
 
         ParticlePlayer.StopBattleCry(dungeonMaster.CurrentActor);
     }
@@ -38,7 +38,7 @@ public static class SkillConcrete
     public static IEnumerator BeStunned(DungeonMaster dungeonMaster, IConstructElement element)
     {
         Debug.Log("Stunned!");
-        yield return LowLevelConcrete.Pause;
+        yield return GlobalLowLevelConcrete.Pause;
         yield return new WaitForSeconds(1f);
     }
 }

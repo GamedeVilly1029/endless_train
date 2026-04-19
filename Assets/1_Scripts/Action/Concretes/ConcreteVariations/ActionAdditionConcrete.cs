@@ -8,7 +8,7 @@ public static class ActionAdditionConcrete
     {
         ActionAssignmentConstructElement casted = element as ActionAssignmentConstructElement;
         dungeonMaster.Player.ActionRowInst.Actions.Add(casted.ActionToAssign.CloneAndInstantiateUI(dungeonMaster.Player.ActionRowInst.Panel, casted.ActionToAssign));
-        yield return LowLevelConcrete.Pause;
+        yield return GlobalLowLevelConcrete.Pause;
     }
 
     public static IEnumerator AddActionToPlayerRowStart(DungeonMaster dungeonMaster, IConstructElement element)
@@ -19,13 +19,13 @@ public static class ActionAdditionConcrete
 
         dungeonMaster.Player.ActionRowInst.Actions.Insert(0, createdAction);
         createActionTransform.SetSiblingIndex(element.ActionOfThisConcrete.UIRepresentation.transform.GetSiblingIndex() + 1);
-        yield return LowLevelConcrete.Pause;
+        yield return GlobalLowLevelConcrete.Pause;
     }
 
     public static IEnumerator ChangeNextActionOfPlayer(DungeonMaster dungeonMaster, IConstructElement element)
     {
-        yield return LowLevelConcrete.Pause;
-        yield return LowLevelConcrete.Pause;
+        yield return GlobalLowLevelConcrete.Pause;
+        yield return GlobalLowLevelConcrete.Pause;
 
 
         ActionAssignmentConstructElement casted = element as ActionAssignmentConstructElement;
@@ -40,6 +40,6 @@ public static class ActionAdditionConcrete
         dungeonMaster.Player.ActionRowInst.Actions.Insert(0, createdAction);
         createActionTransform.SetSiblingIndex(element.ActionOfThisConcrete.UIRepresentation.transform.GetSiblingIndex() + 1);
 
-        yield return LowLevelConcrete.Pause;
+        yield return GlobalLowLevelConcrete.Pause;
     }
 }

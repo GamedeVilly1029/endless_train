@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IStatusEffect
 {
-    List<StatusEffectConstructElement> StatusConstruct{get;set;}
+    List<IStatusEffectConstructElement> StatusConstruct{get;set;}
     bool DestroyAfterApplication{get;set;}
 
     void InitializeStatusEffect(DungeonMaster dungeonMaster);

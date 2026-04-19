@@ -6,7 +6,7 @@ public static class AttackConcrete
     
     public static IEnumerator StrikeConcrete(DungeonMaster dungeonMaster, IConstructElement element)
     {
-        yield return LowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
+        yield return AttackLowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
     }
 
     public static IEnumerator TantrumStrike(DungeonMaster dungeonMaster, IConstructElement element)
@@ -15,13 +15,13 @@ public static class AttackConcrete
         {
             if (dungeonMaster.CurrentActor.FightBasedActionHistory[i] is Tantrum)
             {
-                yield return LowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
+                yield return AttackLowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
             }
             else
             {
                 break;
             }
         }
-        yield return LowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
+        yield return AttackLowLevelConcrete.AttackEntityAhead(dungeonMaster, element);
     }
 }

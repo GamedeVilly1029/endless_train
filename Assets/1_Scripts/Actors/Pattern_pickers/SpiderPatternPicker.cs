@@ -37,11 +37,6 @@ public class SpiderPatternPicker : BasePatternPicker
             SpiderInstance.ActionRowInst.Actions = CopyActionSet(sneakyLeap, SpiderInstance.ActionRowInst.Panel);
             return;
         }
-        // else
-        // {
-        //     SpiderInstance.ActionRowInst.Actions = CopyActionSet(tantrums, SpiderInstance.ActionRowInst.Panel);
-        //     return;
-        // }
 
         Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
         SpiderInstance.ActionRowInst.Actions = null;
@@ -85,30 +80,17 @@ public class SpiderPatternPicker : BasePatternPicker
     private List<IAction> InitializeSneakyLeap()
     {
         List<IAction> actions = new();
-
-        IAction heavyWalk = new HeavyWalk();
-        heavyWalk.InitializeAction(SpiderInstance, DungeonMasterInst);
-        actions.Add(heavyWalk);
-
-        IAction stunPlayer = new StunPlayer();
-        stunPlayer.InitializeAction(SpiderInstance, DungeonMasterInst);
-        actions.Add(stunPlayer);
+        IAction dash = new Dash();
+        dash.InitializeAction(SpiderInstance, DungeonMasterInst);
+        actions.Add(dash);
 
         IAction strike = new Strike();
         strike.InitializeAction(SpiderInstance, DungeonMasterInst);
         actions.Add(strike);
 
-        IAction strike1 = new Strike();
-        strike1.InitializeAction(SpiderInstance, DungeonMasterInst);
-        actions.Add(strike1);
-
         IAction moveBack = new MoveOneTileBackwards();
         moveBack.InitializeAction(SpiderInstance, DungeonMasterInst);
         actions.Add(moveBack);
-
-        // IAction moveBack1 = new MoveOneTileBackwards();
-        // moveBack1.InitializeAction(SpiderInstance, DungeonMasterInst);
-        // actions.Add(moveBack1);
 
         return actions;
     }
@@ -120,7 +102,6 @@ public class SpiderPatternPicker : BasePatternPicker
         {
             IAction copy = action.CloneAndInstantiateUI(UIPanel, action);
             copies.Add(copy);
-            // SpiderInstance.ActionRowInst.OnActionAdd.Invoke();
         }
         return copies;
     }

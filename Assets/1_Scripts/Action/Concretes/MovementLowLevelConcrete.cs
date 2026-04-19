@@ -1,8 +1,37 @@
 using System.Collections;
 using UnityEngine;
 
-public static class ActorPosManipulation
+public static class MovementLowLevelConcrete
 {
+    private static IEnumerator StepArc(IActor actor, MoveData moveData, Vector2 start, Vector2 end)
+    {
+        float timePast = 0;
+        while (timePast <= moveData.Duration)
+        {
+            float normalizedTime = timePast / moveData.Duration;
+            Vector2 newPos = Vector2.Lerp(start, end, normalizedTime);
+            newPos.y = start.y + moveData.Curve.Evaluate(normalizedTime);
+
+            actor.TransformReference.position = newPos;
+            timePast += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    private static IEnumerator StepFlat(IActor actor, Vector2 start, Vector2 end, float stepDuration)
+    {
+        float timePast = 0;
+        while (timePast <= stepDuration)
+        {
+            float normalizedTime = timePast / stepDuration;
+            Vector2 newPos = Vector2.Lerp(start, end, normalizedTime);
+
+            actor.TransformReference.position = newPos;
+            timePast += Time.deltaTime;
+            yield return null;
+        }
+    }
+
     public static IEnumerator StepForwardOrBackwards(DungeonMaster dungeonMaster, IActor actor, MoveData moveData, bool forward)
     {
         dungeonMaster.Cells[actor.PositionCellIndex].EnityOccupyingThisCell = null;
@@ -69,22 +98,6 @@ public static class ActorPosManipulation
         ParticlePlayer.StopSlide(actor);
     }
 
-
-    private static IEnumerator StepArc(IActor actor, MoveData moveData, Vector2 start, Vector2 end)
-    {
-        float timePast = 0;
-        while (timePast <= moveData.Duration)
-        {
-            float normalizedTime = timePast / moveData.Duration;
-            Vector2 newPos = Vector2.Lerp(start, end, normalizedTime);
-            newPos.y = start.y + moveData.Curve.Evaluate(normalizedTime);
-
-            actor.TransformReference.position = newPos;
-            timePast += Time.deltaTime;
-            yield return null;
-        }
-    }
-
     public static IEnumerator BePushed(DungeonMaster dungeonMaster, IActor actorToPush, bool pushRight)
     {
         dungeonMaster.Cells[actorToPush.PositionCellIndex].EnityOccupyingThisCell = null;
@@ -115,20 +128,6 @@ public static class ActorPosManipulation
         }
     }
 
-    private static IEnumerator StepFlat(IActor actor, Vector2 start, Vector2 end, float stepDuration)
-    {
-        float timePast = 0;
-        while (timePast <= stepDuration)
-        {
-            float normalizedTime = timePast / stepDuration;
-            Vector2 newPos = Vector2.Lerp(start, end, normalizedTime);
-
-            actor.TransformReference.position = newPos;
-            timePast += Time.deltaTime;
-            yield return null;
-        }
-    }
-
     public static IEnumerator RotateActor(IActor actor)
     {
         Quaternion start = actor.TransformReference.rotation;
@@ -142,5 +141,43 @@ public static class ActorPosManipulation
             yield return null;
         }
         actor.TransformReference.rotation = target;
+    }
+    
+    public static IEnumerator MoveOneCellForward(DungeonMaster dungeonMaster, IConstructElement element)
+    {
+        IActor actor = dungeonMaster.CurrentActor;
+        if (!CellBasedCondition.CellAheadExists(dungeonMaster, actor))
+        {
+            yield break;
+        }
+        else if (!CellBasedCondition.CellAheadIsEmpty(dungeonMaster, actor))
+        {
+            Debug.Log("Cell ahead isn't empty");
+            yield break;
+        }
+        else
+        {
+            yield return MovementLowLevelConcrete.StepForwardOrBackwards(dungeonMaster, actor, Resources.Load<MoveData>("StepData"), true);
+        }
+        yield return GlobalLowLevelConcrete.Pause;
+    }
+
+    public static IEnumerator MoveOneCellBackwards(DungeonMaster dungeonMaster, IConstructElement element)
+    {
+        IActor actor = dungeonMaster.CurrentActor;
+        if (!CellBasedCondition.CellBehindExists(dungeonMaster, actor))
+        {
+            yield break;
+        }
+        else if (!CellBasedCondition.CellBehindIsEmpty(dungeonMaster, actor))
+        {
+            Debug.Log("Cell ahead isn't empty");
+            yield break;
+        }
+        else
+        {
+            yield return MovementLowLevelConcrete.StepForwardOrBackwards(dungeonMaster, actor, Resources.Load<MoveData>("StepData"), false);
+        }
+        yield return GlobalLowLevelConcrete.Pause;
     }
 }

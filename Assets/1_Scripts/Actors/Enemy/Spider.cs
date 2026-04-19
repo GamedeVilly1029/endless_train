@@ -7,7 +7,8 @@ public class Spider : BaseActor
         TransformReference.position = DungeonMasterInstance.Cells[9].CellPosition;
         DungeonMasterInstance.Cells[9].EnityOccupyingThisCell = this;
         PositionCellIndex = 9;
-        StatusEffectsForTurn = new();
+        StatusEffectsDuringTurn = new();
+        StatusEffectsBeforeTurn = new();
         StatusEffectsBeforeTakingDamage = new();
         MaxHP = 25;
         CurrentHP = MaxHP;

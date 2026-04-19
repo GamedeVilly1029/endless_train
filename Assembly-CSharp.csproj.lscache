@@ -58,15 +58,15 @@ Assets/1_Scripts/Action/
  ActionRow.cs
  BaseAction.cs
  Concretes/
-  ActionRowManipulation.cs
-  ActorPosManipulation.cs
+  AttackLowLevelConcrete.cs
   ConcreteVariations/
    ActionAdditionConcrete.cs
    AttackConcrete.cs
    MovementConcrete.cs
    PushConcrete.cs
    SkillConcrete.cs
-  LowLevelConcrete.cs
+  GlobalLowLevelConcrete.cs
+  MovementLowLevelConcrete.cs
  Constructs/ElementVariations/
   ActionAssignmentConstructElement.cs
   BaseConstructElement.cs
@@ -114,13 +114,19 @@ Assets/1_Scripts/DungeonMaster/
  Cell.cs
  DungeonMaster.cs
  TurnMaster.cs
+Assets/1_Scripts/Status_Effects/CreatedStatusEffects/
+ NextAttackDmgUpEffect.cs
+ StunFirstActionEffect.cs
+ TantrumVulnerabilityEffect.cs
 Assets/1_Scripts/Status_Effects/
  IStatusEffect.cs
- NextAttackDmgUpEffect.cs
  StatusEffectConcrete.cs
- StatusEffectConstructElement.cs
+ StatusEffectConstruct/
+  ActionAssignmentStatusConstructElement.cs
+  BaseStatusEffectConstructElement.cs
+  IStatusEffectConstructElement.cs
+  ValueStatusEffectConstructElement.cs
  StatusEffectLowLevelFunctionality.cs
- TantrumVulnerabilityEffect.cs
 Assets/1_Scripts/UI/
  PlayerTurnUIController.cs
  TurnCounterUI.cs

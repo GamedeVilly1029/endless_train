@@ -12,8 +12,9 @@ public interface IActor
     int MaxHP{get;set;}
     int CurrentHP {get;set;}
     List<IAction> FightBasedActionHistory{get;set;}
-    List<IStatusEffect> StatusEffectsForTurn{get;set;}
+    List<IStatusEffect> StatusEffectsDuringTurn{get;set;}
     List<IStatusEffect> StatusEffectsBeforeTakingDamage{get;set;}
+    List<IStatusEffect> StatusEffectsBeforeTurn{get;set;}
     BasePatternPicker PatternPicker {get;set;}
     public void Initialize();
     void TryToDie(int HP);

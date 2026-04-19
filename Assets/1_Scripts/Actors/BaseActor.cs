@@ -19,8 +19,9 @@ public class BaseActor : MonoBehaviour, IActor
     public int CurrentHP{get;set;}
     public int PositionCellIndex {get;set;}
     public Stack<int> PositionCellIndexHistory{get;set;}
-    public List<IStatusEffect> StatusEffectsForTurn {get;set;}
     public List<IAction> FightBasedActionHistory{get;set;}
+    public List<IStatusEffect> StatusEffectsBeforeTurn{get;set;}
+    public List<IStatusEffect> StatusEffectsDuringTurn {get;set;}
     public List<IStatusEffect> StatusEffectsBeforeTakingDamage {get;set;}
     Transform IActor.GraphicTransform {get {return GraphicTransformInstance;}set{}}
     public BasePatternPicker PatternPicker{get {return PatternPickerSetter;} set{}}
@@ -97,7 +98,7 @@ public class BaseActor : MonoBehaviour, IActor
     {
         List<IStatusEffect> effectsToDestroy = new();
 
-        foreach (IStatusEffect statusEffect in StatusEffectsForTurn)
+        foreach (IStatusEffect statusEffect in StatusEffectsDuringTurn)
         {
             if (statusEffect.DestroyAfterApplication)
             {

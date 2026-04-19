@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class NextAttackDmgUpEffect : IStatusEffect
 {
-    public List<StatusEffectConstructElement> StatusConstruct{get;set;}
+    public List<IStatusEffectConstructElement> StatusConstruct{get;set;}
     public bool DestroyAfterApplication{get;set;}
     public void InitializeStatusEffect(DungeonMaster dungeonMaster)
     {
         StatusConstruct = new();
 
-        StatusEffectConstructElement elem1 = new(StatusEffectConcrete.IncreaseDamageOfFirstAttackConcrete, 2, dungeonMaster.CurrentActor);
+        ValueStatusEffectConstructElement elem1 = new(StatusEffectConcrete.IncreaseDamageOfFirstAttackConcrete, 2, dungeonMaster.CurrentActor);
         StatusConstruct.Add(elem1);
 
         DestroyAfterApplication = true;
@@ -18,7 +18,7 @@ public class NextAttackDmgUpEffect : IStatusEffect
 
     public IEnumerator ApplyStatusEffect(DungeonMaster dungeonMaster)
     {
-        foreach (StatusEffectConstructElement element in StatusConstruct)
+        foreach (IStatusEffectConstructElement element in StatusConstruct)
         {
             yield return element.ExecuteStatusConcrete(dungeonMaster);
         }
@@ -26,6 +26,6 @@ public class NextAttackDmgUpEffect : IStatusEffect
 
     public void SelfDestroy(DungeonMaster dungeonMaster)
     {
-        dungeonMaster.CurrentActor.StatusEffectsForTurn.Remove(this);
+        dungeonMaster.CurrentActor.StatusEffectsDuringTurn.Remove(this);
     }
 }

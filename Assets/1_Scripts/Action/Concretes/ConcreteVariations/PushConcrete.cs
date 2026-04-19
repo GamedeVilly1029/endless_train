@@ -8,17 +8,17 @@ public static class PushConcrete
         ParticlePlayer.StartPush(dungeonMaster.CurrentActor);
         if (CellBasedCondition.CellAheadExists(dungeonMaster, dungeonMaster.CurrentActor))
         {
-            IActor actorAhead = LowLevelConcrete.TryReturnActorAhead(dungeonMaster, element);
+            IActor actorAhead = GlobalLowLevelConcrete.TryReturnActorAhead(dungeonMaster, element);
             if (actorAhead != null)
             {
                 if (CellBasedCondition.AdjacentCellsExists(dungeonMaster, actorAhead))
                 {
-                    yield return ActorPosManipulation.BePushed(dungeonMaster, actorAhead, dungeonMaster.CurrentActor.IsFacingRight());
+                    yield return MovementLowLevelConcrete.BePushed(dungeonMaster, actorAhead, dungeonMaster.CurrentActor.IsFacingRight());
                 }
             }
         }
         Object.FindFirstObjectByType<AudioMaster>().PlaySound("push");
-        yield return LowLevelConcrete.Pause;
+        yield return GlobalLowLevelConcrete.Pause;
         ParticlePlayer.StopPush(dungeonMaster.CurrentActor);
     }
 }
