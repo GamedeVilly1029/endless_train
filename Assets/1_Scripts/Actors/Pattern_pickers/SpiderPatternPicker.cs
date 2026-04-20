@@ -7,9 +7,10 @@ public class SpiderPatternPicker : BasePatternPicker
     public Spider SpiderInstance;
     public DungeonMaster DungeonMasterInst;
 
-    public List<IAction> approach;
-    public List<IAction> rotate;
-    public List<IAction> sneakyLeap;
+    private List<IAction> _approach;
+    private List<IAction> _rotate;
+    private List<IAction> _sneakyLeap;
+    private List<IAction> _stunningShout;
 
     public override void FillActionRowOrBelt()
     {
@@ -21,21 +22,30 @@ public class SpiderPatternPicker : BasePatternPicker
 
         if (!PlayerAhead(DungeonMasterInst, DungeonMasterInst.Player, SpiderInstance))
         {
-            SpiderInstance.ActionRowInst.Actions = CopyActionSet(rotate, SpiderInstance.ActionRowInst.Panel);
+            SpiderInstance.ActionRowInst.Actions = CopyActionSet(_rotate, SpiderInstance.ActionRowInst.Panel);
             return;
         }
 
         if (!PlayerInRange(DungeonMasterInst, DungeonMasterInst.Player, SpiderInstance, 2))
         {
-            SpiderInstance.ActionRowInst.Actions = CopyActionSet(approach, SpiderInstance.ActionRowInst.Panel);
+            SpiderInstance.ActionRowInst.Actions = CopyActionSet(_approach, SpiderInstance.ActionRowInst.Panel);
             return;
         }
 
         if (HPmoreThan30Percent(SpiderInstance.MaxHP, SpiderInstance.CurrentHP, 30))
         {
+            int randomInt = UnityEngine.Random.Range(1, 4);
+            if (randomInt == 1)
+            {
+                SpiderInstance.ActionRowInst.Actions = CopyActionSet(_sneakyLeap, SpiderInstance.ActionRowInst.Panel);
+                return;
+            }
+            else
+            {
+                SpiderInstance.ActionRowInst.Actions = CopyActionSet(_stunningShout, SpiderInstance.ActionRowInst.Panel);
+                return;
+            }
             
-            SpiderInstance.ActionRowInst.Actions = CopyActionSet(sneakyLeap, SpiderInstance.ActionRowInst.Panel);
-            return;
         }
 
         Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
@@ -45,9 +55,10 @@ public class SpiderPatternPicker : BasePatternPicker
 
     public override void InitializeActionPrototypes()
     {
-        approach = InitializeApproach();
-        rotate = InitializeRotate();
-        sneakyLeap = InitializeSneakyLeap();
+        _approach = InitializeApproach();
+        _rotate = InitializeRotate();
+        _sneakyLeap = InitializeSneakyLeap();
+        _stunningShout = InitializeStunningShout();
     }
 
     private List<IAction> InitializeApproach()
@@ -91,6 +102,17 @@ public class SpiderPatternPicker : BasePatternPicker
         IAction moveBack = new MoveOneTileBackwards();
         moveBack.InitializeAction(SpiderInstance, DungeonMasterInst);
         actions.Add(moveBack);
+
+        return actions;
+    }
+
+    private List<IAction> InitializeStunningShout()
+    {
+        List<IAction> actions = new();
+
+        IAction stunFirstNextTurn = new StunFirstPlayerActionNextTurn();
+        stunFirstNextTurn.InitializeAction(SpiderInstance, DungeonMasterInst);
+        actions.Add(stunFirstNextTurn);
 
         return actions;
     }

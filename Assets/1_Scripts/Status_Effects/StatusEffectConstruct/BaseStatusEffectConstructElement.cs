@@ -15,6 +15,7 @@ public class BaseStatusEffectConstructElement : IStatusEffectConstructElement
 
     public IEnumerator ExecuteStatusConcrete(DungeonMaster dungeonMaster)
     {
+        Debug.Log($"{StatusConcrete} is going to be executed");
         yield return StatusConcrete(dungeonMaster, this);
     }
 }

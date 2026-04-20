@@ -6,11 +6,15 @@ public class StunFirstActionEffect : IStatusEffect
 {
     public List<IStatusEffectConstructElement> StatusConstruct{get;set;}
     public bool DestroyAfterApplication{get;set;}
+
+    private IAction _stunned;
     public void InitializeStatusEffect(DungeonMaster dungeonMaster)
     {
         StatusConstruct = new();
+        _stunned = new BeStunned();
+        _stunned.InitializeAction(dungeonMaster.Player, dungeonMaster);
 
-        ValueStatusEffectConstructElement elem1 = new(StatusEffectConcrete.IncreaseDamageOfFirstAttackConcrete, 2, dungeonMaster.Player);
+        ActionAssignmentStatusConstructElement elem1 = new(StatusEffectConcrete.StunFirstPlayerAction, _stunned, dungeonMaster.Player);
         StatusConstruct.Add(elem1);
 
         DestroyAfterApplication = true;
@@ -26,6 +30,6 @@ public class StunFirstActionEffect : IStatusEffect
 
     public void SelfDestroy(DungeonMaster dungeonMaster)
     {
-        dungeonMaster.CurrentActor.StatusEffectsDuringTurn.Remove(this);
+        dungeonMaster.CurrentActor.StatusEffectsBeforeTurn.Remove(this);
     }
 }

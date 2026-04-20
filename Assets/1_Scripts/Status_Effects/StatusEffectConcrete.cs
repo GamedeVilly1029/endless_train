@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public static class StatusEffectConcrete
 {
@@ -19,5 +18,25 @@ public static class StatusEffectConcrete
     {
         ValueStatusEffectConstructElement casted = element as ValueStatusEffectConstructElement;
         yield return element.Actor.SubtractDamageFromHP(casted.StatusConcreteValue);
+    }
+
+    public static IEnumerator StunFirstPlayerAction(DungeonMaster dungeonMaster, IStatusEffectConstructElement element)
+    {
+        yield return GlobalLowLevelConcrete.Pause;
+
+        ActionAssignmentStatusConstructElement casted = element as ActionAssignmentStatusConstructElement;
+        if (dungeonMaster.Player.ActionRowInst.Actions.Count > 0)
+        {
+            ActionManipulationMethods.RemoveFromActionRowAndShrinkIt(dungeonMaster.Player.ActionRowInst.Actions[0]);
+            dungeonMaster.Player.ActionRowInst.Actions.RemoveAt(0);
+        }
+
+        IAction createdAction = casted.ActionToAssign.CloneAndInstantiateUI(dungeonMaster.Player.ActionRowInst.Panel, casted.ActionToAssign);
+        createdAction.UIRepresentation.transform.SetSiblingIndex(0);
+        dungeonMaster.Player.ActionRowInst.Actions.Insert(0, createdAction);
+
+        Debug.Log("StunFirstPlayerAction status effect was executed");
+
+        yield return GlobalLowLevelConcrete.Pause;
     }
 }

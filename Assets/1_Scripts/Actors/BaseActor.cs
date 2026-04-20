@@ -116,4 +116,12 @@ public class BaseActor : MonoBehaviour, IActor
         PositionCellIndexHistory = new();
         PositionCellIndexHistory.Push(PositionCellIndex);
     }
+
+    public void RunBeforeTurnStatuses()
+    {
+        foreach (IStatusEffect status in StatusEffectsBeforeTurn)
+        {
+            status.ApplyStatusEffect(DungeonMasterInstance);
+        }
+    }
 }

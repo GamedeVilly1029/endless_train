@@ -37,8 +37,19 @@ public static class SkillConcrete
 
     public static IEnumerator BeStunned(DungeonMaster dungeonMaster, IConstructElement element)
     {
+        yield return GlobalLowLevelConcrete.Pause;
         Debug.Log("Stunned!");
         yield return GlobalLowLevelConcrete.Pause;
-        yield return new WaitForSeconds(1f);
+    }
+
+    public static IEnumerator StunFirstPlayerActionNextTurnConcrete(DungeonMaster dungeonMaster, IConstructElement element)
+    {
+        IStatusEffect stunFirstAction = new StunFirstActionEffect();
+        stunFirstAction.InitializeStatusEffect(dungeonMaster);
+        dungeonMaster.Player.StatusEffectsBeforeTurn.Add(stunFirstAction);
+
+        Debug.Log("StunFirstPlayerActionNextTurnConcrete is executed");
+
+        yield return GlobalLowLevelConcrete.Pause;
     }
 }

@@ -19,6 +19,7 @@ public interface IActor
     public void Initialize();
     void TryToDie(int HP);
     void AddActionToFightHistory();
+    void RunBeforeTurnStatuses();
     IEnumerator RunBeforeDamageStatuses();
     IEnumerator SubtractDamageFromHP(int damageToTake);
     bool IsFacingRight();

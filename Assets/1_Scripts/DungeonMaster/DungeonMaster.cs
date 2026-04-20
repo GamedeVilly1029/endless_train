@@ -39,6 +39,7 @@ public class DungeonMaster : MonoBehaviour
         foreach (IActor actor in AllActors)
         {
             actor.InitializeCellIndexHistories();
+            actor.RunBeforeDamageStatuses();
         }
         _noActionsLeft = false;
     }
