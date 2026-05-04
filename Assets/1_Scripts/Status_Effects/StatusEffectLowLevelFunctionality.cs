@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 public static class StatusEffectLowLevelFunctionality
 {
-    public static List<IAction> ExtractCurrentActorActions(DungeonMaster dungeonMaster)
+    public static List<IAction> ExtractActorActions(IActor actor)
     {
         List<IAction> actions = new();
-        foreach (IAction action in dungeonMaster.CurrentActor.ActionRowInst.Actions)
+        foreach (IAction action in actor.ActionRowInst.Actions)
         {
             actions.Add(action);
         }
         return actions;
     }
 
-    public static ValueConstructElement ReturnAttackConcrete(List<IAction> actions)
+    public static ValueConcrete ReturnAttackConcrete(List<IAction> actions)
     {
         foreach (IAction action in actions)
         {
-            foreach (ValueConstructElement element in action.ActionConstruct)
+            foreach (BaseConcrete element in action.ActionConstruct)
             {
-                if (element.ConcreteTag == ActionConcreteTag.Attack)
+                if (element is ValueConcrete && element.Tag == ActionConcreteTag.Attack)
                 {
-                    return element;
+                    return element as ValueConcrete;
                 }
             }
         }

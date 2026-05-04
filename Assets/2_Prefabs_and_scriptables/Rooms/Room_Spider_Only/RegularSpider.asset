@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5e849035eb35d8f2ad9bcaa18593479, type: 3}
+  m_Name: RegularSpider
+  m_EditorClassIdentifier: Assembly-CSharp::EnemeyInstantiationInfo
+  ActorPrefab: {fileID: 7505665625940839799, guid: 33ecafce69c7c2f71ab09cb5f7ae6acc, type: 3}
+  CellIndex: 9
+  HP: 25
+  RotationAngle: -180

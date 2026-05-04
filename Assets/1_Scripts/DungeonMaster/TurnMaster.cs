@@ -4,7 +4,8 @@ using UnityEngine.Events;
 
 public class TurnMaster : MonoBehaviour
 {
-    [SerializeField] private DungeonMaster _dungeonMaster;
+    [SerializeField] private TurnProcessor _turnProcessor;
+    [SerializeField] private LevelMaster _levelMaster;
     [SerializeField] private ActionMaster _actionMaster;
     public UnityEvent OnEndTurn = new();
     public UnityEvent OnStartTurn = new();
@@ -26,17 +27,17 @@ public class TurnMaster : MonoBehaviour
     {
         TurnNumber += 1;
 
-        foreach (IActor actor in _dungeonMaster.AllActors)
+        foreach (IActor actor in _levelMaster.AllActors)
         {
             actor.PatternPicker.FillActionRowOrBelt();
         }
 
-        _dungeonMaster.Player.ActionInRowCount = 0;
+        _levelMaster.Player.ActionInRowCount = 0;
     }
 
     private IEnumerator EndTurn()
     {
-        yield return _dungeonMaster.StartCoroutine(_dungeonMaster.IterateThroughActionRow());
+        yield return _turnProcessor.StartCoroutine(_turnProcessor.IterateThroughActionRow());
         StartTurn();
     }
 }

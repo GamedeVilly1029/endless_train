@@ -20,23 +20,19 @@ public class HeavyWalk : BaseAction
 
     private void InitializeConstruct()
     {
-        // Here, what to do.
-        ActionConstruct = new();
-        ValueConstructElement elem1 = new(this, null, AttackConcrete.StrikeConcrete, ActionConcreteTag.Attack, 4);
-        ActionConstruct.Add(elem1);
-
-        BaseConstructElement elem2 = new(this, null, PushConcrete.Push, ActionConcreteTag.Push);
-        ActionConstruct.Add(elem2);
-        
-        ValueConstructElement elem3 = new(this, null, MovementConcrete.WalkXTilesForward, ActionConcreteTag.Move, 1);
-        ActionConstruct.Add(elem3);
+        ActionConstruct = new()
+        {
+            new StrikeConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Attack, 5),
+            new PushConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Push),
+            new StepXTilesForwardConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Move, 1, Actor)
+        };
     }
 
     public override IAction CreateClone(Transform transform)
     {
         HeavyWalk actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };

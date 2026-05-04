@@ -3,12 +3,12 @@ using UnityEngine.EventSystems;
 
 public class PlayerTurnUIController : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private TurnMaster turnMaster;
+    [SerializeField] private TurnMaster _turnMaster;
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.pointerCurrentRaycast.gameObject.CompareTag("StartTurnButton"))
         {
-            turnMaster.OnEndTurn.Invoke();
+            _turnMaster.OnEndTurn.Invoke();
         }
     }
 }

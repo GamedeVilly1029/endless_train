@@ -21,27 +21,37 @@ public class KneeDash : BaseAction
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new();
-        List<Func<DungeonMaster, IActor, bool>> conditions = new()
+        ActionConstruct = new()
         {
-            HistoryBasedCondition.PositionIndexChangedInPreviousAction
-        };
-        ValueConstructElement elem1 = new(this, conditions, AttackConcrete.StrikeConcrete, ActionConcreteTag.Attack, 10);
-        ActionConstruct.Add(elem1);
+            new StrikeConcrete(TurnProcessorInstance,
+            LevelMasterInstance,
+            this,
+            new List<IConditionCommand>()
+            {
+                new PositionIndexChangedInPreviousActionCondition(TurnProcessorInstance, LevelMasterInstance, Actor)
+            },
+            ActionConcreteTag.Attack,
+            5
+            ),
 
-        conditions = new()
-        {
-            HistoryBasedCondition.ConcreteHistoryIsEmpty
+            new StrikeConcrete(TurnProcessorInstance,
+            LevelMasterInstance,
+            this,
+            new List<IConditionCommand>()
+            {
+                new ConcreteHistoryIsEmptyCondition(TurnProcessorInstance, LevelMasterInstance)
+            },
+            ActionConcreteTag.Attack,
+            5
+            )
         };
-        ValueConstructElement elem2 = new(this, conditions, AttackConcrete.StrikeConcrete, ActionConcreteTag.Attack, 5);
-        ActionConstruct.Add(elem2);
     }
 
     public override IAction CreateClone(Transform transform)
     {
         KneeDash actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };

@@ -22,7 +22,7 @@ public class Rotate : BaseAction
     {
         ActionConstruct = new()
         {
-            new BaseConstructElement(this, null, MovementConcrete.RotateConcrete, ActionConcreteTag.Move)
+            new RotateActorConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Move, Actor)
         };
     }
 
@@ -30,7 +30,7 @@ public class Rotate : BaseAction
     {
         Rotate actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

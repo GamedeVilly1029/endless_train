@@ -21,17 +21,17 @@ public class Dash: BaseAction
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new();
-        ValueConstructElement charge = new(this, null, MovementConcrete.DashConcrete, ActionConcreteTag.Attack, 4);
-
-        ActionConstruct.Add(charge);
+        ActionConstruct = new()
+        {
+            new DashConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Move, 4, Actor)
+        };
     }
 
     public override IAction CreateClone(Transform transform)
     {
         Dash actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };

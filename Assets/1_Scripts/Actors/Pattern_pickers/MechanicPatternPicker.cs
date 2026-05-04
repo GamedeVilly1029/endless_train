@@ -5,7 +5,6 @@ using UnityEngine;
 public class MechanicPatternPicker : BasePatternPicker
 {
     public Mechanic MechanicInstance;
-    public DungeonMaster DungeonMasterInst;
 
     private List<IAction> _approach;
     private List<IAction> _rotate;
@@ -21,28 +20,49 @@ public class MechanicPatternPicker : BasePatternPicker
     {
         MechanicInstance.ActionRowInst.Actions.Clear();
 
-        Func<float, float, float, bool> HPmoreThan30Percent = HPBasedCondition.CurrentHPIsMoreThanXPercent;
-        Func<DungeonMaster, IActor, IActor, int, bool> PlayerKeepsDistance = CellBasedCondition.ActorInRangeOfXCellsFromOtherActor;
-        Func<DungeonMaster, IActor, IActor, bool> PlayerAhead = CellBasedCondition.ActorIsOnCellsAhead;
+        IConditionCommand playerOnCellsAhead = new ActorIsOnCellsAheadCondition(_turnProcessor, 
+        _levelMaster, 
+        _levelMaster.Player, 
+        MechanicInstance);
 
-        Func<DungeonMaster, IActor, int, int, bool> ActorInTheCarriageLeft = CellBasedCondition.ActorInRangeOfCells;
+        IConditionCommand playerKeepsDistance = new ActorInRangeOfXCellsFromOtherActorCondition(_turnProcessor, 
+        _levelMaster, 
+        _levelMaster.Player, 
+        MechanicInstance, 
+        2);
 
-        if (!PlayerAhead(DungeonMasterInst, DungeonMasterInst.Player, MechanicInstance))
+        IConditionCommand HPMoreThan30Percent = new CurrentHPIsMoreThanXPercentCondition(_turnProcessor, 
+        _levelMaster, 
+        MechanicInstance.MaxHP,
+        MechanicInstance.CurrentHP,
+        30);
+
+        IConditionCommand playerInTheCarriageLeft = new ActorInRangeOfCellsCondition(_turnProcessor, _levelMaster, _levelMaster.Player, 0, 3);
+
+        IConditionCommand mechanicInTheCarriageLeft = new ActorInRangeOfCellsCondition(_turnProcessor, _levelMaster, MechanicInstance, 0, 3);
+
+        // Func<float, float, float, bool> HPmoreThan30Percent = HPBasedCondition.CurrentHPIsMoreThanXPercent;
+        // Func<TurnProcessor, IActor, IActor, int, bool> PlayerKeepsDistance = CellBasedCondition.ActorInRangeOfXCellsFromOtherActor;
+        // Func<TurnProcessor, IActor, IActor, bool> PlayerAhead = CellBasedCondition.ActorIsOnCellsAhead;
+
+        // Func<TurnProcessor, IActor, int, int, bool> ActorInTheCarriageLeft = CellBasedCondition.ActorInRangeOfCells;
+
+        // if (!PlayerAhead(TurnProcessorInst, LevelMasterInst.Player, MechanicInstance)){}
+        if (!playerOnCellsAhead.Execute())
         {
             MechanicInstance.ActionRowInst.Actions = CopyActionSet(_rotate, MechanicInstance.ActionRowInst.Panel);
             return;
         }
 
-        if (!PlayerKeepsDistance(DungeonMasterInst, DungeonMasterInst.Player, MechanicInstance, 2))
+        // if (!PlayerKeepsDistance(TurnProcessorInst, LevelMasterInst.Player, MechanicInstance, 2)){}
+        if (!playerKeepsDistance.Execute())
         {
             MechanicInstance.ActionRowInst.Actions = CopyActionSet(_approach, MechanicInstance.ActionRowInst.Panel);
             return;
         }
 
         if (
-        ActorInTheCarriageLeft(DungeonMasterInst, DungeonMasterInst.Player, 0, 3) && 
-        ActorInTheCarriageLeft(DungeonMasterInst, MechanicInstance, 0, 3) &&
-        _playerWasInCarriageLeft < 2
+        playerInTheCarriageLeft.Execute() && mechanicInTheCarriageLeft.Execute() && _playerWasInCarriageLeft < 2
         )
         {
             MechanicInstance.ActionRowInst.Actions = CopyActionSet(_retreat, MechanicInstance.ActionRowInst.Panel);
@@ -50,7 +70,7 @@ public class MechanicPatternPicker : BasePatternPicker
             return;
         }
 
-        if (HPmoreThan30Percent(MechanicInstance.MaxHP, MechanicInstance.CurrentHP, 30))
+        if (HPMoreThan30Percent.Execute())
         {
             int randomInt = UnityEngine.Random.Range(1, 4);
             if (randomInt == 1)
@@ -96,11 +116,11 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction move = new MoveOneTileForward();
-        move.InitializeAction(MechanicInstance, DungeonMasterInst);
+        move.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(move);
 
         IAction move1 = new MoveOneTileForward();
-        move1.InitializeAction(MechanicInstance, DungeonMasterInst);
+        move1.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(move1);
 
         return actions;
@@ -112,7 +132,7 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction rotate = new Rotate();
-        rotate.InitializeAction(MechanicInstance, DungeonMasterInst);
+        rotate.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(rotate);
 
         return actions;
@@ -123,7 +143,7 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction heavyWalk = new HeavyWalk();
-        heavyWalk.InitializeAction(MechanicInstance, DungeonMasterInst);
+        heavyWalk.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(heavyWalk);
 
         return actions;
@@ -134,11 +154,11 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction roar = new AngryRoar();
-        roar.InitializeAction(MechanicInstance, DungeonMasterInst);
+        roar.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(roar);
 
         IAction strike = new Strike();
-        strike.InitializeAction(MechanicInstance, DungeonMasterInst);
+        strike.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(strike);
 
         return actions;
@@ -149,15 +169,15 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
         
         IAction heavyWalk = new HeavyWalk();
-        heavyWalk.InitializeAction(MechanicInstance, DungeonMasterInst);
+        heavyWalk.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(heavyWalk);
 
         IAction heavyWalk1 = new HeavyWalk();
-        heavyWalk1.InitializeAction(MechanicInstance, DungeonMasterInst);
+        heavyWalk1.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(heavyWalk1);
 
         IAction strike = new Strike();
-        strike.InitializeAction(MechanicInstance, DungeonMasterInst);
+        strike.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(strike);
 
         return actions;
@@ -169,7 +189,7 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction tantrum = new Tantrum();
-        tantrum.InitializeAction(MechanicInstance, DungeonMasterInst);
+        tantrum.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(tantrum);
 
         return actions;
@@ -180,11 +200,11 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction moveBack = new MoveOneTileBackwards();
-        moveBack.InitializeAction(MechanicInstance, DungeonMasterInst);
+        moveBack.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(moveBack);
 
         IAction moveBack1 = new MoveOneTileBackwards();
-        moveBack1.InitializeAction(MechanicInstance, DungeonMasterInst);
+        moveBack1.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
         actions.Add(moveBack1);
 
         return actions;

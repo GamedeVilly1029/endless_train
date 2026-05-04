@@ -20,7 +20,7 @@ public class Push : BaseAction
     {
         ActionConstruct = new()
         {
-            new BaseConstructElement(this, null, PushConcrete.Push, ActionConcreteTag.Push)
+            new PushConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Push)
         };
     }
 
@@ -28,7 +28,7 @@ public class Push : BaseAction
     {
         Push actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

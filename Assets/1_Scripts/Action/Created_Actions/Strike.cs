@@ -21,7 +21,7 @@ public class Strike : BaseAction
     {
         ActionConstruct = new()
         {
-            new ValueConstructElement(this, null, AttackConcrete.StrikeConcrete, ActionConcreteTag.Attack, 5)
+            new StrikeConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Attack, 5)
         };
     }
 
@@ -29,7 +29,7 @@ public class Strike : BaseAction
     {
         Strike actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

@@ -20,16 +20,17 @@ public class StunFirstPlayerActionNextTurn: BaseAction
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new();
-        BaseConstructElement stunPlayerNextTurn = new(this, null, SkillConcrete.StunFirstPlayerActionNextTurnConcrete, ActionConcreteTag.Move);
-        ActionConstruct.Add(stunPlayerNextTurn);
+        ActionConstruct = new()
+        {
+            new StunFirstPlayerActionNextTurnConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Skill)
+        };
     }
 
     public override IAction CreateClone(Transform transform)
     {
         MoveOneTileForward actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

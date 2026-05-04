@@ -5,7 +5,6 @@ using UnityEngine;
 public class SpiderPatternPicker : BasePatternPicker
 {
     public Spider SpiderInstance;
-    public DungeonMaster DungeonMasterInst;
 
     private List<IAction> _approach;
     private List<IAction> _rotate;
@@ -16,23 +15,33 @@ public class SpiderPatternPicker : BasePatternPicker
     {
         SpiderInstance.ActionRowInst.Actions.Clear();
 
-        Func<float, float, float, bool> HPmoreThan30Percent = HPBasedCondition.CurrentHPIsMoreThanXPercent;
-        Func<DungeonMaster, IActor, IActor, int, bool> PlayerInRange = CellBasedCondition.ActorInRangeOfXCellsFromOtherActor;
-        Func<DungeonMaster, IActor, IActor, bool> PlayerAhead = CellBasedCondition.ActorIsOnCellsAhead;
+        Debug.Log($"_turnProcessor is null: {_turnProcessor == null}");
+        Debug.Log($"_levelMaster is null: {_levelMaster == null}");
 
-        if (!PlayerAhead(DungeonMasterInst, DungeonMasterInst.Player, SpiderInstance))
+        if (_levelMaster != null)
+        {
+            Debug.Log($"_levelMaster.Player is null: {_levelMaster.Player == null}");
+        }
+        else
+        {
+            Debug.Log("_levelMaster is null, cannot check Player");
+        }
+
+        Debug.Log($"SpiderInstance is null: {SpiderInstance == null}");
+
+        if (!new ActorIsOnCellsAheadCondition(_turnProcessor, _levelMaster, _levelMaster.Player, SpiderInstance).Execute())
         {
             SpiderInstance.ActionRowInst.Actions = CopyActionSet(_rotate, SpiderInstance.ActionRowInst.Panel);
             return;
         }
 
-        if (!PlayerInRange(DungeonMasterInst, DungeonMasterInst.Player, SpiderInstance, 2))
+        if (!new ActorInRangeOfXCellsFromOtherActorCondition(_turnProcessor, _levelMaster, _levelMaster.Player, SpiderInstance, 2).Execute())
         {
             SpiderInstance.ActionRowInst.Actions = CopyActionSet(_approach, SpiderInstance.ActionRowInst.Panel);
             return;
         }
 
-        if (HPmoreThan30Percent(SpiderInstance.MaxHP, SpiderInstance.CurrentHP, 30))
+        if (new CurrentHPIsMoreThanXPercentCondition(_turnProcessor, _levelMaster, SpiderInstance.MaxHP, SpiderInstance.CurrentHP, 30f).Execute())
         {
             int randomInt = UnityEngine.Random.Range(1, 4);
             if (randomInt == 1)
@@ -66,11 +75,11 @@ public class SpiderPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction move = new MoveOneTileForward();
-        move.InitializeAction(SpiderInstance, DungeonMasterInst);
+        move.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
         actions.Add(move);
 
         IAction move1 = new MoveOneTileForward();
-        move1.InitializeAction(SpiderInstance, DungeonMasterInst);
+        move1.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
         actions.Add(move1);
 
         return actions;
@@ -82,7 +91,7 @@ public class SpiderPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction rotate = new Rotate();
-        rotate.InitializeAction(SpiderInstance, DungeonMasterInst);
+        rotate.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
         actions.Add(rotate);
 
         return actions;
@@ -92,15 +101,15 @@ public class SpiderPatternPicker : BasePatternPicker
     {
         List<IAction> actions = new();
         IAction dash = new Dash();
-        dash.InitializeAction(SpiderInstance, DungeonMasterInst);
+        dash.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
         actions.Add(dash);
 
         IAction strike = new Strike();
-        strike.InitializeAction(SpiderInstance, DungeonMasterInst);
+        strike.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
         actions.Add(strike);
 
         IAction moveBack = new MoveOneTileBackwards();
-        moveBack.InitializeAction(SpiderInstance, DungeonMasterInst);
+        moveBack.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
         actions.Add(moveBack);
 
         return actions;
@@ -111,7 +120,7 @@ public class SpiderPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction stunFirstNextTurn = new StunFirstPlayerActionNextTurn();
-        stunFirstNextTurn.InitializeAction(SpiderInstance, DungeonMasterInst);
+        stunFirstNextTurn.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
         actions.Add(stunFirstNextTurn);
 
         return actions;

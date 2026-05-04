@@ -4,10 +4,14 @@ using UnityEngine;
 
 public interface IStatusEffect
 {
-    List<IStatusEffectConstructElement> StatusConstruct{get;set;}
+    TurnProcessor TurnProcessorInstance{get;set;}
+    LevelMaster LevelMasterInstance{get;set;}
+    IActor Actor{get;set;}
+    List<IStatusConcrete> StatusConstruct{get;set;}
     bool DestroyAfterApplication{get;set;}
 
-    void InitializeStatusEffect(DungeonMaster dungeonMaster);
-    IEnumerator ApplyStatusEffect(DungeonMaster dungeonMaster);
-    void SelfDestroy(DungeonMaster dungeonMaster);
+    void ChildInitializeStatusEffect(IActor actor);
+    void InitializeStatusEffect(TurnProcessor turnProcessor,LevelMaster levelMaster, IActor actor);
+    IEnumerator ApplyStatusEffect();
+    void SelfDestroy(List<IStatusEffect> listToRemoveFrom);
 }

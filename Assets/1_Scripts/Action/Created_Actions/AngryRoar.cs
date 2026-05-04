@@ -21,7 +21,7 @@ public class AngryRoar: BaseAction
     {
         ActionConstruct = new()
         {
-            new ValueConstructElement(this, null, SkillConcrete.IncreaseDamageOfNextAttack, ActionConcreteTag.Skill, 5)
+            new IncreaseDamageOfNextAttackConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Skill)
         };
     }
 
@@ -29,7 +29,7 @@ public class AngryRoar: BaseAction
     {
         AngryRoar actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

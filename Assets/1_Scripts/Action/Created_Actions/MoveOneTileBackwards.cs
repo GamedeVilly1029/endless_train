@@ -23,14 +23,14 @@ public class MoveOneTileBackwards : BaseAction
     {
         ActionConstruct = new()
         {
-            new ValueConstructElement(this, null, MovementConcrete.WalkXTilesBackwards, ActionConcreteTag.Move, 1)
+            new StepOneCellBackwardsConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Move, Actor)
         };
     }
     public override IAction CreateClone(Transform transform)
     {
         MoveOneTileForward actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

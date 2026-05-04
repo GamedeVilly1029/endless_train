@@ -16,23 +16,24 @@ public class StunPlayer : BaseAction
             Debug.LogError("Resources.Load can't find UIRepresentation Asset");
         }
 
-        _beStunned.InitializeAction(DungeonMasterInstance.Player, DungeonMasterInstance);
+        _beStunned.InitializeAction(LevelMasterInstance.Player, TurnProcessorInstance, LevelMasterInstance);
 
         InitializeConstruct();
     }
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new();
-        ActionAssignmentConstructElement stunPlayer = new(this, null, ActionAdditionConcrete.ChangeNextActionOfPlayer, ActionConcreteTag.Move, _beStunned);
-        ActionConstruct.Add(stunPlayer);
+        ActionConstruct = new()
+        {
+            new ChangeNextActionOfPlayerConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Skill, _beStunned)
+        };
     }
 
     public override IAction CreateClone(Transform transform)
     {
         MoveOneTileForward actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

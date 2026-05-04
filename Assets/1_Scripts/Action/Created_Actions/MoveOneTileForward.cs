@@ -19,16 +19,17 @@ public class MoveOneTileForward : BaseAction
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new();
-        ValueConstructElement moveForward = new(this, null, MovementConcrete.WalkXTilesForward, ActionConcreteTag.Move, 1);
-        ActionConstruct.Add(moveForward);
+        ActionConstruct = new()
+        {
+            new StepOneCellForwardConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Move, Actor)
+        };
     }
 
     public override IAction CreateClone(Transform transform)
     {
         MoveOneTileForward actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

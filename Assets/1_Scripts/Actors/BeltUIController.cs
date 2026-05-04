@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 public class BeltUIController : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private PlayerActor _player;
-    [SerializeField] private DungeonMaster _dungeonMaster;
+    [SerializeField] private TurnProcessor _turnProcessor;
+    [SerializeField] private LevelMaster _levelMaster;
     [SerializeField] private ActionRow _playerActionRow;
 
     private GameObject _objectWasClicked;
@@ -43,7 +44,7 @@ public class BeltUIController : MonoBehaviour, IPointerDownHandler
     {
         _playerActionRow.Actions.Add(_player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
         _objectWasClicked.transform.SetParent(_playerActionRow.Panel);
-        _dungeonMaster.Player.Belt.Remove(_player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
+        _levelMaster.Player.Belt.Remove(_player.Belt.FirstOrDefault(x => x.UIRepresentation == _objectWasClicked));
     }
 
     private void FromRowToBelt()

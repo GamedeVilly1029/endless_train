@@ -8,18 +8,15 @@ public class PlayerActor : BaseActor
     public int ActionInRowLimit = 3;
     public int ActionInRowCount = 0;
 
-    public override void Initialize()
+    public override void InitializeChild(int cellIndex, float YRotation, int HP)
     {
-        TransformReference.position = DungeonMasterInstance.Cells[5].CellPosition;
-        DungeonMasterInstance.Cells[5].EnityOccupyingThisCell = this;
-        PositionCellIndex = 5;
-        StatusEffectsDuringTurn = new();
-        StatusEffectsBeforeTurn = new();
-        StatusEffectsBeforeTakingDamage = new();
-        MaxHP = 99;
+        TransformReference.position = LevelMasterInst.Cells[cellIndex].CellPosition;
+        LevelMasterInst.Cells[cellIndex].EnityOccupyingThisCell = this;
+        PositionCellIndex = cellIndex;
+        MaxHP = HP;
         CurrentHP = MaxHP;
-        TransformReference.rotation = Quaternion.Euler(0f, 0f, 0f);
-    }
+        TransformReference.rotation = Quaternion.Euler(0f, YRotation, 0f);
+    } 
 
 
     private void Update()

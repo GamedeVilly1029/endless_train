@@ -5,29 +5,26 @@ using UnityEngine;
 public class BaseAction: IAction
 {
     public IAction PrototypeAction{get;set;} = null;
-    public DungeonMaster DungeonMasterInstance{get;set;}
+    public TurnProcessor TurnProcessorInstance{get;set;}
+    public LevelMaster LevelMasterInstance{get;set;}
     public IActor Actor {get;set;}
     public GameObject UIRepresentation {get;set;}
-    public List<IConstructElement> ActionConstruct {get;set;}
-    public List<System.Func<DungeonMaster, IConstructElement, IEnumerator>> TurnTemporarySuccessfulConcreteHistory {get;set;}
+    public List<IConcrete> ActionConstruct {get;set;}
+    public List<IConcrete> TurnTemporarySuccessfulConcreteHistory {get;set;}
     public virtual int CooldownMax{get;set;}
     public virtual int Cooldown{get;set;}
 
-    public void InitializeAction(IActor actor, DungeonMaster dungeonMaster)
+    public void InitializeAction(IActor actor, TurnProcessor turnProcessor, LevelMaster levelMaster)
     {
-        InitializeBaseAction(actor, dungeonMaster);
+        TurnProcessorInstance = turnProcessor;
+        Actor = actor;
+        LevelMasterInstance = levelMaster;
         InitializeChildAction();
     }
 
     public virtual void InitializeChildAction()
     {
         Debug.LogError("Base class placeholder is called - error"); 
-    }
-
-    private void InitializeBaseAction(IActor actor, DungeonMaster dungeonMaster)
-    {
-        DungeonMasterInstance = dungeonMaster;
-        Actor = actor;
     }
 
     public IAction CloneAndInstantiateUI(Transform transform, IAction prototypeAction)
@@ -53,32 +50,32 @@ public class BaseAction: IAction
         actionClone.PrototypeAction = prototype;
     }
 
-    public List<IConstructElement> CloneActionConstruct(IAction actionClone)
+    public List<IConcrete> CloneActionConstruct(IAction actionClone)
     {
-        List<IConstructElement> construct = new();
+        List<IConcrete> construct = new();
         foreach (var element in ActionConstruct)
         {
-            IConstructElement clonedElement = element.Clone(actionClone);
+            IConcrete clonedElement = element.Clone(actionClone);
             construct.Add(clonedElement);
         }
         return construct;
     }
 
-    public IEnumerator ExecuteAction(DungeonMaster dungeonMaster)
+    public IEnumerator ExecuteAction()
     {
         TurnTemporarySuccessfulConcreteHistory = new();
-        foreach (IConstructElement element in ActionConstruct)
+        foreach (IConcrete element in ActionConstruct)
         {
-            yield return element.Execute(DungeonMasterInstance);
+            yield return element.Execute();
         }
         Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);
         ActionManipulationMethods.RemoveFromActionRowAndShrinkIt(this);
-        SetCooldown(PrototypeAction.Actor);
+        SetCooldown();
     }
 
-    private void SetCooldown(IActor actor)
+    private void SetCooldown()
     {
-        if (actor is PlayerActor)
+        if (PrototypeAction.Actor is PlayerActor)
         {
             if (PrototypeAction != null)
             {
@@ -86,7 +83,7 @@ public class BaseAction: IAction
             }
             else
             {
-                Debug.Log("Can't set cooldown, no action reference");
+                Debug.LogError("Can't set cooldown, no action reference");
             }
         }
     }

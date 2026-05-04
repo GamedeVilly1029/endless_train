@@ -6,18 +6,19 @@ using System.Collections;
 public interface IAction
 {
     IAction PrototypeAction{get;set;}
-    DungeonMaster DungeonMasterInstance{get;set;}
+    TurnProcessor TurnProcessorInstance{get;set;}
+    LevelMaster LevelMasterInstance{get;set;}
     IActor Actor{get;set;}
     GameObject UIRepresentation{get;set;}
-    List<IConstructElement> ActionConstruct{get;set;}
-    List<Func<DungeonMaster, IConstructElement, IEnumerator>> TurnTemporarySuccessfulConcreteHistory{get;set;}
+    List<IConcrete> ActionConstruct{get;set;}
+    List<IConcrete> TurnTemporarySuccessfulConcreteHistory{get;set;}
     int CooldownMax{get;set;}
     int Cooldown{get;set;}
 
-    IEnumerator ExecuteAction(DungeonMaster dungeonMaster);
-    void InitializeAction(IActor actor, DungeonMaster dungeonMaster);
+    IEnumerator ExecuteAction();
+    void InitializeAction(IActor actor, TurnProcessor turnProcessor, LevelMaster levelMaster);
     IAction CloneAndInstantiateUI(Transform transform, IAction actionCloneReference);
     IAction CreateClone(Transform transform);
     void SetReferenceAction(IAction actionCloneReference, IAction actionClone);
-    List<IConstructElement> CloneActionConstruct(IAction actionClone);
+    List<IConcrete> CloneActionConstruct(IAction actionClone);
 }

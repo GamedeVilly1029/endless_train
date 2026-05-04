@@ -5,16 +5,16 @@ public static class GlobalLowLevelConcrete
 {
     public static WaitForSeconds Pause = new WaitForSeconds(0.5f);
 
-    public static IActor TryReturnActorAhead(DungeonMaster dungeonMaster, IConstructElement element)
+    public static IActor TryReturnActorAhead(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actor)
     {
-        IActor actor = dungeonMaster.CurrentActor;
-        if (CellBasedCondition.CellAheadExists(dungeonMaster, actor))
+        IConditionCommand cellAheadExists = new CellAheadExistsCondition(turnProcessor , levelMaster, actor);
+        if (cellAheadExists.Execute())
         {
             if (actor.IsFacingRight())
             {
-                if (dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell != null)
+                if (levelMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell != null)
                 {
-                    return dungeonMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell;
+                    return levelMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell;
                 }
                 else
                 {
@@ -23,9 +23,9 @@ public static class GlobalLowLevelConcrete
             }
             else
             {
-                if (dungeonMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell != null)
+                if (levelMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell != null)
                 {
-                    return dungeonMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell;
+                    return levelMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell;
                 }
                 else
                 {

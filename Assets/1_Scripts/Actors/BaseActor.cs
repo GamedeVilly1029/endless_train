@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class BaseActor : MonoBehaviour, IActor
 {
-    public DungeonMaster DungeonMasterInstance;
+    [HideInInspector] public TurnProcessor TurnProcessorInst;
+    [HideInInspector] public LevelMaster LevelMasterInst;
     public RectTransform ActionRowPanelInstance;
     public TextMeshPro HPBarText;
     public SpriteRenderer SpriteRend;
@@ -18,6 +19,7 @@ public class BaseActor : MonoBehaviour, IActor
     public int MaxHP{get;set;}
     public int CurrentHP{get;set;}
     public int PositionCellIndex {get;set;}
+    public bool IsDead {get;set;} = false;
     public Stack<int> PositionCellIndexHistory{get;set;}
     public List<IAction> FightBasedActionHistory{get;set;}
     public List<IStatusEffect> StatusEffectsBeforeTurn{get;set;}
@@ -26,11 +28,27 @@ public class BaseActor : MonoBehaviour, IActor
     Transform IActor.GraphicTransform {get {return GraphicTransformInstance;}set{}}
     public BasePatternPicker PatternPicker{get {return PatternPickerSetter;} set{}}
 
-    public virtual void Initialize()
+    public virtual void InitializeChild(int cellIndex, float YRotation, int HP)
     {
-        Debug.LogError("Base class Initialization was called - call concrete class initialization instead");
+        Debug.LogError("Base class child Initialization version was called - call concrete class initialization instead");
     }
 
+    private void BaseInitialize(TurnProcessor turnProcessor, LevelMaster levelMaster)
+    {
+        TurnProcessorInst = turnProcessor;
+        LevelMasterInst = levelMaster;
+
+        Debug.Log("Values of the turnProcessor and levelMaster of the BaseActor were assigned");
+
+        StatusEffectsDuringTurn = new();
+        StatusEffectsBeforeTurn = new();
+        StatusEffectsBeforeTakingDamage = new();
+    }
+    public void Initialize(int cellIndex, float YRotation, int HP, TurnProcessor turnProcessor, LevelMaster levelMaster)
+    {
+        BaseInitialize(turnProcessor, levelMaster);
+        InitializeChild(cellIndex, YRotation, HP);
+    }
 
     private void Update()
     {
@@ -42,9 +60,10 @@ public class BaseActor : MonoBehaviour, IActor
     {
         if (CurrentHP <= 0)
         {
-            DungeonMasterInstance.AllActors.Remove(this);
-            DungeonMasterInstance.Cells[PositionCellIndex].EnityOccupyingThisCell = null;
-            Destroy(gameObject);
+            IsDead = true;
+            ActionRowInst.Actions.Clear();
+            LevelMasterInst.Cells[PositionCellIndex].EnityOccupyingThisCell = null;
+            gameObject.SetActive(false);
         }
     }
 
@@ -54,12 +73,12 @@ public class BaseActor : MonoBehaviour, IActor
         {
             FightBasedActionHistory = new()
             {
-                DungeonMasterInstance.CurrentAction
+                TurnProcessorInst.CurrentAction
             };
         }
         else
         {
-            FightBasedActionHistory.Add(DungeonMasterInstance.CurrentAction);
+            FightBasedActionHistory.Add(TurnProcessorInst.CurrentAction);
         }
     }
 
@@ -67,7 +86,7 @@ public class BaseActor : MonoBehaviour, IActor
     {
         foreach (IStatusEffect statusEffect in StatusEffectsBeforeTakingDamage)
         {
-            yield return statusEffect.ApplyStatusEffect(DungeonMasterInstance);
+            yield return statusEffect.ApplyStatusEffect();
         }
     }
 
@@ -104,11 +123,11 @@ public class BaseActor : MonoBehaviour, IActor
             {
                 effectsToDestroy.Add(statusEffect);
             }
-            yield return statusEffect.ApplyStatusEffect(DungeonMasterInstance);
+            yield return statusEffect.ApplyStatusEffect();
         }
         foreach (IStatusEffect effect in effectsToDestroy)
         {
-            effect.SelfDestroy(DungeonMasterInstance);
+            effect.SelfDestroy(StatusEffectsDuringTurn);
         }
     }
 
@@ -117,11 +136,20 @@ public class BaseActor : MonoBehaviour, IActor
         PositionCellIndexHistory.Push(PositionCellIndex);
     }
 
-    public void RunBeforeTurnStatuses()
+    public IEnumerator RunBeforeTurnStatuses()
     {
-        foreach (IStatusEffect status in StatusEffectsBeforeTurn)
+        List<IStatusEffect> effectsToDestroy = new();
+        foreach (IStatusEffect statusEffect in StatusEffectsBeforeTurn)
         {
-            status.ApplyStatusEffect(DungeonMasterInstance);
+            if (statusEffect.DestroyAfterApplication)
+            {
+                effectsToDestroy.Add(statusEffect);
+            }
+            yield return statusEffect.ApplyStatusEffect();
+        }
+        foreach (IStatusEffect effect in effectsToDestroy)
+        {
+            effect.SelfDestroy(StatusEffectsBeforeTurn);
         }
     }
 }

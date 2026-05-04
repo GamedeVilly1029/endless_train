@@ -16,10 +16,12 @@ public interface IActor
     List<IStatusEffect> StatusEffectsBeforeTakingDamage{get;set;}
     List<IStatusEffect> StatusEffectsBeforeTurn{get;set;}
     BasePatternPicker PatternPicker {get;set;}
-    public void Initialize();
+    bool IsDead{get;set;}
+    void Initialize(int cellIndex, float YRotation, int HP, TurnProcessor turnProcessor, LevelMaster levelMaster);
+    void InitializeChild(int cellIndex, float YRotation, int HP);
     void TryToDie(int HP);
     void AddActionToFightHistory();
-    void RunBeforeTurnStatuses();
+    IEnumerator RunBeforeTurnStatuses();
     IEnumerator RunBeforeDamageStatuses();
     IEnumerator SubtractDamageFromHP(int damageToTake);
     bool IsFacingRight();

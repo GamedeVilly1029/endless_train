@@ -21,45 +21,38 @@ public class Tantrum : BaseAction
 
     private void InitializeConstruct()
     {
-        ActionConstruct = new();
-        List<Func<DungeonMaster, IActor, bool>> conditions = new()
+        List<IConditionCommand> conditions = new()
         {
-            HistoryBasedCondition.LastActionIsNotThisAction
+            new LastActionIsNotThisActionCondition(TurnProcessorInstance, LevelMasterInstance),
         };
 
-        BaseConstructElement removeVulnerable = new(this, conditions, SkillConcrete.RemoveTantrumVulnerability, ActionConcreteTag.Attack);
-        ActionConstruct.Add(removeVulnerable);
+        ActionConstruct = new();
+        RemoveTantrumVulnerabilityConcrete removeVuln = new(TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Skill);
+        ActionConstruct.Add(removeVuln);
 
-        ValueConstructElement strike = new(this, conditions, AttackConcrete.StrikeConcrete, ActionConcreteTag.Attack, 2);
+        StrikeConcrete strike = new(TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Attack, 5);
         ActionConstruct.Add(strike);
 
-        BaseConstructElement add1Vulnerability = new(this, conditions, SkillConcrete.AddTantrumVulnerability, ActionConcreteTag.Attack);
-        ActionConstruct.Add(add1Vulnerability);
-
-
-        conditions = new()
-        {
-            HistoryBasedCondition.ConcreteHistoryIsEmpty
-        };
-
-        ValueConstructElement tantrumStrike = new(this, conditions, AttackConcrete.TantrumStrike, ActionConcreteTag.Attack, 2);
-        ActionConstruct.Add(tantrumStrike);
-
+        AddTantrumVulnerabilityConcrete addVuln = new(TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Skill);
+        ActionConstruct.Add(addVuln);
 
         conditions = new()
         {
-            HistoryBasedCondition.ConcreteHistoryHasOnly1Concrete
+            new ConcreteHistoryIsEmptyCondition(TurnProcessorInstance, LevelMasterInstance)
         };
 
-        add1Vulnerability = new(this, conditions, SkillConcrete.AddTantrumVulnerability, ActionConcreteTag.Attack);
-        ActionConstruct.Add(add1Vulnerability);
+        TantrumStrikeConcrete tanStrike = new (TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Attack, 5);
+        ActionConstruct.Add(tanStrike);
+
+        AddTantrumVulnerabilityConcrete addVuln1 = new(TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Skill);
+        ActionConstruct.Add(addVuln1);
     }
 
     public override IAction CreateClone(Transform transform)
     {
         Tantrum actionClone = new()
         {
-            DungeonMasterInstance = DungeonMasterInstance,
+            TurnProcessorInstance = TurnProcessorInstance,
             Actor = Actor,
             UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };
