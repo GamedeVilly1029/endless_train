@@ -38,4 +38,9 @@ public class AddActionToPlayerRowStartConcrete : ActionAddConcrete
 
         yield return GlobalLowLevelConcrete.Pause;
     }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new AddActionToPlayerRowStartConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, ActionToAdd);
+    }
 }

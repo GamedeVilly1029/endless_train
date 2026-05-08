@@ -42,4 +42,9 @@ public class StrikeConcrete : ValueConcrete
             ParticlePlayer.StopStrike(TurnProcessorInst.CurrentActor);
         }
     }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new StrikeConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value);
+    }
 }

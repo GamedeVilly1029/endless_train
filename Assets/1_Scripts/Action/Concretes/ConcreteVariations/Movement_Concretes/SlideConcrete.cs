@@ -36,4 +36,9 @@ public class SlideConcrete : BaseConcrete
         _actor.TransformReference.position = end;
         ParticlePlayer.StopSlide(_actor);
     }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new SlideConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actor, _destinationCellIDX);
+    }
 }

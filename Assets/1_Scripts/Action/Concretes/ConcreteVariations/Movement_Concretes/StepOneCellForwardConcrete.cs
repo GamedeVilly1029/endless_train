@@ -34,8 +34,14 @@ public class StepOneCellForwardConcrete : BaseConcrete
         }
         else
         {
-            yield return MovementLowLevelConcrete.StepForwardOrBackwards(_actorToMove, Resources.Load<MoveData>("StepData"), true);
+            yield return MovementLowLevelConcrete.StepForwardOrBackwards(LevelMasterInst, _actorToMove, Resources.Load<MoveData>("StepData"), true);
+            Debug.Log("StepOneCellForwardConcrete - stepped forward");
         }
         yield return GlobalLowLevelConcrete.Pause;
+    }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new StepOneCellForwardConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actorToMove);
     }
 }

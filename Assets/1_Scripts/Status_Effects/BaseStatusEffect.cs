@@ -10,25 +10,26 @@ public class BaseStatusEffect : IStatusEffect
     public LevelMaster LevelMasterInstance { get; set; }
     public IActor Actor { get; set; }
 
-    public virtual void ChildInitializeStatusEffect(IActor actor)
+    public virtual void ChildInitialize(IActor actor)
     {
         Debug.LogWarning("BaseStatusEffect initialization was called!");
     }
 
-    public void InitializeStatusEffect(TurnProcessor dungeonMaster, LevelMaster levelMaster, IActor actor)
+    public void Initialize(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actor)
     {
-        BaseInitialization(dungeonMaster, levelMaster, actor);
-        ChildInitializeStatusEffect(actor);
+        BaseInitialization(turnProcessor, levelMaster, actor);
+        Debug.Log("Base initialization of the turnProcessor and levelMaster are done");
+        ChildInitialize(actor);
     }
 
-    private void BaseInitialization(TurnProcessor dungeonMaster, LevelMaster levelMaster, IActor actor)
+    private void BaseInitialization(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actor)
     {
-        TurnProcessorInstance = dungeonMaster;
+        TurnProcessorInstance = turnProcessor;
         LevelMasterInstance = levelMaster;
         Actor = actor;
     }
 
-    public IEnumerator ApplyStatusEffect()
+    public IEnumerator Apply()
     {
         foreach (IStatusConcrete element in StatusConstruct)
         {

@@ -15,20 +15,6 @@ public class SpiderPatternPicker : BasePatternPicker
     {
         SpiderInstance.ActionRowInst.Actions.Clear();
 
-        Debug.Log($"_turnProcessor is null: {_turnProcessor == null}");
-        Debug.Log($"_levelMaster is null: {_levelMaster == null}");
-
-        if (_levelMaster != null)
-        {
-            Debug.Log($"_levelMaster.Player is null: {_levelMaster.Player == null}");
-        }
-        else
-        {
-            Debug.Log("_levelMaster is null, cannot check Player");
-        }
-
-        Debug.Log($"SpiderInstance is null: {SpiderInstance == null}");
-
         if (!new ActorIsOnCellsAheadCondition(_turnProcessor, _levelMaster, _levelMaster.Player, SpiderInstance).Execute())
         {
             SpiderInstance.ActionRowInst.Actions = CopyActionSet(_rotate, SpiderInstance.ActionRowInst.Panel);

@@ -42,9 +42,13 @@ public class ChangeNextActionOfPlayerConcrete : ActionAddConcrete
         LevelMasterInst.Player.ActionRowInst.Actions.Insert(0, createdAction);
 
         createActionTransform.SetSiblingIndex(
-            _actionOfThisConcreteRef.UIRepresentation.transform.GetSiblingIndex() + 1
+            _actionOfThisConcreteRef.UIRepresentation.transform.GetSiblingIndex() + 1 // Looks sus, probably won't work as expected
         );
 
         yield return GlobalLowLevelConcrete.Pause;
+    }
+        public override IConcrete Clone(IAction clonedAction)
+    {
+        return new ChangeNextActionOfPlayerConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, ActionToAdd);
     }
 }

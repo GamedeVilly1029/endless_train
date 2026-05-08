@@ -22,10 +22,4 @@ public class ActionAddConcrete : BaseConcrete
         Debug.LogWarning("ActionAddConcrete's base Execute method version was called. Implement proper concrete");
         yield break;
     }
-
-    public override IConcrete Clone(IAction clonedAction)
-    {
-        ActionAddConcrete clone = new(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, ActionToAdd);
-        return clone;
-    }
 }

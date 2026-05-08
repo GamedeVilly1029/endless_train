@@ -10,8 +10,8 @@ public interface IStatusEffect
     List<IStatusConcrete> StatusConstruct{get;set;}
     bool DestroyAfterApplication{get;set;}
 
-    void ChildInitializeStatusEffect(IActor actor);
-    void InitializeStatusEffect(TurnProcessor turnProcessor,LevelMaster levelMaster, IActor actor);
-    IEnumerator ApplyStatusEffect();
+    void ChildInitialize(IActor actor);
+    void Initialize(TurnProcessor turnProcessor,LevelMaster levelMaster, IActor actor);
+    IEnumerator Apply();
     void SelfDestroy(List<IStatusEffect> listToRemoveFrom);
 }

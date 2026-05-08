@@ -14,6 +14,7 @@ public class LevelMaster : MonoBehaviour
 
     private void Start()
     {
+        AllActors.Add(Player);
         CreateCellPositionsDictionary();
         // InitializePlayer();
 
@@ -22,12 +23,8 @@ public class LevelMaster : MonoBehaviour
 
     public void LoadRoom(RoomInstantiationInfo room)
     {
+        Player.Initialize(room.PlayerCellIndex, 0, 99, _turnProcessor, this);
         LoadEnemies(room);
-
-        Cells[Player.PositionCellIndex].EnityOccupyingThisCell = null;
-        Player.PositionCellIndex = room.PlayerCellIndex;
-        Cells[room.PlayerCellIndex].EnityOccupyingThisCell = Player;
-
     }
 
     private void LoadEnemies(RoomInstantiationInfo room)

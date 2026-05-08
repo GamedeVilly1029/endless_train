@@ -7,12 +7,13 @@ public class BasePatternPicker : MonoBehaviour
     protected TurnProcessor _turnProcessor;
     protected LevelMaster _levelMaster;
 
-    private void Start()
+    public void Initialize()
     {
-        _turnProcessor = _actor.TurnProcessorInst;
-        _levelMaster = _actor.LevelMasterInst;
-
-        Debug.Log("Values of BasePatternPicker were assigned");
+        if(_actor != null)
+        {
+            _turnProcessor = _actor.TurnProcessorInst;
+            _levelMaster = _actor.LevelMasterInst;
+        }
     }
 
     public virtual void FillActionRowOrBelt()

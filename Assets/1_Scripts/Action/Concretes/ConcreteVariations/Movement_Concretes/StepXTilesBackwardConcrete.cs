@@ -37,4 +37,9 @@ public class StepXTilesBackwardConcrete : ValueConcrete
             stepsToSubtract--;
         }
     }
+    
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new StepXTilesBackwardConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value,_actorToMove);
+    }
 }

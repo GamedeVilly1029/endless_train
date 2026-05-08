@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NextAttackDmgUpEffect : BaseStatusEffect 
 {
-    public override void ChildInitializeStatusEffect(IActor actor)
+    public override void ChildInitialize(IActor actor)
     {
         StatusConstruct = new()
         {

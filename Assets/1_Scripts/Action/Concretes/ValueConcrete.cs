@@ -22,10 +22,4 @@ public class ValueConcrete : BaseConcrete
         Debug.LogWarning("ValueConcrete's base Execute method version was called. Implement proper ValueConcrete");
         yield break;
     }
-
-    public override IConcrete Clone(IAction clonedAction)
-    {
-        ValueConcrete clone = new(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value);
-        return clone;
-    }
 }

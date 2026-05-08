@@ -34,4 +34,9 @@ public class RotateActorConcrete : BaseConcrete
 
         yield return GlobalLowLevelConcrete.Pause;
     }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new RotateActorConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actorToRotate);
+    }
 }

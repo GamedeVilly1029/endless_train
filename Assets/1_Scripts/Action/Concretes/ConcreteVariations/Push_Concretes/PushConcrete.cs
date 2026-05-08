@@ -33,7 +33,7 @@ public class PushConcrete : BaseConcrete
                         ActionConcreteTag.Move,
                         actorAhead,
                         TurnProcessorInst.CurrentActor.IsFacingRight()
-                    );
+                    ).Execute();
                 }
             }
         }
@@ -41,5 +41,10 @@ public class PushConcrete : BaseConcrete
         Object.FindFirstObjectByType<AudioMaster>().PlaySound("push");
         yield return GlobalLowLevelConcrete.Pause;
         ParticlePlayer.StopPush(TurnProcessorInst.CurrentActor);
+    }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new PushConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag);
     }
 }

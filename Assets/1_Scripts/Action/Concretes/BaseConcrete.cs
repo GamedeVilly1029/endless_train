@@ -55,7 +55,7 @@ public class BaseConcrete : IConcrete
 
     public virtual IConcrete Clone(IAction clonedAction)
     {
-        BaseConcrete clone = new(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag);
-        return clone;
+        Debug.LogWarning($"Implement Clonning of this concrete");
+        return null;
     }
 }

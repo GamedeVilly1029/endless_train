@@ -17,9 +17,14 @@ public class StunFirstPlayerActionNextTurnConcrete : BaseConcrete
     public override IEnumerator ChildExecute()
     {
         IStatusEffect stunFirstAction = new StunFirstActionEffect();
-        stunFirstAction.ChildInitializeStatusEffect(LevelMasterInst.Player);
+        stunFirstAction.Initialize(TurnProcessorInst, LevelMasterInst, LevelMasterInst.Player);
         LevelMasterInst.Player.StatusEffectsBeforeTurn.Add(stunFirstAction);
 
         yield return GlobalLowLevelConcrete.Pause;
+    }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new StunFirstPlayerActionNextTurnConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag);
     }
 }

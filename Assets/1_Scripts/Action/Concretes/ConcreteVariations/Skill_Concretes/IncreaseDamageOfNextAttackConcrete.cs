@@ -18,11 +18,16 @@ public class IncreaseDamageOfNextAttackConcrete : BaseConcrete
     {
         ParticlePlayer.StartBattleCry(TurnProcessorInst.CurrentActor);
         IStatusEffect dmgIncreaseEffect = new NextAttackDmgUpEffect();
-        dmgIncreaseEffect.ChildInitializeStatusEffect(TurnProcessorInst.CurrentActor);
+        dmgIncreaseEffect.Initialize(TurnProcessorInst, LevelMasterInst, TurnProcessorInst.CurrentActor);
 
         TurnProcessorInst.CurrentActor.StatusEffectsDuringTurn.Add(dmgIncreaseEffect);
         yield return GlobalLowLevelConcrete.Pause;
 
         ParticlePlayer.StopBattleCry(TurnProcessorInst.CurrentActor);
+    }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new IncreaseDamageOfNextAttackConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag);
     }
 }

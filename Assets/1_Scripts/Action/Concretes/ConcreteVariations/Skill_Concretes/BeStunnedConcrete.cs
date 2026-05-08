@@ -20,4 +20,9 @@ public class BeStunnedConcrete : BaseConcrete
         Debug.Log("Stunned!");
         yield return GlobalLowLevelConcrete.Pause;
     }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new BeStunnedConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag);
+    }
 }

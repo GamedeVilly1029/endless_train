@@ -18,4 +18,9 @@ public class AddActionToPlayerRowEndConcrete : ActionAddConcrete
         LevelMasterInst.Player.ActionRowInst.Actions.Add(ActionToAdd.CloneAndInstantiateUI(LevelMasterInst.Player.ActionRowInst.Panel, ActionToAdd));
         yield return GlobalLowLevelConcrete.Pause;
     }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new AddActionToPlayerRowEndConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, ActionToAdd);
+    }
 }

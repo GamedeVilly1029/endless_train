@@ -53,7 +53,7 @@ public class BaseAction: IAction
     public List<IConcrete> CloneActionConstruct(IAction actionClone)
     {
         List<IConcrete> construct = new();
-        foreach (var element in ActionConstruct)
+        foreach (IConcrete element in ActionConstruct)
         {
             IConcrete clonedElement = element.Clone(actionClone);
             construct.Add(clonedElement);

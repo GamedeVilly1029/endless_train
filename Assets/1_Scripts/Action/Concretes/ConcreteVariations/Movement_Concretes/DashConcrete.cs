@@ -76,7 +76,12 @@ public class DashConcrete : ValueConcrete
             }
         }
 
-        yield return MovementLowLevelConcrete.StepForwardOrBackwards(_caller, Resources.Load<MoveData>("StepData"), _caller.IsFacingRight());
+        yield return MovementLowLevelConcrete.StepForwardOrBackwards(LevelMasterInst, _caller, Resources.Load<MoveData>("StepData"), _caller.IsFacingRight());
         yield return GlobalLowLevelConcrete.Pause;
+    }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new DashConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, _caller);
     }
 }

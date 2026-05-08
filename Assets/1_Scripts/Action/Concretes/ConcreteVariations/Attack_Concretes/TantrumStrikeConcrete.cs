@@ -45,4 +45,9 @@ public class TantrumStrikeConcrete : ValueConcrete
             Value
         ).Execute();
     }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new TantrumStrikeConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value);
+    }
 }

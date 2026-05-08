@@ -38,7 +38,7 @@ public class BaseActor : MonoBehaviour, IActor
         TurnProcessorInst = turnProcessor;
         LevelMasterInst = levelMaster;
 
-        Debug.Log("Values of the turnProcessor and levelMaster of the BaseActor were assigned");
+        PatternPicker.Initialize();
 
         StatusEffectsDuringTurn = new();
         StatusEffectsBeforeTurn = new();
@@ -86,7 +86,7 @@ public class BaseActor : MonoBehaviour, IActor
     {
         foreach (IStatusEffect statusEffect in StatusEffectsBeforeTakingDamage)
         {
-            yield return statusEffect.ApplyStatusEffect();
+            yield return statusEffect.Apply();
         }
     }
 
@@ -123,7 +123,7 @@ public class BaseActor : MonoBehaviour, IActor
             {
                 effectsToDestroy.Add(statusEffect);
             }
-            yield return statusEffect.ApplyStatusEffect();
+            yield return statusEffect.Apply();
         }
         foreach (IStatusEffect effect in effectsToDestroy)
         {
@@ -145,7 +145,7 @@ public class BaseActor : MonoBehaviour, IActor
             {
                 effectsToDestroy.Add(statusEffect);
             }
-            yield return statusEffect.ApplyStatusEffect();
+            yield return statusEffect.Apply();
         }
         foreach (IStatusEffect effect in effectsToDestroy)
         {

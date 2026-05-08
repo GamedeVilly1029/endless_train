@@ -25,7 +25,7 @@ public class BePushedConcrete : BaseConcrete
     {
         LevelMasterInst.Cells[_actorToPush.PositionCellIndex].EnityOccupyingThisCell = null;
         Vector2 start = LevelMasterInst.Cells[_actorToPush.PositionCellIndex].CellPosition;
-        Vector2 end = MovementLowLevelConcrete.BePushedCalculator(_actorToPush, _pushRight);
+        Vector2 end = MovementLowLevelConcrete.BePushedCalculator(LevelMasterInst, _actorToPush, _pushRight);
 
         ParticlePlayer.StartBePushed(_actorToPush);
 
@@ -33,5 +33,10 @@ public class BePushedConcrete : BaseConcrete
         _actorToPush.TransformReference.position = end;
 
         ParticlePlayer.StopBePushed(_actorToPush);
+    }
+
+    public override IConcrete Clone(IAction clonedAction)
+    {
+        return new BePushedConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actorToPush, _pushRight);
     }
 }
