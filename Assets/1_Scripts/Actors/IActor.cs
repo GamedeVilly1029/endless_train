@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IActor
 {
-    Transform TransformReference {get;set;}
+    Transform TransformReference {get;set;} 
     Transform GraphicTransform {get;set;}
     int PositionCellIndex {get;set;}
     Stack<int> PositionCellIndexHistory {get;set;}

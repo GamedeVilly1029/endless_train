@@ -7,4 +7,5 @@ public class RoomInstantiationInfo : ScriptableObject
 {
     public List<EnemeyInstantiationInfo> EnemiesToInstantiate;
     public int PlayerCellIndex;
+    public int PlayerRotation;
 }

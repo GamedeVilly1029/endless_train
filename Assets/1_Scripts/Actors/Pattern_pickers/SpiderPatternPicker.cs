@@ -27,8 +27,8 @@ public class SpiderPatternPicker : BasePatternPicker
             return;
         }
 
-        if (new CurrentHPIsMoreThanXPercentCondition(_turnProcessor, _levelMaster, SpiderInstance.MaxHP, SpiderInstance.CurrentHP, 30f).Execute())
-        {
+        // if (new CurrentHPIsMoreThanXPercentCondition(_turnProcessor, _levelMaster, SpiderInstance.MaxHP, SpiderInstance.CurrentHP, 30f).Execute())
+        // {
             int randomInt = UnityEngine.Random.Range(1, 4);
             if (randomInt == 1)
             {
@@ -40,12 +40,11 @@ public class SpiderPatternPicker : BasePatternPicker
                 SpiderInstance.ActionRowInst.Actions = CopyActionSet(_stunningShout, SpiderInstance.ActionRowInst.Panel);
                 return;
             }
-            
-        }
+        // }
 
-        Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
-        SpiderInstance.ActionRowInst.Actions = null;
-        return;
+        // Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
+        // SpiderInstance.ActionRowInst.Actions = null;
+        // return;
     }
 
     public override void InitializeActionPrototypes()

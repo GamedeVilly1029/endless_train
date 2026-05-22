@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5e849035eb35d8f2ad9bcaa18593479, type: 3}
-  m_Name: RegularSpider
+  m_Name: MechanicInfo
   m_EditorClassIdentifier: Assembly-CSharp::EnemeyInstantiationInfo
-  ActorPrefab: {fileID: 7505665625940839799, guid: 33ecafce69c7c2f71ab09cb5f7ae6acc, type: 3}
+  ActorPrefab: {fileID: 7522039980220785142, guid: 5d591358bd31fdcde8f6356409569030, type: 3}
   CellIndex: 6
   HP: 5
   RotationAngle: -180

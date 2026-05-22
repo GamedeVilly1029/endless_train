@@ -14,6 +14,7 @@ public class BasePatternPicker : MonoBehaviour
             _turnProcessor = _actor.TurnProcessorInst;
             _levelMaster = _actor.LevelMasterInst;
         }
+        InitializeActionPrototypes();
     }
 
     public virtual void FillActionRowOrBelt()

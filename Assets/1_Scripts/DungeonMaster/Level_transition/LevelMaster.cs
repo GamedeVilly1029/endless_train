@@ -1,29 +1,32 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelMaster : MonoBehaviour
 {
     [SerializeField] private TurnProcessor _turnProcessor;
-    [SerializeField] private List<RoomInstantiationInfo> _rooms;
+    public List<RoomInstantiationInfo> Rooms;
     [SerializeField] private Transform _instantiationPlaceForEnemies;
     [SerializeField] private List<Transform> MovementCellAnchors;
 
     [HideInInspector] public List<Cell> Cells;
     public PlayerActor Player;
     public List<IActor> AllActors = new();
+    private Queue<RoomInstantiationInfo> _roomQueue;
 
     private void Start()
     {
         AllActors.Add(Player);
         CreateCellPositionsDictionary();
-        // InitializePlayer();
 
-        LoadRoom(_rooms[0]); // With one spider
+        FillRoomQueue();
+        LoadNextRoom();
     }
 
-    public void LoadRoom(RoomInstantiationInfo room)
+    public void LoadNextRoom()
     {
-        Player.Initialize(room.PlayerCellIndex, 0, 99, _turnProcessor, this);
+        RoomInstantiationInfo room = _roomQueue.Dequeue();
+        Player.Initialize(room.PlayerCellIndex, room.PlayerRotation, 99, _turnProcessor, this);
         LoadEnemies(room);
     }
 
@@ -51,18 +54,24 @@ public class LevelMaster : MonoBehaviour
         }
     }
 
-    // private void InitializePlayer()
-    // {
-    //     foreach (IActor actor in AllActors)
-    //     {
-    //         if (actor is PlayerActor)
-    //         {
-    //             Player = actor as PlayerActor;
-    //         }
-    //     }
-    //     if (Player == null)
-    //     {
-    //         Debug.Log("Player actor is null, fix that ;3");
-    //     }
-    // }
+    public bool AliveEnemiesPresented()
+    {
+        foreach (IActor actor in AllActors)
+        {
+            if (actor is not PlayerActor && !actor.IsDead)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+   private void FillRoomQueue()
+    {
+        _roomQueue = new();
+        foreach(RoomInstantiationInfo room in Rooms)
+        {
+            _roomQueue.Enqueue(room);
+        }
+    }
 }

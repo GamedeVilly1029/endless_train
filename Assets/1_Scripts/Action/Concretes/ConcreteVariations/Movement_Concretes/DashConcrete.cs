@@ -46,7 +46,7 @@ public class DashConcrete : ValueConcrete
                             ActionConcreteTag.Move,
                             _caller,
                             i - 1
-                        );
+                        ).Execute();
                         yield break;
                     }
                 }
@@ -69,7 +69,7 @@ public class DashConcrete : ValueConcrete
                             ActionConcreteTag.Move,
                             _caller,
                             i + 1
-                        );
+                        ).Execute();
                         yield break;
                     }
                 }

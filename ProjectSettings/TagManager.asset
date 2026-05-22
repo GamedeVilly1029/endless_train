@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StartTurnButton
   - UIActionIcon
+  - StartNewFight
   layers:
   - Default
   - TransparentFX
