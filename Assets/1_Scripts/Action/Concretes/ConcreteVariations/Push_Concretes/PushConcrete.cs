@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class PushConcrete : BaseConcrete
 {
+    BaseActor _pusher;
     public PushConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
     IAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
-    ActionConcreteTag tag
+    ActionConcreteTag tag,
+    BaseActor pusher
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
+        _pusher = pusher;
     }
 
     public override IEnumerator ChildExecute()
     {
-        ParticlePlayer.StartPush(TurnProcessorInst.CurrentActor);
+        ActorParticlePlayer.PlayParticles(_pusher, ParticleType.Push);
 
         if (new CellAheadExistsCondition(TurnProcessorInst, LevelMasterInst, TurnProcessorInst.CurrentActor).Execute())
         {
-            IActor actorAhead = GlobalLowLevelConcrete.TryReturnActorAhead(TurnProcessorInst, LevelMasterInst, TurnProcessorInst.CurrentActor);
+            BaseActor actorAhead = GlobalLowLevelConcrete.TryReturnActorAhead(TurnProcessorInst, LevelMasterInst, TurnProcessorInst.CurrentActor);
             if (actorAhead != null)
             {
                 if (new AdjacentCellsExistsCondition(TurnProcessorInst, LevelMasterInst, actorAhead).Execute())
@@ -40,11 +43,17 @@ public class PushConcrete : BaseConcrete
 
         Object.FindFirstObjectByType<AudioMaster>().PlaySound("push");
         yield return GlobalLowLevelConcrete.Pause;
-        ParticlePlayer.StopPush(TurnProcessorInst.CurrentActor);
+    }
+
+    public override IEnumerator FalseConditionConcrete()
+    {
+        ActorParticlePlayer.PlayParticles(_pusher, ParticleType.Push);
+        Object.FindFirstObjectByType<AudioMaster>().PlaySound("push");
+        yield break;
     }
 
     public override IConcrete Clone(IAction clonedAction)
     {
-        return new PushConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag);
+        return new PushConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _pusher);
     }
 }

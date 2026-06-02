@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class BaseConditionCommand : IConditionCommand
 {
-    public TurnProcessor TurnProcessor;
-    public LevelMaster LevelMaster;
+    public TurnProcessor TurnProcessorInst;
+    public LevelMaster LevelMasterInst;
 
 
     public BaseConditionCommand(TurnProcessor turnProcessor, LevelMaster levelMaster)
     {
-        TurnProcessor = turnProcessor;
-        LevelMaster = levelMaster;
+        TurnProcessorInst = turnProcessor;
+        LevelMasterInst = levelMaster;
     }
 
     public virtual bool Execute()

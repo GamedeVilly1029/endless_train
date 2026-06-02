@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class AdjacentCellsExistsCondition : BaseConditionCommand
 {
-    private IActor _actor;
+    private BaseActor _actor;
 
-    public AdjacentCellsExistsCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actor)
+    public AdjacentCellsExistsCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actor)
         : base(turnProcessor, levelMaster)
     {
         _actor = actor;
@@ -13,6 +13,6 @@ public class AdjacentCellsExistsCondition : BaseConditionCommand
     public override bool Execute()
     {
         int currentCellIndex = _actor.PositionCellIndex;
-        return 0 < currentCellIndex && currentCellIndex + 1 < LevelMaster.Cells.Count;
+        return 0 < currentCellIndex && currentCellIndex + 1 < LevelMasterInst.Cells.Count;
     }
 }

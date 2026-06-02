@@ -4,30 +4,32 @@ using UnityEngine;
 
 public class IncreaseDamageOfNextAttackConcrete : BaseConcrete
 {
+    BaseActor _cryer;
     public IncreaseDamageOfNextAttackConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
     IAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
-    ActionConcreteTag tag
+    ActionConcreteTag tag,
+    BaseActor cryer
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
+        _cryer = cryer;
     }
 
     public override IEnumerator ChildExecute()
     {
-        ParticlePlayer.StartBattleCry(TurnProcessorInst.CurrentActor);
+        ActorParticlePlayer.PlayParticles(_cryer, ParticleType.BattleCry);
         IStatusEffect dmgIncreaseEffect = new NextAttackDmgUpEffect();
         dmgIncreaseEffect.Initialize(TurnProcessorInst, LevelMasterInst, TurnProcessorInst.CurrentActor);
 
         TurnProcessorInst.CurrentActor.StatusEffectsDuringTurn.Add(dmgIncreaseEffect);
         yield return GlobalLowLevelConcrete.Pause;
 
-        ParticlePlayer.StopBattleCry(TurnProcessorInst.CurrentActor);
     }
 
     public override IConcrete Clone(IAction clonedAction)
     {
-        return new IncreaseDamageOfNextAttackConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag);
+        return new IncreaseDamageOfNextAttackConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _cryer);
     }
 }

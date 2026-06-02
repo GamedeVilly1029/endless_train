@@ -5,7 +5,7 @@ public static class GlobalLowLevelConcrete
 {
     public static WaitForSeconds Pause = new WaitForSeconds(0.5f);
 
-    public static IActor TryReturnActorAhead(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actor)
+    public static BaseActor TryReturnActorAhead(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actor)
     {
         IConditionCommand cellAheadExists = new CellAheadExistsCondition(turnProcessor , levelMaster, actor);
         if (cellAheadExists.Execute())

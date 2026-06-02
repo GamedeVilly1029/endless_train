@@ -11,7 +11,7 @@ public class ActionAddStatusConcrete : BaseStatusConcrete
     (
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster,
-        IActor actor,
+        BaseActor actor,
         IAction actionToAssign
     ):base(turnProcessor, levelMaster, actor) 
     {

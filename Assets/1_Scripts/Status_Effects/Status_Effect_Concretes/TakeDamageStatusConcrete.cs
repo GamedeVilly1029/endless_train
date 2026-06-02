@@ -6,7 +6,7 @@ public class TakeDamageStatusConcrete : ValueStatusConcrete
     public TakeDamageStatusConcrete(
         TurnProcessor turnProcessor,
         LevelMaster levelMaster,
-        IActor actor,
+        BaseActor actor,
         int value
     ) : base(turnProcessor, levelMaster, actor, value)
     {
@@ -14,6 +14,6 @@ public class TakeDamageStatusConcrete : ValueStatusConcrete
 
     public override IEnumerator ChildExecute()
     {
-        yield return Actor.SubtractDamageFromHP(Value);
+        yield return Actor.TakePiercingDamage(Value);
     }
 }

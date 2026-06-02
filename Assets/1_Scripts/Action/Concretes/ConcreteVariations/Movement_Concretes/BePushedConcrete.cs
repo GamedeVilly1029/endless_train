@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BePushedConcrete : BaseConcrete
 {
-    private IActor _actorToPush;
+    private BaseActor _actorToPush;
     private bool _pushRight;
 
     public BePushedConcrete(
@@ -13,7 +13,7 @@ public class BePushedConcrete : BaseConcrete
     IAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
-    IActor actorToPush,
+    BaseActor actorToPush,
     bool pushRight
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
@@ -27,12 +27,12 @@ public class BePushedConcrete : BaseConcrete
         Vector2 start = LevelMasterInst.Cells[_actorToPush.PositionCellIndex].CellPosition;
         Vector2 end = MovementLowLevelConcrete.BePushedCalculator(LevelMasterInst, _actorToPush, _pushRight);
 
-        ParticlePlayer.StartBePushed(_actorToPush);
+        ActorParticlePlayer.PlayParticles(_actorToPush, ParticleType.BePushed);
 
         yield return MovementLowLevelConcrete.StepFlat(_actorToPush, start, end, 0.2f);
         _actorToPush.TransformReference.position = end;
 
-        ParticlePlayer.StopBePushed(_actorToPush);
+        ActorParticlePlayer.StopParticles(_actorToPush, ParticleType.BePushed);
     }
 
     public override IConcrete Clone(IAction clonedAction)

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class StepOneCellBackwardsConcrete : BaseConcrete
 {
-    private IActor _actorToMove;
+    private BaseActor _actorToMove;
     public StepOneCellBackwardsConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
     IAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
-    IActor actor
+    BaseActor actor
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
         _actorToMove = actor;

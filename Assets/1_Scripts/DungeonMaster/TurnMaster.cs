@@ -36,7 +36,7 @@ public class TurnMaster : MonoBehaviour
         {
             TurnNumber += 1;
 
-            foreach (IActor actor in _levelMaster.AllActors)
+            foreach (BaseActor actor in _levelMaster.AllActors)
             {
                 actor.PatternPicker.FillActionRowOrBelt();
             }

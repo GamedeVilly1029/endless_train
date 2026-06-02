@@ -3,30 +3,43 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class BaseActor : MonoBehaviour, IActor
+public class BaseActor : MonoBehaviour
 {
     [HideInInspector] public TurnProcessor TurnProcessorInst;
     [HideInInspector] public LevelMaster LevelMasterInst;
-    public RectTransform ActionRowPanelInstance;
-    public TextMeshPro HPBarText;
-    public SpriteRenderer SpriteRend;
-    public ActionRow ActionRowSetter;
-    public Transform GraphicTransformInstance;
-    public BasePatternPicker PatternPickerSetter;
+    [HideInInspector] public int MaxHP;
+    [HideInInspector] public int CurrentHP;
+    [HideInInspector] public int PositionCellIndex;
+    [HideInInspector] public bool IsDead = false;
+    [HideInInspector] public int Defense;
 
+    public RectTransform ActionRowPanelInstance;
+
+    public TextMeshPro HPBarText;
+    public TextMeshPro DefenseBarText;
+
+    public SpriteRenderer SpriteRend;
+    public ActionRow ActionRowInst;
+    public Transform GraphicTransform;
+    public BasePatternPicker PatternPicker;
     public Transform TransformReference{get{return transform;}set{}}
-    public ActionRow ActionRowInst {get{return ActionRowSetter;}set{}}
-    public int MaxHP{get;set;}
-    public int CurrentHP{get;set;}
-    public int PositionCellIndex {get;set;}
-    public bool IsDead {get;set;} = false;
-    public Stack<int> PositionCellIndexHistory{get;set;}
-    public List<IAction> FightBasedActionHistory{get;set;}
-    public List<IStatusEffect> StatusEffectsBeforeTurn{get;set;}
-    public List<IStatusEffect> StatusEffectsDuringTurn {get;set;}
-    public List<IStatusEffect> StatusEffectsBeforeTakingDamage {get;set;}
-    Transform IActor.GraphicTransform {get {return GraphicTransformInstance;}set{}}
-    public BasePatternPicker PatternPicker{get {return PatternPickerSetter;} set{}}
+    public Stack<int> PositionCellIndexHistory;
+    public List<IAction> FightBasedActionHistory;
+    public List<IStatusEffect> StatusEffectsBeforeTurn;
+    public List<IStatusEffect> StatusEffectsDuringTurn; 
+    public List<IStatusEffect> StatusEffectsBeforeTakingDamage;
+    public List<ActorTrait> Traits;
+
+    public IEnumerator TurnStart()
+    {
+        InitializeCellIndexHistories();
+        yield return RunBeforeTurnStatuses();
+    }
+
+    public IEnumerator TurnEnd()
+    {
+        yield return Defense = 0;
+    }
 
     public virtual void InitializeChild(int cellIndex, float YRotation, int HP)
     {
@@ -43,6 +56,7 @@ public class BaseActor : MonoBehaviour, IActor
         StatusEffectsDuringTurn = new();
         StatusEffectsBeforeTurn = new();
         StatusEffectsBeforeTakingDamage = new();
+        Traits = new();
     }
     public void Initialize(int cellIndex, float YRotation, int HP, TurnProcessor turnProcessor, LevelMaster levelMaster)
     {
@@ -50,10 +64,11 @@ public class BaseActor : MonoBehaviour, IActor
         InitializeChild(cellIndex, YRotation, HP);
     }
 
-    private void Update()
+    public void Update()
     {
         TryToDie(CurrentHP);
         HPBarText.text = CurrentHP.ToString();
+        DefenseBarText.text = Defense.ToString();
     }
 
     public void TryToDie(int HP)
@@ -90,14 +105,34 @@ public class BaseActor : MonoBehaviour, IActor
         }
     }
 
-    public IEnumerator SubtractDamageFromHP(int damageToTake)
+    public IEnumerator TakeBluntDamage(int damageToTake)
+    {
+        if (damageToTake > Defense)
+        {
+            int leftDamage = damageToTake - Defense;
+            yield return CurrentHP -= leftDamage;
+            Defense = 0;
+        }
+        else if (damageToTake < Defense)
+        {
+            Defense -= damageToTake;
+        }
+        else
+        {
+            Defense = 0;
+        }
+    }
+
+    public IEnumerator TakePiercingDamage(int damageToTake)
     {
         yield return CurrentHP -= damageToTake;
     }
 
+
+
     public bool IsFacingRight()
     {
-        float y = TransformReference.eulerAngles.y;
+        float y = GraphicTransform.eulerAngles.y;
         return Mathf.Abs(Mathf.DeltaAngle(y, 0)) < 1f;
     }
 

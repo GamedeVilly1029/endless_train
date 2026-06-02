@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SpiderPatternPicker : BasePatternPicker
 {
-    public Spider SpiderInstance;
-
     private List<IAction> _approach;
     private List<IAction> _rotate;
     private List<IAction> _sneakyLeap;
@@ -13,17 +11,17 @@ public class SpiderPatternPicker : BasePatternPicker
 
     public override void FillActionRowOrBelt()
     {
-        SpiderInstance.ActionRowInst.Actions.Clear();
+        _actor.ActionRowInst.Actions.Clear();
 
-        if (!new ActorIsOnCellsAheadCondition(_turnProcessor, _levelMaster, _levelMaster.Player, SpiderInstance).Execute())
+        if (!new ActorIsOnCellsAheadCondition(_turnProcessor, _levelMaster, _levelMaster.Player, _actor).Execute())
         {
-            SpiderInstance.ActionRowInst.Actions = CopyActionSet(_rotate, SpiderInstance.ActionRowInst.Panel);
+            _actor.ActionRowInst.Actions = CopyActionSet(_rotate, _actor.ActionRowInst.Panel);
             return;
         }
 
-        if (!new ActorInRangeOfXCellsFromOtherActorCondition(_turnProcessor, _levelMaster, _levelMaster.Player, SpiderInstance, 2).Execute())
+        if (!new ActorInRangeOfXCellsFromOtherActorCondition(_turnProcessor, _levelMaster, _levelMaster.Player, _actor, 2).Execute())
         {
-            SpiderInstance.ActionRowInst.Actions = CopyActionSet(_approach, SpiderInstance.ActionRowInst.Panel);
+            _actor.ActionRowInst.Actions = CopyActionSet(_approach, _actor.ActionRowInst.Panel);
             return;
         }
 
@@ -32,12 +30,12 @@ public class SpiderPatternPicker : BasePatternPicker
             int randomInt = UnityEngine.Random.Range(1, 4);
             if (randomInt == 1)
             {
-                SpiderInstance.ActionRowInst.Actions = CopyActionSet(_sneakyLeap, SpiderInstance.ActionRowInst.Panel);
+                _actor.ActionRowInst.Actions = CopyActionSet(_sneakyLeap, _actor.ActionRowInst.Panel);
                 return;
             }
             else
             {
-                SpiderInstance.ActionRowInst.Actions = CopyActionSet(_stunningShout, SpiderInstance.ActionRowInst.Panel);
+                _actor.ActionRowInst.Actions = CopyActionSet(_stunningShout, _actor.ActionRowInst.Panel);
                 return;
             }
         // }
@@ -60,11 +58,11 @@ public class SpiderPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction move = new MoveOneTileForward();
-        move.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
+        move.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(move);
 
         IAction move1 = new MoveOneTileForward();
-        move1.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
+        move1.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(move1);
 
         return actions;
@@ -76,7 +74,7 @@ public class SpiderPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction rotate = new Rotate();
-        rotate.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
+        rotate.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(rotate);
 
         return actions;
@@ -86,15 +84,15 @@ public class SpiderPatternPicker : BasePatternPicker
     {
         List<IAction> actions = new();
         IAction dash = new Dash();
-        dash.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
+        dash.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(dash);
 
         IAction strike = new Strike();
-        strike.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
+        strike.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(strike);
 
         IAction moveBack = new MoveOneTileBackwards();
-        moveBack.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
+        moveBack.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(moveBack);
 
         return actions;
@@ -105,7 +103,7 @@ public class SpiderPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction stunFirstNextTurn = new StunFirstPlayerActionNextTurn();
-        stunFirstNextTurn.InitializeAction(SpiderInstance, _turnProcessor, _levelMaster);
+        stunFirstNextTurn.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(stunFirstNextTurn);
 
         return actions;

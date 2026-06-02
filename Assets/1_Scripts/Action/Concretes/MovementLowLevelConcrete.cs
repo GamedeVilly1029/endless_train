@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class MovementLowLevelConcrete
 {
-    public static IEnumerator StepArc(IActor actor, MoveData moveData, Vector2 start, Vector2 end)
+    public static IEnumerator StepArc(BaseActor actor, MoveData moveData, Vector2 start, Vector2 end)
     {
         float timePast = 0;
         while (timePast <= moveData.Duration)
@@ -18,7 +18,7 @@ public static class MovementLowLevelConcrete
         }
     }
 
-    public static IEnumerator StepFlat(IActor actor, Vector2 start, Vector2 end, float stepDuration)
+    public static IEnumerator StepFlat(BaseActor actor, Vector2 start, Vector2 end, float stepDuration)
     {
         float timePast = 0;
         while (timePast <= stepDuration)
@@ -33,7 +33,7 @@ public static class MovementLowLevelConcrete
     }
 
 
-    public static Vector2 StepForwardCalculator(LevelMaster levelMaster, IActor actor)
+    public static Vector2 StepForwardCalculator(LevelMaster levelMaster, BaseActor actor)
     {
         if (actor.IsFacingRight())
         {
@@ -49,7 +49,7 @@ public static class MovementLowLevelConcrete
         }
     }
 
-    public static Vector2 StepBackwardsCalculator(LevelMaster levelMaster, IActor actor)
+    public static Vector2 StepBackwardsCalculator(LevelMaster levelMaster, BaseActor actor)
     {
         if (actor.IsFacingRight())
         {
@@ -67,7 +67,7 @@ public static class MovementLowLevelConcrete
 
 
 
-    public static Vector2 BePushedCalculator(LevelMaster levelMaster, IActor actorToPush, bool pushRight)
+    public static Vector2 BePushedCalculator(LevelMaster levelMaster, BaseActor actorToPush, bool pushRight)
     {
         if (pushRight)
         {
@@ -83,7 +83,7 @@ public static class MovementLowLevelConcrete
         }
     }
 
-    public static IEnumerator StepForwardOrBackwards(LevelMaster levelMaster, IActor actor, MoveData moveData, bool forward)
+    public static IEnumerator StepForwardOrBackwards(LevelMaster levelMaster, BaseActor actor, MoveData moveData, bool forward)
     {
         levelMaster.Cells[actor.PositionCellIndex].EnityOccupyingThisCell = null;
         Vector2 start = levelMaster.Cells[actor.PositionCellIndex].CellPosition;

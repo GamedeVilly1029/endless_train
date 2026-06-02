@@ -10,6 +10,6 @@ public class ConcreteHistoryHasOnly1ConcreteCondition : BaseConditionCommand
 
     public override bool Execute()
     {
-        return TurnProcessor.CurrentAction.TurnTemporarySuccessfulConcreteHistory.Count == 1;
+        return TurnProcessorInst.CurrentAction.TurnTemporarySuccessfulConcreteHistory.Count == 1;
     }
 }

@@ -8,7 +8,7 @@ public class StunFirstPlayerActionStatusConcrete : ActionAddStatusConcrete
     (
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster, 
-        IActor actor, 
+        BaseActor actor, 
         IAction actionToAssign
     ):base(turnProcessor, levelMaster, actor, actionToAssign)
     {

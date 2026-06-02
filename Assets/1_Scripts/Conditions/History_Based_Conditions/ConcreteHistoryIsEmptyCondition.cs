@@ -9,6 +9,6 @@ public class ConcreteHistoryIsEmptyCondition : BaseConditionCommand
 
     public override bool Execute()
     {
-        return TurnProcessor.CurrentAction.TurnTemporarySuccessfulConcreteHistory.Count == 0;
+        return TurnProcessorInst.CurrentAction.TurnTemporarySuccessfulConcreteHistory.Count == 0;
     }
 }

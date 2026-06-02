@@ -6,7 +6,7 @@ public class IncreaseDamageOfFirstAttackStatusConcrete : ValueStatusConcrete
     public IncreaseDamageOfFirstAttackStatusConcrete(
         TurnProcessor turnProcessor,
         LevelMaster levelMaster,
-        IActor actor,
+        BaseActor actor,
         int value
     ) : base(turnProcessor, levelMaster, actor, value)
     {

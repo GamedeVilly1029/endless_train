@@ -5,7 +5,7 @@ using UnityEngine;
 public class StunFirstActionEffect : BaseStatusEffect
 {
     private IAction _stunned;
-    public override void ChildInitialize(IActor actor)
+    public override void ChildInitialize(BaseActor actor)
     {
         _stunned = new BeStunned();
 

@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class ActorIsOnCellsAheadCondition : BaseConditionCommand
 {
-    private IActor _actorToFind;
-    private IActor _caster;
+    private BaseActor _actorToFind;
+    private BaseActor _caster;
 
-    public ActorIsOnCellsAheadCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actorToFind, IActor caster)
+    public ActorIsOnCellsAheadCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actorToFind, BaseActor caster)
         : base(turnProcessor, levelMaster)
     {
         _actorToFind = actorToFind;
@@ -19,9 +19,9 @@ public class ActorIsOnCellsAheadCondition : BaseConditionCommand
 
         if (facingRight)
         {
-            for (int i = cellIndex; i < LevelMaster.Cells.Count - 1; i++)
+            for (int i = cellIndex; i < LevelMasterInst.Cells.Count - 1; i++)
             {
-                if (LevelMaster.Cells[i].EnityOccupyingThisCell == _actorToFind)
+                if (LevelMasterInst.Cells[i].EnityOccupyingThisCell == _actorToFind)
                 {
                     return true;
                 }
@@ -31,7 +31,7 @@ public class ActorIsOnCellsAheadCondition : BaseConditionCommand
         {
             for (int i = cellIndex; i >= 0; i--)
             {
-                if (LevelMaster.Cells[i].EnityOccupyingThisCell == _actorToFind)
+                if (LevelMasterInst.Cells[i].EnityOccupyingThisCell == _actorToFind)
                 {
                     return true;
                 }

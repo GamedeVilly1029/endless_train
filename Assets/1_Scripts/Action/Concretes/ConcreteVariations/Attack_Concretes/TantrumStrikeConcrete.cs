@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class TantrumStrikeConcrete : ValueConcrete
 {
+    BaseActor _striker;
     public TantrumStrikeConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
     IAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
-    int value
+    int value,
+    BaseActor striker
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag, value)
     {
+        _striker = striker;
     }
 
     public override IEnumerator ChildExecute()
@@ -27,7 +30,8 @@ public class TantrumStrikeConcrete : ValueConcrete
                     ActionOfThisConcrete,
                     null,
                     ActionConcreteTag.Attack,
-                    Value
+                    Value,
+                    _striker
                 ).Execute();
             }
             else
@@ -42,12 +46,13 @@ public class TantrumStrikeConcrete : ValueConcrete
             ActionOfThisConcrete,
             null,
             ActionConcreteTag.Attack,
-            Value
+            Value,
+            _striker
         ).Execute();
     }
 
     public override IConcrete Clone(IAction clonedAction)
     {
-        return new TantrumStrikeConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value);
+        return new TantrumStrikeConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, _striker);
     }
 }

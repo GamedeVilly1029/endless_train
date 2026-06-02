@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StepXTilesBackwardConcrete : ValueConcrete
 {
-    private IActor _actorToMove;
+    private BaseActor _actorToMove;
 
     public StepXTilesBackwardConcrete(
     TurnProcessor turnProcessor,
@@ -13,7 +13,7 @@ public class StepXTilesBackwardConcrete : ValueConcrete
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     int value,
-    IActor actorToMove
+    BaseActor actorToMove
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag, value)
     {
         _actorToMove = actorToMove;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StepOneCellForwardConcrete : BaseConcrete
 {
-    private IActor _actorToMove;
+    private BaseActor _actorToMove;
 
     public StepOneCellForwardConcrete
     (
@@ -13,7 +13,7 @@ public class StepOneCellForwardConcrete : BaseConcrete
     IAction actionOfThisConcrete, 
     List<IConditionCommand> extraConditions, 
     ActionConcreteTag tag,
-    IActor actorToMove
+    BaseActor actorToMove
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
         _actorToMove = actorToMove;

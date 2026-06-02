@@ -39,6 +39,7 @@ public class BaseConcrete : IConcrete
             {
                 if (!condition.Execute())
                 {
+                    yield return FalseConditionConcrete();
                     yield break;
                 }
             }
@@ -57,5 +58,10 @@ public class BaseConcrete : IConcrete
     {
         Debug.LogWarning($"Implement Clonning of this concrete");
         return null;
+    }
+
+    public virtual IEnumerator FalseConditionConcrete()
+    {
+        yield break;
     }
 }

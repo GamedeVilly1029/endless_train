@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlideConcrete : BaseConcrete
 {
-    private IActor _actor;
+    private BaseActor _actor;
     private int _destinationCellIDX;
 
     public SlideConcrete(
@@ -13,7 +13,7 @@ public class SlideConcrete : BaseConcrete
     IAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
-    IActor actor,
+    BaseActor actor,
     int destinationCellIDX
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
@@ -30,11 +30,11 @@ public class SlideConcrete : BaseConcrete
         LevelMasterInst.Cells[_destinationCellIDX].EnityOccupyingThisCell = _actor;
         _actor.PositionCellIndex = _destinationCellIDX;
 
-        ParticlePlayer.StartSlide(_actor);
+        ActorParticlePlayer.PlayParticles(_actor, ParticleType.BePushed);
         Object.FindFirstObjectByType<AudioMaster>().PlaySound("slide");
         yield return MovementLowLevelConcrete.StepFlat(_actor, start, end, 0.2f);
         _actor.TransformReference.position = end;
-        ParticlePlayer.StopSlide(_actor);
+        ActorParticlePlayer.StopParticles(_actor, ParticleType.BePushed);
     }
 
     public override IConcrete Clone(IAction clonedAction)

@@ -5,7 +5,6 @@ public class PlayerBeltPatternPicker : BasePatternPicker
 {
     public List<IAction> PlayerActionPrototypes;
 
-        
     public override void FillActionRowOrBelt()
     {
         foreach (IAction actionWithUI in _levelMaster.Player.Belt)
@@ -58,9 +57,13 @@ public class PlayerBeltPatternPicker : BasePatternPicker
         push1.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
         actions.Add(push1);
 
-        IAction tantrum = new Tantrum();
-        tantrum.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
-        actions.Add(tantrum);
+        IAction basicDefend = new BasicDefend();
+        basicDefend.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
+        actions.Add(basicDefend);
+
+        IAction heal = new Heal();
+        heal.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
+        actions.Add(heal);
 
         return actions;
     }

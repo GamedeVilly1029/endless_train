@@ -8,7 +8,7 @@ public interface IAction
     IAction PrototypeAction{get;set;}
     TurnProcessor TurnProcessorInstance{get;set;}
     LevelMaster LevelMasterInstance{get;set;}
-    IActor Actor{get;set;}
+    BaseActor Actor{get;set;}
     GameObject UIRepresentation{get;set;}
     List<IConcrete> ActionConstruct{get;set;}
     List<IConcrete> TurnTemporarySuccessfulConcreteHistory{get;set;}
@@ -16,7 +16,7 @@ public interface IAction
     int Cooldown{get;set;}
 
     IEnumerator ExecuteAction();
-    void InitializeAction(IActor actor, TurnProcessor turnProcessor, LevelMaster levelMaster);
+    void InitializeAction(BaseActor actor, TurnProcessor turnProcessor, LevelMaster levelMaster);
     IAction CloneAndInstantiateUI(Transform transform, IAction actionCloneReference);
     IAction CreateClone(Transform transform);
     void SetReferenceAction(IAction actionCloneReference, IAction actionClone);

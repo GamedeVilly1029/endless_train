@@ -11,7 +11,7 @@ public class LevelMaster : MonoBehaviour
 
     [HideInInspector] public List<Cell> Cells;
     public PlayerActor Player;
-    public List<IActor> AllActors = new();
+    public List<BaseActor> AllActors = new();
     private Queue<RoomInstantiationInfo> _roomQueue;
 
     private void Start()
@@ -32,9 +32,9 @@ public class LevelMaster : MonoBehaviour
 
     private void LoadEnemies(RoomInstantiationInfo room)
     {
-        foreach (EnemeyInstantiationInfo enemyInfo in room.EnemiesToInstantiate)
+        foreach (EnemyInstantiationInfo enemyInfo in room.EnemiesToInstantiate)
         {
-            IActor enemy = Instantiate(enemyInfo.ActorPrefab, _instantiationPlaceForEnemies);
+            BaseActor enemy = Instantiate(enemyInfo.ActorPrefab, _instantiationPlaceForEnemies);
             enemy.Initialize(enemyInfo.CellIndex, enemyInfo.RotationAngle, enemyInfo.HP, _turnProcessor, this);
             AllActors.Add(enemy);
         }
@@ -47,6 +47,7 @@ public class LevelMaster : MonoBehaviour
         {
             Cell cell = new()
             {
+                CellTransform = transform,
                 CellPosition = transform.position,
                 EnityOccupyingThisCell = null
             };
@@ -56,7 +57,7 @@ public class LevelMaster : MonoBehaviour
 
     public bool AliveEnemiesPresented()
     {
-        foreach (IActor actor in AllActors)
+        foreach (BaseActor actor in AllActors)
         {
             if (actor is not PlayerActor && !actor.IsDead)
             {

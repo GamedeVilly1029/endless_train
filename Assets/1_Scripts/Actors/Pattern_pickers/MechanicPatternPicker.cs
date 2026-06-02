@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MechanicPatternPicker : BasePatternPicker
 {
-    public Mechanic MechanicInstance;
-
     private List<IAction> _approach;
     private List<IAction> _rotate;
     private List<IAction> _chase;
@@ -18,28 +16,28 @@ public class MechanicPatternPicker : BasePatternPicker
     
     public override void FillActionRowOrBelt()
     {
-        MechanicInstance.ActionRowInst.Actions.Clear();
+        _actor.ActionRowInst.Actions.Clear();
 
         IConditionCommand playerOnCellsAhead = new ActorIsOnCellsAheadCondition(_turnProcessor, 
         _levelMaster, 
         _levelMaster.Player, 
-        MechanicInstance);
+        _actor);
 
         IConditionCommand playerKeepsDistance = new ActorInRangeOfXCellsFromOtherActorCondition(_turnProcessor, 
         _levelMaster, 
         _levelMaster.Player, 
-        MechanicInstance, 
+        _actor, 
         2);
 
         IConditionCommand HPMoreThan30Percent = new CurrentHPIsMoreThanXPercentCondition(_turnProcessor, 
         _levelMaster, 
-        MechanicInstance.MaxHP,
-        MechanicInstance.CurrentHP,
+        _actor.MaxHP,
+        _actor.CurrentHP,
         30);
 
         IConditionCommand playerInTheCarriageLeft = new ActorInRangeOfCellsCondition(_turnProcessor, _levelMaster, _levelMaster.Player, 0, 3);
 
-        IConditionCommand mechanicInTheCarriageLeft = new ActorInRangeOfCellsCondition(_turnProcessor, _levelMaster, MechanicInstance, 0, 3);
+        IConditionCommand mechanicInTheCarriageLeft = new ActorInRangeOfCellsCondition(_turnProcessor, _levelMaster, _actor, 0, 3);
 
         // Func<float, float, float, bool> HPmoreThan30Percent = HPBasedCondition.CurrentHPIsMoreThanXPercent;
         // Func<TurnProcessor, IActor, IActor, int, bool> PlayerKeepsDistance = CellBasedCondition.ActorInRangeOfXCellsFromOtherActor;
@@ -50,14 +48,14 @@ public class MechanicPatternPicker : BasePatternPicker
         // if (!PlayerAhead(TurnProcessorInst, LevelMasterInst.Player, MechanicInstance)){}
         if (!playerOnCellsAhead.Execute())
         {
-            MechanicInstance.ActionRowInst.Actions = CopyActionSet(_rotate, MechanicInstance.ActionRowInst.Panel);
+            _actor.ActionRowInst.Actions = CopyActionSet(_rotate, _actor.ActionRowInst.Panel);
             return;
         }
 
         // if (!PlayerKeepsDistance(TurnProcessorInst, LevelMasterInst.Player, MechanicInstance, 2)){}
         if (!playerKeepsDistance.Execute())
         {
-            MechanicInstance.ActionRowInst.Actions = CopyActionSet(_approach, MechanicInstance.ActionRowInst.Panel);
+            _actor.ActionRowInst.Actions = CopyActionSet(_approach, _actor.ActionRowInst.Panel);
             return;
         }
 
@@ -65,7 +63,7 @@ public class MechanicPatternPicker : BasePatternPicker
         playerInTheCarriageLeft.Execute() && mechanicInTheCarriageLeft.Execute() && _playerWasInCarriageLeft < 2
         )
         {
-            MechanicInstance.ActionRowInst.Actions = CopyActionSet(_retreat, MechanicInstance.ActionRowInst.Panel);
+            _actor.ActionRowInst.Actions = CopyActionSet(_retreat, _actor.ActionRowInst.Panel);
             _playerWasInCarriageLeft += 1;
             return;
         }
@@ -75,28 +73,28 @@ public class MechanicPatternPicker : BasePatternPicker
             int randomInt = UnityEngine.Random.Range(1, 4);
             if (randomInt == 1)
             {
-                MechanicInstance.ActionRowInst.Actions = CopyActionSet(_chase, MechanicInstance.ActionRowInst.Panel);
+                _actor.ActionRowInst.Actions = CopyActionSet(_chase, _actor.ActionRowInst.Panel);
                 return;
             }
             else if (randomInt == 2)
             {
-                MechanicInstance.ActionRowInst.Actions = CopyActionSet(_heavyPunch, MechanicInstance.ActionRowInst.Panel);
+                _actor.ActionRowInst.Actions = CopyActionSet(_heavyPunch, _actor.ActionRowInst.Panel);
                 return;
             }
             else if (randomInt == 3)
             {
-                MechanicInstance.ActionRowInst.Actions = CopyActionSet(_chasingPunch, MechanicInstance.ActionRowInst.Panel);
+                _actor.ActionRowInst.Actions = CopyActionSet(_chasingPunch, _actor.ActionRowInst.Panel);
                 return;
             }
         }
         else
         {
-            MechanicInstance.ActionRowInst.Actions = CopyActionSet(_tantrums, MechanicInstance.ActionRowInst.Panel);
+            _actor.ActionRowInst.Actions = CopyActionSet(_tantrums, _actor.ActionRowInst.Panel);
             return;
         }
 
         Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
-        MechanicInstance.ActionRowInst.Actions = null;
+        _actor.ActionRowInst.Actions = null;
         return;
     }
 
@@ -116,11 +114,11 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction move = new MoveOneTileForward();
-        move.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        move.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(move);
 
         IAction move1 = new MoveOneTileForward();
-        move1.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        move1.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(move1);
 
         return actions;
@@ -132,7 +130,7 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction rotate = new Rotate();
-        rotate.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        rotate.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(rotate);
 
         return actions;
@@ -143,7 +141,7 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction heavyWalk = new HeavyWalk();
-        heavyWalk.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        heavyWalk.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(heavyWalk);
 
         return actions;
@@ -154,11 +152,11 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction roar = new AngryRoar();
-        roar.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        roar.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(roar);
 
         IAction strike = new Strike();
-        strike.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        strike.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(strike);
 
         return actions;
@@ -169,15 +167,15 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
         
         IAction heavyWalk = new HeavyWalk();
-        heavyWalk.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        heavyWalk.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(heavyWalk);
 
         IAction heavyWalk1 = new HeavyWalk();
-        heavyWalk1.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        heavyWalk1.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(heavyWalk1);
 
         IAction strike = new Strike();
-        strike.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        strike.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(strike);
 
         return actions;
@@ -189,7 +187,7 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction tantrum = new Tantrum();
-        tantrum.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        tantrum.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(tantrum);
 
         return actions;
@@ -200,11 +198,11 @@ public class MechanicPatternPicker : BasePatternPicker
         List<IAction> actions = new();
 
         IAction moveBack = new MoveOneTileBackwards();
-        moveBack.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        moveBack.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(moveBack);
 
         IAction moveBack1 = new MoveOneTileBackwards();
-        moveBack1.InitializeAction(MechanicInstance, _turnProcessor, _levelMaster);
+        moveBack1.InitializeAction(_actor, _turnProcessor, _levelMaster);
         actions.Add(moveBack1);
 
         return actions;

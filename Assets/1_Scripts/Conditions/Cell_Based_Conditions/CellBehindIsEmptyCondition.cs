@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class CellBehindIsEmptyCondition : BaseConditionCommand
 {
-    private IActor _actor;
+    private BaseActor _actor;
 
-    public CellBehindIsEmptyCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actor)
+    public CellBehindIsEmptyCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actor)
         : base(turnProcessor, levelMaster)
     {
         _actor = actor;
@@ -13,15 +13,15 @@ public class CellBehindIsEmptyCondition : BaseConditionCommand
     public override bool Execute()
     {
         int currentCellIndex = _actor.PositionCellIndex;
-        if (new CellBehindExistsCondition(TurnProcessor, LevelMaster, _actor).Execute())
+        if (new CellBehindExistsCondition(TurnProcessorInst, LevelMasterInst, _actor).Execute())
         {
-            if (TurnProcessor.CurrentActor.IsFacingRight())
+            if (TurnProcessorInst.CurrentActor.IsFacingRight())
             {
-                return LevelMaster.Cells[currentCellIndex - 1].EnityOccupyingThisCell == null;
+                return LevelMasterInst.Cells[currentCellIndex - 1].EnityOccupyingThisCell == null;
             }
             else
             {
-                return LevelMaster.Cells[currentCellIndex + 1].EnityOccupyingThisCell == null;
+                return LevelMasterInst.Cells[currentCellIndex + 1].EnityOccupyingThisCell == null;
             }
         }
         else

@@ -9,10 +9,10 @@ public class LastActionIsNotThisActionCondition : BaseConditionCommand
 
     public override bool Execute()
     {
-        if (TurnProcessor.CurrentActor.FightBasedActionHistory == null)
+        if (TurnProcessorInst.CurrentActor.FightBasedActionHistory == null)
         {
             return true;
         }
-        return TurnProcessor.CurrentActor.FightBasedActionHistory[^1].GetType() != TurnProcessor.CurrentAction.GetType();
+        return TurnProcessorInst.CurrentActor.FightBasedActionHistory[^1].GetType() != TurnProcessorInst.CurrentAction.GetType();
     }
 }

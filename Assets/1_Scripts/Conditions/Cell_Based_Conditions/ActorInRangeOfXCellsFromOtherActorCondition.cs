@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class ActorInRangeOfXCellsFromOtherActorCondition : BaseConditionCommand
 {
-    private IActor _actorToFind;
-    private IActor _caster;
+    private BaseActor _actorToFind;
+    private BaseActor _caster;
     private int _range;
 
-    public ActorInRangeOfXCellsFromOtherActorCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actorToFind, IActor caster, int range)
+    public ActorInRangeOfXCellsFromOtherActorCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actorToFind, BaseActor caster, int range)
         : base(turnProcessor, levelMaster)
     {
         _actorToFind = actorToFind;
@@ -21,16 +21,16 @@ public class ActorInRangeOfXCellsFromOtherActorCondition : BaseConditionCommand
         int rangeTemp = _range;
         while (rangeTemp > 0)
         {
-            if (rangeTemp + cellIndex < LevelMaster.Cells.Count)
+            if (rangeTemp + cellIndex < LevelMasterInst.Cells.Count)
             {
-                if (LevelMaster.Cells[rangeTemp + cellIndex].EnityOccupyingThisCell == _actorToFind)
+                if (LevelMasterInst.Cells[rangeTemp + cellIndex].EnityOccupyingThisCell == _actorToFind)
                 {
                     return true;
                 }
             }
             if (cellIndex - rangeTemp >= 0)
             {
-                if (LevelMaster.Cells[cellIndex - rangeTemp].EnityOccupyingThisCell == _actorToFind)
+                if (LevelMasterInst.Cells[cellIndex - rangeTemp].EnityOccupyingThisCell == _actorToFind)
                 {
                     return true;
                 }

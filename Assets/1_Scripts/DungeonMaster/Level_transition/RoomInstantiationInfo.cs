@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RoomInstantiationInfo", menuName = "Rooms/RoomInstantiationInfo")]
 public class RoomInstantiationInfo : ScriptableObject
 {
-    public List<EnemeyInstantiationInfo> EnemiesToInstantiate;
+    public List<EnemyInstantiationInfo> EnemiesToInstantiate;
     public int PlayerCellIndex;
     public int PlayerRotation;
 }

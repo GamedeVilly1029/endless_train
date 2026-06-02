@@ -5,9 +5,9 @@ public class Push : BaseAction
     {
         CooldownMax = 1;
         Cooldown = 0;
-        if (Resources.Load<GameObject>("PushActionUI") != null)
+        if (Resources.Load<GameObject>("PushActionUI/PushActionUI") != null)
         {
-            UIRepresentation = Resources.Load<GameObject>("PushActionUI");
+            UIRepresentation = Resources.Load<GameObject>("PushActionUI/PushActionUI");
         }
         else
         {
@@ -20,7 +20,7 @@ public class Push : BaseAction
     {
         ActionConstruct = new()
         {
-            new PushConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Push)
+            new PushConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Push, Actor)
         };
     }
 

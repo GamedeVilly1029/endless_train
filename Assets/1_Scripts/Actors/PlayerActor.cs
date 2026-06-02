@@ -14,14 +14,7 @@ public class PlayerActor : BaseActor
         LevelMasterInst.Cells[cellIndex].EnityOccupyingThisCell = this;
         PositionCellIndex = cellIndex;
         MaxHP = HP;
-        CurrentHP = MaxHP;
-        TransformReference.rotation = Quaternion.Euler(0f, YRotation, 0f);
+        CurrentHP = MaxHP - 30;
+        GraphicTransform.rotation = Quaternion.Euler(0f, YRotation, 0f);
     } 
-
-
-    private void Update()
-    {
-        TryToDie(CurrentHP);
-        HPBarText.text = CurrentHP.ToString();
-    }
 }

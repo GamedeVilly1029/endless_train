@@ -6,13 +6,13 @@ public class BaseStatusConcrete : IStatusConcrete
 {
     public TurnProcessor TurnProcessorInst;
     public LevelMaster LevelMasterInst;
-    public IActor Actor;
+    public BaseActor Actor;
 
     public BaseStatusConcrete
     (
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster,
-        IActor actor
+        BaseActor actor
     )
     {
         TurnProcessorInst = turnProcessor;

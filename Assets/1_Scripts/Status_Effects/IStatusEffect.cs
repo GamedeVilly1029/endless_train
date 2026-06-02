@@ -6,12 +6,12 @@ public interface IStatusEffect
 {
     TurnProcessor TurnProcessorInstance{get;set;}
     LevelMaster LevelMasterInstance{get;set;}
-    IActor Actor{get;set;}
+    BaseActor Actor{get;set;}
     List<IStatusConcrete> StatusConstruct{get;set;}
     bool DestroyAfterApplication{get;set;}
 
-    void ChildInitialize(IActor actor);
-    void Initialize(TurnProcessor turnProcessor,LevelMaster levelMaster, IActor actor);
+    void ChildInitialize(BaseActor actor);
+    void Initialize(TurnProcessor turnProcessor,LevelMaster levelMaster, BaseActor actor);
     IEnumerator Apply();
     void SelfDestroy(List<IStatusEffect> listToRemoveFrom);
 }

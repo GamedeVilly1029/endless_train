@@ -7,7 +7,7 @@ public class ActionMaster : MonoBehaviour
 
     private void Start()
     {
-        foreach (IActor actor in _levelMaster.AllActors)
+        foreach (BaseActor actor in _levelMaster.AllActors)
         {
             actor.PatternPicker.InitializeActionPrototypes();
         }

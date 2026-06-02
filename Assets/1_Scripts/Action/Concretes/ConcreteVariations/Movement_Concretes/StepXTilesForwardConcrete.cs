@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class StepXTilesForwardConcrete : ValueConcrete
 {
-    IActor _actorToMove;
+    BaseActor _actorToMove;
     public StepXTilesForwardConcrete(TurnProcessor turnProcessor, 
     LevelMaster levelMaster, 
     IAction actionOfThisConcrete, 
     List<IConditionCommand> extraConditions, 
     ActionConcreteTag tag,
     int value,
-    IActor actorToMove
+    BaseActor actorToMove
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag, value)
     {
         _actorToMove = actorToMove;
@@ -23,7 +23,7 @@ public class StepXTilesForwardConcrete : ValueConcrete
         while (stepsToSubtract > 0)
         {
             Object.FindFirstObjectByType<AudioMaster>().PlaySound("step");
-            yield return new StepOneCellForwardConcrete(TurnProcessorInst, LevelMasterInst, ActionOfThisConcrete, null, ActionConcreteTag.Move, _actorToMove);
+            yield return new StepOneCellForwardConcrete(TurnProcessorInst, LevelMasterInst, ActionOfThisConcrete, null, ActionConcreteTag.Move, _actorToMove).Execute();
 
             stepsToSubtract--;
         }

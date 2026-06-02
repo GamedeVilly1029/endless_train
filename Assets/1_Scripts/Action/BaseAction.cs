@@ -7,14 +7,14 @@ public class BaseAction: IAction
     public IAction PrototypeAction{get;set;} = null;
     public TurnProcessor TurnProcessorInstance{get;set;}
     public LevelMaster LevelMasterInstance{get;set;}
-    public IActor Actor {get;set;}
+    public BaseActor Actor {get;set;}
     public GameObject UIRepresentation {get;set;}
     public List<IConcrete> ActionConstruct {get;set;}
     public List<IConcrete> TurnTemporarySuccessfulConcreteHistory {get;set;}
     public virtual int CooldownMax{get;set;}
     public virtual int Cooldown{get;set;}
 
-    public void InitializeAction(IActor actor, TurnProcessor turnProcessor, LevelMaster levelMaster)
+    public void InitializeAction(BaseActor actor, TurnProcessor turnProcessor, LevelMaster levelMaster)
     {
         TurnProcessorInstance = turnProcessor;
         Actor = actor;

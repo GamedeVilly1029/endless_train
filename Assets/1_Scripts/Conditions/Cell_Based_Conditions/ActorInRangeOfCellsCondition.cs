@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class ActorInRangeOfCellsCondition : BaseConditionCommand
 {
-    private IActor _actor;
+    private BaseActor _actor;
     private int _start;
     private int _end;
 
-    public ActorInRangeOfCellsCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actor, int start, int end)
+    public ActorInRangeOfCellsCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actor, int start, int end)
         : base(turnProcessor, levelMaster)
     {
         _actor = actor;

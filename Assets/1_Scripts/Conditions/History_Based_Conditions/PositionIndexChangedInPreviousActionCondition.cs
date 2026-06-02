@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PositionIndexChangedInPreviousActionCondition : BaseConditionCommand
 {
-    private IActor _actor;
+    private BaseActor _actor;
 
-    public PositionIndexChangedInPreviousActionCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, IActor actor)
+    public PositionIndexChangedInPreviousActionCondition(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actor)
         : base(turnProcessor, levelMaster)
     {
         _actor = actor;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public static class StatusEffectLowLevelFunctionality
 {
-    public static List<IAction> ExtractActorActions(IActor actor)
+    public static List<IAction> ExtractActorActions(BaseActor actor)
     {
         List<IAction> actions = new();
         foreach (IAction action in actor.ActionRowInst.Actions)

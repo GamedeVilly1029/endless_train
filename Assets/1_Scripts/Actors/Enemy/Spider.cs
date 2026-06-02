@@ -9,12 +9,6 @@ public class Spider : BaseActor
         PositionCellIndex = cellIndex;
         MaxHP = HP;
         CurrentHP = MaxHP;
-        TransformReference.rotation = Quaternion.Euler(0f, YRotation, 0f);
-    }
-
-    private void Update()
-    {
-        HPBarText.text = CurrentHP.ToString();
-        TryToDie(CurrentHP);
+        GraphicTransform.rotation = Quaternion.Euler(0f, YRotation, 0f);
     }
 }

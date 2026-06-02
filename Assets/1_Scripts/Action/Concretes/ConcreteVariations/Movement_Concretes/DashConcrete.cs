@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DashConcrete : ValueConcrete
 {
-    private IActor _caller;
+    private BaseActor _caller;
 
     public DashConcrete(
     TurnProcessor turnProcessor,
@@ -13,7 +13,7 @@ public class DashConcrete : ValueConcrete
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     int value,
-    IActor caller
+    BaseActor caller
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag, value)
     {
         _caller = caller;

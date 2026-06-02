@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RotateActorConcrete : BaseConcrete
 {
-    private IActor _actorToRotate;
+    private BaseActor _actorToRotate;
 
     public RotateActorConcrete(
     TurnProcessor turnProcessor,
@@ -12,7 +12,7 @@ public class RotateActorConcrete : BaseConcrete
     IAction actionOfThisConcrete, 
     List<IConditionCommand> extraConditions, 
     ActionConcreteTag tag,
-    IActor actorToRotate
+    BaseActor actorToRotate
     ): base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
         _actorToRotate = actorToRotate;
@@ -20,17 +20,17 @@ public class RotateActorConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
-        Quaternion start = _actorToRotate.TransformReference.rotation;
+        Quaternion start = _actorToRotate.GraphicTransform.rotation;
         Quaternion target = _actorToRotate.IsFacingRight() ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
         float timePast = 0;
         while (timePast < 0.25)
         {
             float normalizedTime = timePast / 0.25f;
-            _actorToRotate.TransformReference.rotation = Quaternion.Slerp(start, target, normalizedTime);
+            _actorToRotate.GraphicTransform.rotation = Quaternion.Slerp(start, target, normalizedTime);
             timePast += Time.deltaTime;
             yield return null;
         }
-        _actorToRotate.TransformReference.rotation = target;
+        _actorToRotate.GraphicTransform.rotation = target;
 
         yield return GlobalLowLevelConcrete.Pause;
     }

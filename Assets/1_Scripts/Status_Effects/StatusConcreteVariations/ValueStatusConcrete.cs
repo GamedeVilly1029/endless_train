@@ -8,7 +8,7 @@ public class ValueStatusConcrete : BaseStatusConcrete
     (
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster,
-        IActor actor,
+        BaseActor actor,
         int value
     ):base(turnProcessor, levelMaster, actor) 
     {
