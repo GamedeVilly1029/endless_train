@@ -107,3 +107,4 @@ InitTestScene*.unity*
 /[Pp]ackages/com.singularitygroup.hotreload.meta
 Assets/HotReload/
 SingularityGroup.HotReload*.lscache
+Assets/_Recovery/
