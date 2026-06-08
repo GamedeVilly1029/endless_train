@@ -28,6 +28,7 @@ public class BaseConcrete : IConcrete
 
     public IEnumerator Execute()
     {
+        ExtraConditionCalculations();
         if (ExtraConditions == null)
         {
             ActionOfThisConcrete.TurnTemporarySuccessfulConcreteHistory.Add(this);
@@ -63,5 +64,19 @@ public class BaseConcrete : IConcrete
     public virtual IEnumerator DeclinedConcrete()
     {
         yield break;
+    }
+
+    private void ExtraConditionCalculations()
+    {
+        if (ExtraConditions == null)
+        {
+            ExtraConditions = new();
+        }
+        ChildExtraConditionCalculations();
+    }
+
+    public virtual void ChildExtraConditionCalculations()
+    {
+        return;
     }
 }

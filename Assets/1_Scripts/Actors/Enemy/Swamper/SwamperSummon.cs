@@ -1,7 +1,6 @@
-using TMPro;
 using UnityEngine;
 
-public class Mechanic : BaseActor
+public class SwamperSummon : Summon
 {
     public override void InitializeChild(int cellIndex, float YRotation, int HP)
     {
@@ -11,5 +10,7 @@ public class Mechanic : BaseActor
         MaxHP = HP;
         CurrentHP = MaxHP;
         GraphicTransform.rotation = Quaternion.Euler(0f, YRotation, 0f);
+
+        Traits.Add(new UnPushAbleTrait());
     }
 }

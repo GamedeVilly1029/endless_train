@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+
 public class ValueStatusConcrete : BaseStatusConcrete
 {
     public int Value;
@@ -7,8 +8,7 @@ public class ValueStatusConcrete : BaseStatusConcrete
     public ValueStatusConcrete
     (
         TurnProcessor turnProcessor, 
-        LevelMaster levelMaster,
-        BaseActor actor,
+        LevelMaster levelMaster, BaseActor actor,
         int value
     ):base(turnProcessor, levelMaster, actor) 
     {

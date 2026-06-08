@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PushConcrete : BaseConcrete
 {
-    BaseActor _pusher;
-    BaseActor _actorAhead;
+    public BaseActor _pusher;
+    public BaseActor _actorAhead;
     public PushConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
@@ -16,7 +16,6 @@ public class PushConcrete : BaseConcrete
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
         _pusher = pusher;
-        // ExtraConditions.Add(new IsPushAbleCondition(TurnProcessorInst, LevelMasterInst, _actorAhead)); // This is not triggered, because _actorAhead assigned after this condition runs.
     }
 
     public override IEnumerator ChildExecute()
@@ -25,7 +24,6 @@ public class PushConcrete : BaseConcrete
 
         if (new CellAheadExistsCondition(TurnProcessorInst, LevelMasterInst, TurnProcessorInst.CurrentActor).Execute())
         {
-            _actorAhead = GlobalLowLevelConcrete.TryReturnActorAhead(TurnProcessorInst, LevelMasterInst, TurnProcessorInst.CurrentActor);
             if (_actorAhead != null)
             {
                 if (new AdjacentCellsExistsCondition(TurnProcessorInst, LevelMasterInst, _actorAhead).Execute())
@@ -43,14 +41,23 @@ public class PushConcrete : BaseConcrete
             }
         }
 
-        Object.FindFirstObjectByType<AudioMaster>().PlaySound("push");
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("push");
         yield return GlobalLowLevelConcrete.Pause;
+    }
+
+    public override void ChildExtraConditionCalculations()
+    {
+        _actorAhead = GlobalLowLevelConcrete.TryReturnActorAhead(TurnProcessorInst, LevelMasterInst, _pusher);
+        if (_actorAhead != null)
+        {
+            ExtraConditions.Add(new IsPushAbleCondition(TurnProcessorInst, LevelMasterInst, _actorAhead));
+        }
     }
 
     public override IEnumerator DeclinedConcrete()
     {
         ActorParticlePlayer.PlayParticles(_pusher, ParticleType.Push);
-        Object.FindFirstObjectByType<AudioMaster>().PlaySound("push");
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("push");
         yield break;
     }
 

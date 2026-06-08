@@ -26,6 +26,7 @@ public class LevelMaster : MonoBehaviour
     public void LoadNextRoom()
     {
         RoomInstantiationInfo room = _roomQueue.Dequeue();
+        Cells[Player.PositionCellIndex].EnityOccupyingThisCell = null;
         Player.Initialize(room.PlayerCellIndex, room.PlayerRotation, 99, _turnProcessor, this);
         LoadEnemies(room);
     }
