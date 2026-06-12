@@ -9,7 +9,7 @@ public class RotateActorConcrete : BaseConcrete
     public RotateActorConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster, 
-    IAction actionOfThisConcrete, 
+    BaseAction actionOfThisConcrete, 
     List<IConditionCommand> extraConditions, 
     ActionConcreteTag tag,
     BaseActor actorToRotate
@@ -35,7 +35,7 @@ public class RotateActorConcrete : BaseConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new RotateActorConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actorToRotate);
     }

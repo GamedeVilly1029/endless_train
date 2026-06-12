@@ -8,7 +8,7 @@ public class ActionRow : MonoBehaviour
     [SerializeField] private float offsetOfThePanel;
 
     public RectTransform Panel;
-    [HideInInspector] public List<IAction> Actions;
+    [HideInInspector] public List<BaseAction> Actions;
     [HideInInspector] public UnityEvent OnActionAdd;
     [HideInInspector] public UnityEvent OnActionRemove;
 

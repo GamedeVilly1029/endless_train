@@ -9,7 +9,7 @@ public class PushConcrete : BaseConcrete
     public PushConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     BaseActor pusher
@@ -45,13 +45,17 @@ public class PushConcrete : BaseConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    public override void ChildExtraConditionCalculations()
+    public override List<IConditionCommand> CreateBaseConditionList()
     {
+        List<IConditionCommand> conds = new();
+
         _actorAhead = GlobalLowLevelConcrete.TryReturnActorAhead(TurnProcessorInst, LevelMasterInst, _pusher);
         if (_actorAhead != null)
         {
-            ExtraConditions.Add(new IsPushAbleCondition(TurnProcessorInst, LevelMasterInst, _actorAhead));
+            conds.Add(new IsPushAbleCondition(TurnProcessorInst, LevelMasterInst, _actorAhead));
         }
+
+        return conds;
     }
 
     public override IEnumerator DeclinedConcrete()
@@ -61,7 +65,7 @@ public class PushConcrete : BaseConcrete
         yield break;
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new PushConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _pusher);
     }

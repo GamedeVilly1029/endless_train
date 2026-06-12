@@ -6,5 +6,5 @@ public interface IConcrete
 {
     IEnumerator Execute();
 
-    IConcrete Clone(IAction clonedAction);
+    IConcrete Clone(BaseAction clonedAction);
 }

@@ -8,11 +8,11 @@ public class TurnProcessor : MonoBehaviour
     [SerializeField] private ActionMaster _actionMaster;
     [SerializeField] private LevelMaster _levelMaster;
 
-    public IAction CurrentAction;
+    public BaseAction CurrentAction;
     public BaseActor CurrentActor;
 
     private bool _noActionsLeft;
-    private List<IAction> _playerActions;
+    private List<BaseAction> _playerActions;
 
     public IEnumerator IterateThroughActionRow()
     {

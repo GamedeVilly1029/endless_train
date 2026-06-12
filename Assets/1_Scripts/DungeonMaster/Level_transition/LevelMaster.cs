@@ -6,7 +6,7 @@ public class LevelMaster : MonoBehaviour
 {
     [SerializeField] private TurnProcessor _turnProcessor;
     public List<RoomInstantiationInfo> Rooms;
-    [SerializeField] private Transform _instantiationPlaceForEnemies;
+    public Transform InstantiationPlaceForEnemies;
     [SerializeField] private List<Transform> MovementCellAnchors;
 
     [HideInInspector] public List<Cell> Cells;
@@ -35,7 +35,7 @@ public class LevelMaster : MonoBehaviour
     {
         foreach (EnemyInstantiationInfo enemyInfo in room.EnemiesToInstantiate)
         {
-            BaseActor enemy = Instantiate(enemyInfo.ActorPrefab, _instantiationPlaceForEnemies);
+            BaseActor enemy = Instantiate(enemyInfo.ActorPrefab, InstantiationPlaceForEnemies);
             enemy.Initialize(enemyInfo.CellIndex, enemyInfo.RotationAngle, enemyInfo.HP, _turnProcessor, this);
             AllActors.Add(enemy);
         }

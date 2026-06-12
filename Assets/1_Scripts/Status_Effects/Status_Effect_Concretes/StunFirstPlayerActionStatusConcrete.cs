@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class StunFirstPlayerActionStatusConcrete : ActionAddStatusConcrete
 {
-    private IAction _stunAction;
+    private BaseAction _stunAction;
     public StunFirstPlayerActionStatusConcrete
     (
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster, 
         BaseActor actor, 
-        IAction actionToAssign
+        BaseAction actionToAssign
     ):base(turnProcessor, levelMaster, actor, actionToAssign)
     {
         _stunAction = actionToAssign;
@@ -24,7 +24,7 @@ public class StunFirstPlayerActionStatusConcrete : ActionAddStatusConcrete
             ActionManipulationMethods.RemoveFromActionRowAndShrinkIt(LevelMasterInst.Player.ActionRowInst.Actions[0]);
         }
 
-        IAction createdAction = _stunAction.CloneAndInstantiateUI(LevelMasterInst.Player.ActionRowInst.Panel, ActionToAssign);
+        BaseAction createdAction = _stunAction.CloneAndInstantiateUI(LevelMasterInst.Player.ActionRowInst.Panel, ActionToAssign);
         createdAction.UIRepresentation.transform.SetSiblingIndex(0);
         LevelMasterInst.Player.ActionRowInst.Actions.Insert(0, createdAction);
 

@@ -7,7 +7,7 @@ public class BeStunnedConcrete : BaseConcrete
     public BeStunnedConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
@@ -21,7 +21,7 @@ public class BeStunnedConcrete : BaseConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new BeStunnedConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag);
     }

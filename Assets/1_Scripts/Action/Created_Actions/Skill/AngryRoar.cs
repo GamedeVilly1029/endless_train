@@ -2,34 +2,19 @@ using UnityEngine;
 
 public class AngryRoar: BaseAction 
 {
-    public override void InitializeChildAction()
-    {
-        CooldownMax = 1;
-        Cooldown = 0;
-        if (Resources.Load<GameObject>("SkillActionUI/AngryRoarActionUI") != null)
-        {
-            UIRepresentation = Resources.Load<GameObject>("SkillActionUI/AngryRoarActionUI");
-        }
-        else
-        {
-            Debug.LogError("Resources.Load can't find UIRepresentationAsset");
-        }
-        InitializeConstruct();
-    }
-
-    private void InitializeConstruct()
+    public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new IncreaseDamageOfNextAttackConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Skill, Actor)
+            new IncreaseDamageOfNextAttackConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Skill, Actor)
         };
     }
 
-    public override IAction CreateClone(Transform transform)
+    public override BaseAction CreateClone(Transform transform)
     {
         AngryRoar actionClone = new()
         {
-            TurnProcessorInstance = TurnProcessorInstance,
+            TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

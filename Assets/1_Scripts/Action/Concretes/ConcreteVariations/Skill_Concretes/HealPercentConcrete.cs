@@ -10,7 +10,7 @@ public class HealPercentConcrete : ValueConcrete
     (
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster, 
-        IAction actionOfThisConcrete, 
+        BaseAction actionOfThisConcrete, 
         List<IConditionCommand> extraConditions, 
         ActionConcreteTag tag, 
         int value,
@@ -40,7 +40,7 @@ public class HealPercentConcrete : ValueConcrete
         new GraphicTransformColorLerpConcrete(_caster, Color.green, 0.5f).Execute();
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new HealPercentConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, _caster);
     }

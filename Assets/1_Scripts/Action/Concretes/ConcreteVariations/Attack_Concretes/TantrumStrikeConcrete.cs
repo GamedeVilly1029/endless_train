@@ -8,7 +8,7 @@ public class TantrumStrikeConcrete : ValueConcrete
     public TantrumStrikeConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     int value,
@@ -51,7 +51,7 @@ public class TantrumStrikeConcrete : ValueConcrete
         ).Execute();
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new TantrumStrikeConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, _striker);
     }

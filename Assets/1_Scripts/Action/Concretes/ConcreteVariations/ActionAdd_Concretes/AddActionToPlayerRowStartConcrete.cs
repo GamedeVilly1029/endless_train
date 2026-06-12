@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class AddActionToPlayerRowStartConcrete : ActionAddConcrete
 {
-    private IAction _actionOfThisConcreteRef;
+    private BaseAction _actionOfThisConcreteRef;
 
     public AddActionToPlayerRowStartConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
-    IAction actionToAdd
+    BaseAction actionToAdd
     ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag, actionToAdd)
     {
         _actionOfThisConcreteRef = actionOfThisConcrete;
@@ -20,7 +20,7 @@ public class AddActionToPlayerRowStartConcrete : ActionAddConcrete
 
     public override IEnumerator ChildExecute()
     {
-        IAction createdAction = ActionToAdd.CloneAndInstantiateUI(
+        BaseAction createdAction = ActionToAdd.CloneAndInstantiateUI(
             LevelMasterInst.Player.ActionRowInst.Panel,
             ActionToAdd
         );
@@ -39,7 +39,7 @@ public class AddActionToPlayerRowStartConcrete : ActionAddConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new AddActionToPlayerRowStartConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, ActionToAdd);
     }

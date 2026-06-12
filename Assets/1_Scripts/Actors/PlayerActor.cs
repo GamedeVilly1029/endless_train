@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerActor : BaseActor 
 {
-    public List<IAction> Belt = new();
+    public List<BaseAction> Belt = new();
     public Transform BeltPanel;
     public int ActionInRowLimit = 3;
     public int ActionInRowCount = 0;

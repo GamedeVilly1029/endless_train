@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class Summon : BaseActor
 {
-    public BaseActor Summoner;
+    [HideInInspector] public Summoner SummonerInst;
 }

@@ -7,28 +7,29 @@ public class BaseConcrete : IConcrete
 {
     public TurnProcessor TurnProcessorInst;
     public LevelMaster LevelMasterInst;
-    public IAction ActionOfThisConcrete;
+    public BaseAction ActionOfThisConcrete;
     public List<IConditionCommand> ExtraConditions;
+    public List<IConditionCommand> ActionPassedConditions;
     public ActionConcreteTag Tag;
 
     public BaseConcrete(
     TurnProcessor turnProcessor, 
     LevelMaster levelMaster, 
-    IAction actionOfThisConcrete, 
-    List<IConditionCommand> extraConditions, 
+    BaseAction actionOfThisConcrete, 
+    List<IConditionCommand> actionPassedConditions, 
     ActionConcreteTag tag
     )
     {
         TurnProcessorInst = turnProcessor;
         LevelMasterInst = levelMaster;
         ActionOfThisConcrete = actionOfThisConcrete;
-        ExtraConditions = extraConditions;
+        ActionPassedConditions = actionPassedConditions;
         Tag = tag;
     }
 
     public IEnumerator Execute()
     {
-        ExtraConditionCalculations();
+        ConditionCalc();
         if (ExtraConditions == null)
         {
             ActionOfThisConcrete.TurnTemporarySuccessfulConcreteHistory.Add(this);
@@ -55,7 +56,7 @@ public class BaseConcrete : IConcrete
         yield break;
     }
 
-    public virtual IConcrete Clone(IAction clonedAction)
+    public virtual IConcrete Clone(BaseAction clonedAction)
     {
         Debug.LogWarning($"Implement Cloning of this concrete");
         return null;
@@ -66,17 +67,28 @@ public class BaseConcrete : IConcrete
         yield break;
     }
 
-    private void ExtraConditionCalculations()
+    private void ConditionCalc()
     {
-        if (ExtraConditions == null)
-        {
-            ExtraConditions = new();
-        }
-        ChildExtraConditionCalculations();
+        ExtraConditions = new();
+        List<IConditionCommand> builtInConditions = CreateBaseConditionList();
+        AddToExtraConditions(builtInConditions);
+        AddToExtraConditions(ActionPassedConditions);
     }
 
-    public virtual void ChildExtraConditionCalculations()
+    public virtual List<IConditionCommand> CreateBaseConditionList()
     {
-        return;
+        // Base conditions of the Concrete should be created and initialized there
+        return null;
+    }
+
+    private void AddToExtraConditions(List<IConditionCommand> conditions)
+    {
+        if (conditions != null && conditions.Count > 0)
+        {
+            foreach (IConditionCommand condition in conditions)
+            {
+                ExtraConditions.Add(condition);
+            }
+        }
     }
 }

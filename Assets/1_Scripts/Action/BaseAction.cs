@@ -2,34 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseAction: IAction
+public class BaseAction
 {
-    public IAction PrototypeAction{get;set;} = null;
-    public TurnProcessor TurnProcessorInstance{get;set;}
-    public LevelMaster LevelMasterInstance{get;set;}
-    public BaseActor Actor {get;set;}
-    public GameObject UIRepresentation {get;set;}
-    public List<IConcrete> ActionConstruct {get;set;}
-    public List<IConcrete> TurnTemporarySuccessfulConcreteHistory {get;set;}
-    public virtual int CooldownMax{get;set;}
-    public virtual int Cooldown{get;set;}
+    public BaseAction PrototypeAction = null;
+    [HideInInspector] public TurnProcessor TurnProcessorInst;
+    [HideInInspector] public LevelMaster LevelMasterInst;
+    [HideInInspector] public BaseActor Actor; 
+    [HideInInspector] public GameObject UIRepresentation; 
+    public List<IConcrete> ActionConstruct; 
+    public List<IConcrete> TurnTemporarySuccessfulConcreteHistory; 
+    [HideInInspector] public int CooldownMax;
+    [HideInInspector] public int Cooldown;
 
-    public void InitializeAction(BaseActor actor, TurnProcessor turnProcessor, LevelMaster levelMaster)
+    public void Initialize
+    (
+        BaseActor actor, 
+        TurnProcessor turnProcessor, 
+        LevelMaster levelMaster,
+        int maxCooldown,
+        string pathToUI
+    )
     {
-        TurnProcessorInstance = turnProcessor;
+        TurnProcessorInst = turnProcessor;
         Actor = actor;
-        LevelMasterInstance = levelMaster;
-        InitializeChildAction();
+        LevelMasterInst = levelMaster;
+        CooldownMax = maxCooldown;
+        Cooldown = 0;
+
+        if (Resources.Load<GameObject>(pathToUI) != null)
+        {
+            UIRepresentation = Resources.Load<GameObject>(pathToUI);
+        }
+        else
+        {
+            Debug.LogError($"Resources.Load can't find UIRepresentationAsset or {pathToUI} contains typos");
+        }
+
+        InitializeChild();
+        InitializeConstruct();
     }
 
-    public virtual void InitializeChildAction()
+    public virtual void InitializeChild()
     {
-        Debug.LogError("Base class placeholder is called - error"); 
+        return;
     }
 
-    public IAction CloneAndInstantiateUI(Transform transform, IAction prototypeAction)
+    public virtual void InitializeConstruct()
     {
-        IAction clone = CreateClone(transform);
+        return;
+    }
+
+    public BaseAction CloneAndInstantiateUI(Transform transform, BaseAction prototypeAction)
+    {
+        BaseAction clone = CreateClone(transform);
         SetReferenceAction(prototypeAction, clone);
         if (transform == Actor.ActionRowInst.Panel) // Automatically adds UI place for the ET_Action.
         {
@@ -39,18 +64,18 @@ public class BaseAction: IAction
         return clone;
     }
 
-    public virtual IAction CreateClone(Transform transform)
+    public virtual BaseAction CreateClone(Transform transform)
     {
         Debug.Log("Base class placeholder is called - error");
         return null;
     }
     
-    public void SetReferenceAction(IAction prototype, IAction actionClone)
+    public void SetReferenceAction(BaseAction prototype, BaseAction actionClone)
     {
         actionClone.PrototypeAction = prototype;
     }
 
-    public List<IConcrete> CloneActionConstruct(IAction actionClone)
+    public List<IConcrete> CloneActionConstruct(BaseAction actionClone)
     {
         List<IConcrete> construct = new();
         foreach (IConcrete element in ActionConstruct)

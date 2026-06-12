@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class ActionManipulationMethods
 {
-    public static void RemoveFromActionRowAndShrinkIt(IAction action)
+    public static void RemoveFromActionRowAndShrinkIt(BaseAction action)
     {
         if (action.UIRepresentation != null)
         {
@@ -13,7 +13,7 @@ public static class ActionManipulationMethods
         action.Actor.ActionRowInst.OnActionRemove.Invoke();
     }
 
-    public static void RemoveFromActionRow(IAction action)
+    public static void RemoveFromActionRow(BaseAction action)
     {
         if (action.UIRepresentation != null)
         {

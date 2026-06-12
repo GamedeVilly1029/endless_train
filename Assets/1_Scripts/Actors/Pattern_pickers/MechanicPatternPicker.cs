@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class MechanicPatternPicker : BasePatternPicker
 {
-    private List<IAction> _approach;
-    private List<IAction> _rotate;
-    private List<IAction> _chase;
-    private List<IAction> _heavyPunch;
-    private List<IAction> _chasingPunch;
-    private List<IAction> _tantrums;
-    private List<IAction> _retreat;
+    private List<BaseAction> _approach;
+    private List<BaseAction> _rotate;
+    private List<BaseAction> _chase;
+    private List<BaseAction> _heavyPunch;
+    private List<BaseAction> _chasingPunch;
+    private List<BaseAction> _tantrums;
+    private List<BaseAction> _retreat;
 
     private int _playerWasInCarriageLeft = 0;
     
@@ -98,7 +98,7 @@ public class MechanicPatternPicker : BasePatternPicker
         return;
     }
 
-    public override void InitializeActionPrototypes()
+    public override void InitializeChild()
     {
         _approach = InitializeApproach();
         _rotate = InitializeRotate();
@@ -109,111 +109,110 @@ public class MechanicPatternPicker : BasePatternPicker
         _retreat = InitializeRetreat();
     }
 
-    private List<IAction> InitializeApproach()
+    private List<BaseAction> InitializeApproach()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction move = new MoveOneTileForward();
-        move.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction move = new MoveOneTileForward();
+        move.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkForward");
         actions.Add(move);
 
-        IAction move1 = new MoveOneTileForward();
-        move1.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction move1 = new MoveOneTileForward();
+        move1.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkForward");
         actions.Add(move1);
 
         return actions;
     }
 
 
-    private List<IAction> InitializeRotate()
+    private List<BaseAction> InitializeRotate()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction rotate = new Rotate();
-        rotate.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction rotate = new Rotate();
+        rotate.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/Rotate");
         actions.Add(rotate);
 
         return actions;
-    }
+    } 
 
-    private List<IAction> InitializeChase()
+    private List<BaseAction> InitializeChase()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction heavyWalk = new HeavyWalk();
-        heavyWalk.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction heavyWalk = new HeavyWalk();
+        heavyWalk.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/HeavyWalk");
         actions.Add(heavyWalk);
 
         return actions;
     }
 
-    private List<IAction> InitializeHeavyPunch()
+    private List<BaseAction> InitializeHeavyPunch()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction roar = new AngryRoar();
-        roar.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction roar = new AngryRoar();
+        roar.Initialize(_actor, _turnProcessor, _levelMaster, 0, "SkillActionUI/AngryRoar");
         actions.Add(roar);
 
-        IAction strike = new Strike();
-        strike.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction strike = new Strike();
+        strike.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/Strike");
         actions.Add(strike);
 
         return actions;
     }
 
-    private List<IAction> InitializeChasingPunch()
+    private List<BaseAction> InitializeChasingPunch()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
         
-        IAction heavyWalk = new HeavyWalk();
-        heavyWalk.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction heavyWalk = new HeavyWalk();
+        heavyWalk.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/HeavyWalk");
         actions.Add(heavyWalk);
 
-        IAction heavyWalk1 = new HeavyWalk();
-        heavyWalk1.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction heavyWalk1 = new HeavyWalk();
+        heavyWalk1.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/HeavyWalk");
         actions.Add(heavyWalk1);
 
-        IAction strike = new Strike();
-        strike.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction strike = new Strike();
+        strike.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/Strike");
         actions.Add(strike);
 
         return actions;
     }
 
-        
-    private List<IAction> InitializeTantrum()
+    private List<BaseAction> InitializeTantrum()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction tantrum = new Tantrum();
-        tantrum.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction tantrum = new Tantrum();
+        tantrum.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/Tantrum");
         actions.Add(tantrum);
 
         return actions;
     }
 
-    private List<IAction> InitializeRetreat()
+    private List<BaseAction> InitializeRetreat()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction moveBack = new MoveOneTileBackwards();
-        moveBack.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction moveBack = new MoveOneTileBackwards();
+        moveBack.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkBackwards");
         actions.Add(moveBack);
 
-        IAction moveBack1 = new MoveOneTileBackwards();
-        moveBack1.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction moveBack1 = new MoveOneTileBackwards();
+        moveBack1.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkBackwards");
         actions.Add(moveBack1);
 
         return actions;
     }
 
-    private List<IAction> CopyActionSet(List<IAction> set, RectTransform UIPanel)
+    private List<BaseAction> CopyActionSet(List<BaseAction> set, RectTransform UIPanel)
     {
-        List<IAction> copies = new();
-        foreach (IAction action in set)
+        List<BaseAction> copies = new();
+        foreach (BaseAction action in set)
         {
-           IAction copy = action.CloneAndInstantiateUI(UIPanel, action);
+           BaseAction copy = action.CloneAndInstantiateUI(UIPanel, action);
            copies.Add(copy);
         }
         return copies;

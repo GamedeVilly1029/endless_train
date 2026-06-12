@@ -14,15 +14,25 @@ public class BasePatternPicker : MonoBehaviour
             _turnProcessor = _actor.TurnProcessorInst;
             _levelMaster = _actor.LevelMasterInst;
         }
-        InitializeActionPrototypes();
+        InitializeChild();
     }
 
     public virtual void FillActionRowOrBelt()
     {
         Debug.LogWarning("Base pattern picker's fill method was called");
     }
-    public virtual void InitializeActionPrototypes()
+    public virtual void InitializeChild()
     {
         Debug.LogWarning("Base pattern picker's Initialize() method was called");
+    }
+
+    public List<BaseAction> CopyActionSet(List<BaseAction> set, RectTransform UIPanel)
+    {
+        List<BaseAction> copies = new();
+        foreach (BaseAction action in set)
+        {
+            BaseAction copy = action.CloneAndInstantiateUI(UIPanel, action);
+            copies.Add(copy); }
+        return copies;
     }
 }

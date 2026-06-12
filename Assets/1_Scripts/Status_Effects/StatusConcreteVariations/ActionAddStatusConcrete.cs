@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class ActionAddStatusConcrete : BaseStatusConcrete
 {
-    public IAction ActionToAssign;
+    public BaseAction ActionToAssign;
 
     public ActionAddStatusConcrete
     (
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster,
         BaseActor actor,
-        IAction actionToAssign
+        BaseAction actionToAssign
     ):base(turnProcessor, levelMaster, actor) 
     {
         ActionToAssign = actionToAssign;

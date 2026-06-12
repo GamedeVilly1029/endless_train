@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ActionAddConcrete : BaseConcrete
 {
-    public IAction ActionToAdd;
+    public BaseAction ActionToAdd;
     public ActionAddConcrete(
     TurnProcessor turnProcessor, 
     LevelMaster levelMaster, 
-    IAction actionOfThisConcrete, 
+    BaseAction actionOfThisConcrete, 
     List<IConditionCommand> extraConditions, 
     ActionConcreteTag tag,
-    IAction actionToAdd
+    BaseAction actionToAdd
     ): base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag)
     {
         ActionToAdd = actionToAdd;

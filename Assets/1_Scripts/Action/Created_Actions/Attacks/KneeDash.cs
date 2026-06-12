@@ -4,43 +4,28 @@ using System;
 
 public class KneeDash : BaseAction
 {
-    public override void InitializeChildAction()
-    {
-        CooldownMax = 1;
-        Cooldown = 0;
-        if (Resources.Load<GameObject>("AttackActionUI/KneeDashActionUI") != null)
-        {
-            UIRepresentation = Resources.Load<GameObject>("AttackActionUI/KneeDashActionUI");
-        }
-        else
-        {
-            Debug.LogError("Resources.Load can't find UIRepresentationAsset");
-        }
-        InitializeConstruct();
-    }
-
-    private void InitializeConstruct()
+    public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new StrikeConcrete(TurnProcessorInstance,
-            LevelMasterInstance,
+            new StrikeConcrete(TurnProcessorInst,
+            LevelMasterInst,
             this,
             new List<IConditionCommand>()
             {
-                new PositionIndexChangedInPreviousActionCondition(TurnProcessorInstance, LevelMasterInstance, Actor)
+                new PositionIndexChangedInPreviousActionCondition(TurnProcessorInst, LevelMasterInst, Actor)
             },
             ActionConcreteTag.Attack,
             5,
             Actor
             ),
 
-            new StrikeConcrete(TurnProcessorInstance,
-            LevelMasterInstance,
+            new StrikeConcrete(TurnProcessorInst,
+            LevelMasterInst,
             this,
             new List<IConditionCommand>()
             {
-                new ConcreteHistoryIsEmptyCondition(TurnProcessorInstance, LevelMasterInstance)
+                new ConcreteHistoryIsEmptyCondition(TurnProcessorInst, LevelMasterInst)
             },
             ActionConcreteTag.Attack,
             5,
@@ -49,11 +34,11 @@ public class KneeDash : BaseAction
         };
     }
 
-    public override IAction CreateClone(Transform transform)
+    public override BaseAction CreateClone(Transform transform)
     {
         KneeDash actionClone = new()
         {
-            TurnProcessorInstance = TurnProcessorInstance,
+            TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,
             UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };

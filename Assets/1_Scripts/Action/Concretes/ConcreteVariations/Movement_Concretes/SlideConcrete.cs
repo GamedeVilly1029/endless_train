@@ -10,7 +10,7 @@ public class SlideConcrete : BaseConcrete
     public SlideConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     BaseActor actor,
@@ -37,7 +37,7 @@ public class SlideConcrete : BaseConcrete
         ActorParticlePlayer.StopParticles(_actor, ParticleType.BePushed);
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new SlideConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actor, _destinationCellIDX);
     }

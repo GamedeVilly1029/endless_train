@@ -7,7 +7,7 @@ public class StepXTilesForwardConcrete : ValueConcrete
     BaseActor _actorToMove;
     public StepXTilesForwardConcrete(TurnProcessor turnProcessor, 
     LevelMaster levelMaster, 
-    IAction actionOfThisConcrete, 
+    BaseAction actionOfThisConcrete, 
     List<IConditionCommand> extraConditions, 
     ActionConcreteTag tag,
     int value,
@@ -29,7 +29,7 @@ public class StepXTilesForwardConcrete : ValueConcrete
         }
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new StepXTilesForwardConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value,_actorToMove);
     }

@@ -10,7 +10,7 @@ public class BePushedConcrete : BaseConcrete
     public BePushedConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     BaseActor actorToPush,
@@ -35,7 +35,7 @@ public class BePushedConcrete : BaseConcrete
         ActorParticlePlayer.StopParticles(_actorToPush, ParticleType.BePushed);
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new BePushedConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actorToPush, _pushRight);
     }

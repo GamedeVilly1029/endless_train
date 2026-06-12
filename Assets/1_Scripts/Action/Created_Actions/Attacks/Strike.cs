@@ -2,34 +2,19 @@ using UnityEngine;
 
 public class Strike : BaseAction 
 {
-    public override void InitializeChildAction()
-    {
-        CooldownMax = 0;
-        Cooldown = 0;
-        if (Resources.Load<GameObject>("AttackActionUI/AttackActionUI") != null)
-        {
-            UIRepresentation = Resources.Load<GameObject>("AttackActionUI/AttackActionUI");
-        }
-        else
-        {
-            Debug.LogError("Resources.Load can't find UIRepresentationAsset");
-        }
-        InitializeConstruct();
-    }
-
-    private void InitializeConstruct()
+    public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new StrikeConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Attack, 5, Actor)
+            new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 5, Actor)
         };
     }
 
-    public override IAction CreateClone(Transform transform)
+    public override BaseAction CreateClone(Transform transform)
     {
         Strike actionClone = new()
         {
-            TurnProcessorInstance = TurnProcessorInstance,
+            TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

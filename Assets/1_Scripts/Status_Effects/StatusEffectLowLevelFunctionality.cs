@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 public static class StatusEffectLowLevelFunctionality
 {
-    public static List<IAction> ExtractActorActions(BaseActor actor)
+    public static List<BaseAction> ExtractActorActions(BaseActor actor)
     {
-        List<IAction> actions = new();
-        foreach (IAction action in actor.ActionRowInst.Actions)
+        List<BaseAction> actions = new();
+        foreach (BaseAction action in actor.ActionRowInst.Actions)
         {
             actions.Add(action);
         }
         return actions;
     }
 
-    public static ValueConcrete ReturnAttackConcrete(List<IAction> actions)
+    public static ValueConcrete ReturnAttackConcrete(List<BaseAction> actions)
     {
-        foreach (IAction action in actions)
+        foreach (BaseAction action in actions)
         {
             foreach (BaseConcrete element in action.ActionConstruct)
             {

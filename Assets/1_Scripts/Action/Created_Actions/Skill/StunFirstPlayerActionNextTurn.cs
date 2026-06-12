@@ -2,35 +2,19 @@ using UnityEngine;
 
 public class StunFirstPlayerActionNextTurn: BaseAction 
 {
-    public override void InitializeChildAction()
-    {
-        CooldownMax = 0;
-        Cooldown = 0;
-        if (Resources.Load<GameObject>("SkillActionUI/Stun") != null)
-        {
-            UIRepresentation = Resources.Load<GameObject>("SkillActionUI/Stun");
-        }
-        else
-        {
-            Debug.LogError("Resources.Load can't find UIRepresentation Asset");
-        }
-
-        InitializeConstruct();
-    }
-
-    private void InitializeConstruct()
+    public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new StunFirstPlayerActionNextTurnConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Skill)
+            new StunFirstPlayerActionNextTurnConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Skill)
         };
     }
 
-    public override IAction CreateClone(Transform transform)
+    public override BaseAction CreateClone(Transform transform)
     {
-        MoveOneTileForward actionClone = new()
+        StunFirstPlayerActionNextTurn actionClone = new()
         {
-            TurnProcessorInstance = TurnProcessorInstance,
+            TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

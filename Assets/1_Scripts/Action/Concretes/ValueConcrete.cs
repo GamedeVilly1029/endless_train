@@ -8,7 +8,7 @@ public class ValueConcrete : BaseConcrete
     public ValueConcrete(
     TurnProcessor turnProcessor, 
     LevelMaster levelMaster, 
-    IAction actionOfThisConcrete, 
+    BaseAction actionOfThisConcrete, 
     List<IConditionCommand> extraConditions, 
     ActionConcreteTag tag,
     int value

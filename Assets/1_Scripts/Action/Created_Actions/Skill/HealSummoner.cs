@@ -1,36 +1,28 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HealSummoner : BaseAction 
 {
-    public BaseActor Summoner;
-    public override void InitializeChildAction()
+    public Summoner Summoner;
+
+    public HealSummoner(Summoner summoner)
     {
-        CooldownMax = 0;
-        Cooldown = 0;
-        // if (Resources.Load<GameObject>("SkillActionUI/Heal") != null)
-        // {
-        //     UIRepresentation = Resources.Load<GameObject>("SkillActionUI/Heal");
-        // }
-        // else
-        // {
-        //     Debug.LogError("Resources.Load can't find UIRepresentationAsset");
-        // }
-        InitializeConstruct();
+        Summoner = summoner;
     }
 
-    private void InitializeConstruct()
+    public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new HealOtherConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Skill, 5, Summoner)
+            new HealOtherConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Skill, 5, Summoner)
         };
     }
 
-    public override IAction CreateClone(Transform transform)
+    public override BaseAction CreateClone(Transform transform)
     {
-        HealSummoner actionClone = new()
+        HealSummoner actionClone = new(Summoner)
         {
-            TurnProcessorInstance = TurnProcessorInstance,
+            TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

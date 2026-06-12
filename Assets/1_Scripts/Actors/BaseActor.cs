@@ -24,7 +24,7 @@ public class BaseActor : MonoBehaviour
     public BasePatternPicker PatternPicker;
     public Transform TransformReference{get{return transform;}set{}}
     public Stack<int> PositionCellIndexHistory;
-    public List<IAction> FightBasedActionHistory;
+    public List<BaseAction> FightBasedActionHistory;
     public List<IStatusEffect> StatusEffectsBeforeTurn;
     public List<IStatusEffect> StatusEffectsDuringTurn; 
     public List<IStatusEffect> StatusEffectsBeforeTakingDamage;
@@ -136,7 +136,7 @@ public class BaseActor : MonoBehaviour
         return Mathf.Abs(Mathf.DeltaAngle(y, 0)) < 1f;
     }
 
-    public IAction ReturnFirstActionInRow()
+    public BaseAction ReturnFirstActionInRow()
     {
         if (ActionRowInst.Actions.Count > 0)
         {

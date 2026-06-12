@@ -9,7 +9,7 @@ public class ActionMaster : MonoBehaviour
     {
         foreach (BaseActor actor in _levelMaster.AllActors)
         {
-            actor.PatternPicker.InitializeActionPrototypes();
+            actor.PatternPicker.Initialize();
         }
     }
 }

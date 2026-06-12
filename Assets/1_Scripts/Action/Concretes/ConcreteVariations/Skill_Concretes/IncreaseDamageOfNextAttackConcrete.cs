@@ -8,7 +8,7 @@ public class IncreaseDamageOfNextAttackConcrete : BaseConcrete
     public IncreaseDamageOfNextAttackConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     BaseActor cryer
@@ -28,7 +28,7 @@ public class IncreaseDamageOfNextAttackConcrete : BaseConcrete
 
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new IncreaseDamageOfNextAttackConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _cryer);
     }

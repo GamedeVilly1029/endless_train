@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class PlayerBeltPatternPicker : BasePatternPicker 
 {
-    public List<IAction> PlayerActionPrototypes;
+    public List<BaseAction> PlayerActionPrototypes;
 
     public override void FillActionRowOrBelt()
     {
-        foreach (IAction actionWithUI in _levelMaster.Player.Belt)
+        foreach (BaseAction actionWithUI in _levelMaster.Player.Belt)
         {
             Destroy(actionWithUI.UIRepresentation);
         }
@@ -22,57 +22,53 @@ public class PlayerBeltPatternPicker : BasePatternPicker
             }
             else
             {
-                IAction action = PlayerActionPrototypes[i].CloneAndInstantiateUI(_levelMaster.Player.BeltPanel, PlayerActionPrototypes[i]);
+                BaseAction action = PlayerActionPrototypes[i].CloneAndInstantiateUI(_levelMaster.Player.BeltPanel, PlayerActionPrototypes[i]);
                 action.Actor = _levelMaster.Player;
                 _levelMaster.Player.Belt.Add(action);
             }
         }
     }
 
-    public override void InitializeActionPrototypes()
+    public override void InitializeChild()
     {
         PlayerActionPrototypes = CreatePlayerActionsPrototype();
     }
 
-    private List<IAction> CreatePlayerActionsPrototype()
+    private List<BaseAction> CreatePlayerActionsPrototype()
     {
-        List<IAction> actions = new();
-        IAction strikeAction1 = new Strike();
-        strikeAction1.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
+        List<BaseAction> actions = new();
+        BaseAction strikeAction1 = new Strike();
+        strikeAction1.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "AttackActionUI/Strike");
         actions.Add(strikeAction1);
 
-        IAction moveOneTileForward1 = new MoveOneTileForward();
-        moveOneTileForward1.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
+        BaseAction moveOneTileForward1 = new MoveOneTileForward();
+        moveOneTileForward1.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkForward");
         actions.Add(moveOneTileForward1);
 
-        IAction moveOneTileBackwards = new MoveOneTileBackwards();
-        moveOneTileBackwards.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
+        BaseAction moveOneTileBackwards = new MoveOneTileBackwards();
+        moveOneTileBackwards.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkBackwards");
         actions.Add(moveOneTileBackwards);
 
-        IAction rotate1 = new Rotate();
-        rotate1.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
+        BaseAction rotate1 = new Rotate();
+        rotate1.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "MovementActionUI/Rotate");
         actions.Add(rotate1);
 
-        IAction push1 = new Push();
-        push1.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
+        BaseAction push1 = new Push();
+        push1.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "PushActionUI/Push");
         actions.Add(push1);
 
-        IAction basicDefend = new BasicDefend();
-        basicDefend.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
+        BaseAction basicDefend = new BasicDefend();
+        basicDefend.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "DefenseActionUI/BasicDefend");
         actions.Add(basicDefend);
-
-        IAction heal = new Heal();
-        heal.InitializeAction(_levelMaster.Player, _turnProcessor, _levelMaster);
-        actions.Add(heal);
 
         return actions;
     }
 
-    public void DecreaseCooldown(List<IAction> exceptions)
+    public void DecreaseCooldown(List<BaseAction> exceptions)
     {
-        foreach (IAction exception in exceptions)
+        foreach (BaseAction exception in exceptions)
         {
-            foreach (IAction prototypeAction in PlayerActionPrototypes)
+            foreach (BaseAction prototypeAction in PlayerActionPrototypes)
             {
                 if (exceptions.Contains(prototypeAction))
                 {

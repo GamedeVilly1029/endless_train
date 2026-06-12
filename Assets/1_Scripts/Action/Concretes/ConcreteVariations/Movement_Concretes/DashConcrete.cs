@@ -9,7 +9,7 @@ public class DashConcrete : ValueConcrete
     public DashConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     int value,
@@ -80,7 +80,7 @@ public class DashConcrete : ValueConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new DashConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, _caller);
     }

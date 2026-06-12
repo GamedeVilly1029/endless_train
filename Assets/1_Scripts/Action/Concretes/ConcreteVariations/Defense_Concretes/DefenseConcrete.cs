@@ -8,7 +8,7 @@ public class DefenseConcrete : ValueConcrete
     public DefenseConcrete(
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster, 
-        IAction actionOfThisConcrete, 
+        BaseAction actionOfThisConcrete, 
         List<IConditionCommand> extraConditions, 
         ActionConcreteTag tag, 
         int value,
@@ -25,7 +25,7 @@ public class DefenseConcrete : ValueConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new DefenseConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, clonedAction.Actor);
     }

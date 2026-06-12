@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SpiderPatternPicker : BasePatternPicker
 {
-    private List<IAction> _approach;
-    private List<IAction> _rotate;
-    private List<IAction> _sneakyLeap;
-    private List<IAction> _stunningShout;
+    private List<BaseAction> _approach;
+    private List<BaseAction> _rotate;
+    private List<BaseAction> _sneakyLeap;
+    private List<BaseAction> _stunningShout;
 
     public override void FillActionRowOrBelt()
     {
@@ -45,7 +45,7 @@ public class SpiderPatternPicker : BasePatternPicker
         // return;
     }
 
-    public override void InitializeActionPrototypes()
+    public override void InitializeChild()
     {
         _approach = InitializeApproach();
         _rotate = InitializeRotate();
@@ -53,68 +53,68 @@ public class SpiderPatternPicker : BasePatternPicker
         _stunningShout = InitializeStunningShout();
     }
 
-    private List<IAction> InitializeApproach()
+    private List<BaseAction> InitializeApproach()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction move = new MoveOneTileForward();
-        move.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction move = new MoveOneTileForward();
+        move.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkForward");
         actions.Add(move);
 
-        IAction move1 = new MoveOneTileForward();
-        move1.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction move1 = new MoveOneTileForward();
+        move1.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkForward");
         actions.Add(move1);
 
         return actions;
     }
 
 
-    private List<IAction> InitializeRotate()
+    private List<BaseAction> InitializeRotate()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction rotate = new Rotate();
-        rotate.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction rotate = new Rotate();
+        rotate.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/Rotate");
         actions.Add(rotate);
 
         return actions;
-    }
+    } 
 
-    private List<IAction> InitializeSneakyLeap()
+    private List<BaseAction> InitializeSneakyLeap()
     {
-        List<IAction> actions = new();
-        IAction dash = new Dash();
-        dash.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        List<BaseAction> actions = new();
+        BaseAction dash = new Dash();
+        dash.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/Dash");
         actions.Add(dash);
 
-        IAction strike = new Strike();
-        strike.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction strike = new Strike();
+        strike.Initialize(_actor, _turnProcessor, _levelMaster,0, "AttackActionUI/Strike");
         actions.Add(strike);
 
-        IAction moveBack = new MoveOneTileBackwards();
-        moveBack.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction moveBack = new MoveOneTileBackwards();
+        moveBack.Initialize(_actor, _turnProcessor, _levelMaster,0, "MovementActionUI/WalkBackwards");
         actions.Add(moveBack);
 
         return actions;
     }
 
-    private List<IAction> InitializeStunningShout()
+    private List<BaseAction> InitializeStunningShout()
     {
-        List<IAction> actions = new();
+        List<BaseAction> actions = new();
 
-        IAction stunFirstNextTurn = new StunFirstPlayerActionNextTurn();
-        stunFirstNextTurn.InitializeAction(_actor, _turnProcessor, _levelMaster);
+        BaseAction stunFirstNextTurn = new StunFirstPlayerActionNextTurn();
+        stunFirstNextTurn.Initialize(_actor, _turnProcessor, _levelMaster,0, "SkillActionUI/Stun");
         actions.Add(stunFirstNextTurn);
 
         return actions;
     }
 
-    private List<IAction> CopyActionSet(List<IAction> set, RectTransform UIPanel)
+    private List<BaseAction> CopyActionSet(List<BaseAction> set, RectTransform UIPanel)
     {
-        List<IAction> copies = new();
-        foreach (IAction action in set)
+        List<BaseAction> copies = new();
+        foreach (BaseAction action in set)
         {
-            IAction copy = action.CloneAndInstantiateUI(UIPanel, action);
+            BaseAction copy = action.CloneAndInstantiateUI(UIPanel, action);
             copies.Add(copy);
         }
         return copies;

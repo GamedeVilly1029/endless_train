@@ -4,34 +4,19 @@ using UnityEngine;
 
 public class Dash: BaseAction
 {
-    public override void InitializeChildAction()
-    {
-        CooldownMax = 0;
-        Cooldown = 0;
-        if (Resources.Load<GameObject>("MovementActionUI/DashActionUI") != null)
-        {
-            UIRepresentation = Resources.Load<GameObject>("MovementActionUI/DashActionUI");
-        }
-        else
-        {
-            Debug.LogError("Resources.Load can't find UIRepresentationAsset");
-        }
-        InitializeConstruct();
-    }
-
-    private void InitializeConstruct()
+    public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new DashConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Move, 4, Actor)
+            new DashConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Move, 4, Actor)
         };
     }
 
-    public override IAction CreateClone(Transform transform)
+    public override BaseAction CreateClone(Transform transform)
     {
         Dash actionClone = new()
         {
-            TurnProcessorInstance = TurnProcessorInstance,
+            TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,
             UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };

@@ -8,7 +8,7 @@ public class StepOneCellBackwardsConcrete : BaseConcrete
     public StepOneCellBackwardsConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
-    IAction actionOfThisConcrete,
+    BaseAction actionOfThisConcrete,
     List<IConditionCommand> extraConditions,
     ActionConcreteTag tag,
     BaseActor actor
@@ -37,7 +37,7 @@ public class StepOneCellBackwardsConcrete : BaseConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new StepOneCellBackwardsConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actorToMove);
     }

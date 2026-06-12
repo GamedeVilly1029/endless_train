@@ -4,55 +4,40 @@ using System;
 
 public class Tantrum : BaseAction
 {
-    public override void InitializeChildAction()
-    {
-        CooldownMax = 0;
-        Cooldown = 0;
-        if (Resources.Load<GameObject>("AttackActionUI/TantrumActionUI") != null)
-        {
-            UIRepresentation = Resources.Load<GameObject>("AttackActionUI/TantrumActionUI");
-        }
-        else
-        {
-            Debug.LogError("Resources.Load can't find UIRepresentationAsset");
-        }
-        InitializeConstruct();
-    }
-
-    private void InitializeConstruct()
+    public override void InitializeConstruct()
     {
         List<IConditionCommand> conditions = new()
         {
-            new LastActionIsNotThisActionCondition(TurnProcessorInstance, LevelMasterInstance),
+            new LastActionIsNotThisActionCondition(TurnProcessorInst, LevelMasterInst),
         };
 
         ActionConstruct = new();
-        RemoveTantrumVulnerabilityConcrete removeVuln = new(TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Skill);
+        RemoveTantrumVulnerabilityConcrete removeVuln = new(TurnProcessorInst, LevelMasterInst, this, conditions, ActionConcreteTag.Skill);
         ActionConstruct.Add(removeVuln);
 
-        StrikeConcrete strike = new(TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Attack, 5, Actor);
+        StrikeConcrete strike = new(TurnProcessorInst, LevelMasterInst, this, conditions, ActionConcreteTag.Attack, 5, Actor);
         ActionConstruct.Add(strike);
 
-        AddTantrumVulnerabilityConcrete addVuln = new(TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Skill);
+        AddTantrumVulnerabilityConcrete addVuln = new(TurnProcessorInst, LevelMasterInst, this, conditions, ActionConcreteTag.Skill);
         ActionConstruct.Add(addVuln);
 
         conditions = new()
         {
-            new ConcreteHistoryIsEmptyCondition(TurnProcessorInstance, LevelMasterInstance)
+            new ConcreteHistoryIsEmptyCondition(TurnProcessorInst, LevelMasterInst)
         };
 
-        TantrumStrikeConcrete tanStrike = new (TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Attack, 5, Actor);
+        TantrumStrikeConcrete tanStrike = new (TurnProcessorInst, LevelMasterInst, this, conditions, ActionConcreteTag.Attack, 5, Actor);
         ActionConstruct.Add(tanStrike);
 
-        AddTantrumVulnerabilityConcrete addVuln1 = new(TurnProcessorInstance, LevelMasterInstance, this, conditions, ActionConcreteTag.Skill);
+        AddTantrumVulnerabilityConcrete addVuln1 = new(TurnProcessorInst, LevelMasterInst, this, conditions, ActionConcreteTag.Skill);
         ActionConstruct.Add(addVuln1);
     }
 
-    public override IAction CreateClone(Transform transform)
+    public override BaseAction CreateClone(Transform transform)
     {
         Tantrum actionClone = new()
         {
-            TurnProcessorInstance = TurnProcessorInstance,
+            TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,
             UIRepresentation = UnityEngine.Object.Instantiate(UIRepresentation, transform),
         };

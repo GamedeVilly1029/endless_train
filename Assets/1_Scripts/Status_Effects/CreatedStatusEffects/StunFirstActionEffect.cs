@@ -4,23 +4,11 @@ using UnityEngine;
 
 public class StunFirstActionEffect : BaseStatusEffect
 {
-    private IAction _stunned;
+    private BaseAction _stunned;
     public override void ChildInitialize(BaseActor actor)
     {
         _stunned = new BeStunned();
-
-
-        if (TurnProcessorInstance == null)
-            UnityEngine.Debug.Log("turnProcessor = null");
-
-        if (LevelMasterInstance == null)
-            UnityEngine.Debug.Log("levelMaster = null");
-
-        if (LevelMasterInstance.Player == null)
-            UnityEngine.Debug.Log("player = null");
-
-
-        _stunned.InitializeAction(LevelMasterInstance.Player, TurnProcessorInstance, LevelMasterInstance);
+        _stunned.Initialize(LevelMasterInstance.Player, TurnProcessorInstance, LevelMasterInstance, 0, "SkillActionUI/Stunned");
 
         StatusConstruct = new()
         {

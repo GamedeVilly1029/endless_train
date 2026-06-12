@@ -2,35 +2,19 @@ using UnityEngine;
 
 public class Rotate : BaseAction 
 {
-    
-    public override void InitializeChildAction()
-    {
-        CooldownMax = 0;
-        Cooldown = 0;
-        if (Resources.Load<GameObject>("MovementActionUI/RotateActionUI") != null)
-        {
-            UIRepresentation = Resources.Load<GameObject>("MovementActionUI/RotateActionUI");
-        }
-        else
-        {
-            Debug.LogError("Resources.Load can't find UIRepresentationAsset");
-        }
-        InitializeConstruct();
-    }
-
-    private void InitializeConstruct()
+    public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new RotateActorConcrete(TurnProcessorInstance, LevelMasterInstance, this, null, ActionConcreteTag.Move, Actor)
+            new RotateActorConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Move, Actor)
         };
     }
 
-    public override IAction CreateClone(Transform transform)
+    public override BaseAction CreateClone(Transform transform)
     {
         Rotate actionClone = new()
         {
-            TurnProcessorInstance = TurnProcessorInstance,
+            TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,
             UIRepresentation = Object.Instantiate(UIRepresentation, transform),
         };

@@ -6,9 +6,9 @@ public class AddActionToPlayerRowEndConcrete : ActionAddConcrete
 {
     public AddActionToPlayerRowEndConcrete(TurnProcessor turnProcessor, 
     LevelMaster levelMaster, 
-    IAction actionOfThisConcrete, 
+    BaseAction actionOfThisConcrete, 
     List<IConditionCommand> extraConditions, 
-    ActionConcreteTag tag, IAction actionToAdd
+    ActionConcreteTag tag, BaseAction actionToAdd
     ):base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag, actionToAdd)
     {
     }
@@ -19,7 +19,7 @@ public class AddActionToPlayerRowEndConcrete : ActionAddConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    public override IConcrete Clone(IAction clonedAction)
+    public override IConcrete Clone(BaseAction clonedAction)
     {
         return new AddActionToPlayerRowEndConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, ActionToAdd);
     }
