@@ -18,7 +18,6 @@ public class BaseStatusEffect : IStatusEffect
     public void Initialize(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actor)
     {
         BaseInitialization(turnProcessor, levelMaster, actor);
-        Debug.Log("Base initialization of the turnProcessor and levelMaster are done");
         ChildInitialize(actor);
     }
 

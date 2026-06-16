@@ -6,7 +6,6 @@ public class TurnMaster : MonoBehaviour
 {
     [SerializeField] private TurnProcessor _turnProcessor;
     [SerializeField] private LevelMaster _levelMaster;
-    [SerializeField] private ActionMaster _actionMaster;
     [SerializeField] private UIMaster _uIMaster;
     public UnityEvent OnEndTurn = new();
     public UnityEvent OnStartTurn = new();
@@ -60,7 +59,7 @@ public class TurnMaster : MonoBehaviour
 
     private IEnumerator EndTurn()
     {
-        yield return _turnProcessor.StartCoroutine(_turnProcessor.IterateThroughActionRow());
+        yield return _turnProcessor.StartCoroutine(_turnProcessor.ProcessTurn());
         StartTurn();
     }
 }

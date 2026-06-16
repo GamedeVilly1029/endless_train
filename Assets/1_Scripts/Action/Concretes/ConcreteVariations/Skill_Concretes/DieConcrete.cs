@@ -26,4 +26,9 @@ public class DieConcrete : BaseConcrete
         _suicider.gameObject.SetActive(false); 
         yield break;
     }
+
+    public override IConcrete Clone(BaseAction clonedAction)
+    {
+        return new DieConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _suicider);
+    }
 }

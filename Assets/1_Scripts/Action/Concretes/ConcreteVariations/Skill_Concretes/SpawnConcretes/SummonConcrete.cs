@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class SummonConcrete : BaseConcrete
 {
+    public Summon Summon;
     private EnemyInstantiationInfo _info;
     private Summoner _summoner;
     private int _idx;
     public SummonConcrete
     (
-        TurnProcessor turnProcessor, 
-        LevelMaster levelMaster, 
-        BaseAction actionOfThisConcrete, 
-        List<IConditionCommand> extraConditions, 
+        TurnProcessor turnProcessor,
+        LevelMaster levelMaster,
+        BaseAction actionOfThisConcrete,
+        List<IConditionCommand> extraConditions,
         ActionConcreteTag tag,
         EnemyInstantiationInfo info,
         Summoner summoner,
@@ -26,12 +27,24 @@ public class SummonConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
-        SpawnConcrete concrete = new(TurnProcessorInst, LevelMasterInst, ActionOfThisConcrete, null, Tag, _idx, _info.RotationAngle, _info.ActorPrefab, _info.HP);
-        yield return concrete.Execute();
+        Summon = Object.Instantiate(_info.ActorPrefab as Summon, LevelMasterInst.InstantiationPlaceForEnemies);
+        Summon.InitializeSummon(_summoner);
+        Summon.Initialize(_idx, _info.RotationAngle, _info.HP, TurnProcessorInst, LevelMasterInst);
 
-        Summon summon = (Summon)concrete.Spawned;
-        summon.SummonerInst = _summoner;
-        _summoner.Summons.Add(summon);
+        _summoner.Summons.Add(Summon);
+        LevelMasterInst.AllActors.Add(Summon);
+
+        yield return GlobalLowLevelConcrete.Pause;
+    }
+
+    public override List<IConditionCommand> CreateBaseConditionList()
+    {
+        List<IConditionCommand> baseConditions = new()
+        {
+            new IsSummonCondition(TurnProcessorInst, LevelMasterInst, _info.ActorPrefab)
+        };
+
+        return baseConditions;
     }
 
     public override IConcrete Clone(BaseAction clonedAction)

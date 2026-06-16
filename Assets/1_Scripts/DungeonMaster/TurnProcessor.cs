@@ -5,37 +5,36 @@ using System.Collections;
 public class TurnProcessor : MonoBehaviour
 {
     [SerializeField] private TurnMaster _turnMaster;
-    [SerializeField] private ActionMaster _actionMaster;
     [SerializeField] private LevelMaster _levelMaster;
 
     public BaseAction CurrentAction;
     public BaseActor CurrentActor;
 
-    private bool _noActionsLeft;
+    private Queue<BaseActor> _enemies;
     private List<BaseAction> _playerActions;
 
-    public IEnumerator IterateThroughActionRow()
+    public IEnumerator ProcessTurn()
     {
         yield return BeforeIteration();
         yield return Iteration();
         yield return AfterIteration();
     }
 
-    private IEnumerator BeforeIteration()
+    private IEnumerator BeforeIteration() 
     {
-        PutPlayerOnTop();
         _playerActions = new();
         foreach (BaseActor actor in _levelMaster.AllActors)
         {
             yield return actor.TurnStart();
         }
-        _noActionsLeft = false;
     }
 
     private IEnumerator ProcessAction(BaseActor actor)
     {
         CurrentActor = actor;
-        yield return actor.TriggerTurnBasedStatusEffects();
+        CurrentAction = actor.ReturnFirstActionInRow();
+
+        yield return actor.RunDuringTurnStatuses();
         if (actor is PlayerActor)
         {
             _playerActions.Add(CurrentAction.PrototypeAction);
@@ -46,26 +45,33 @@ public class TurnProcessor : MonoBehaviour
 
     private IEnumerator Iteration()
     {
-        while (!_noActionsLeft)
+        for (int i = 0; i < _levelMaster.AllActors.Count; i++)
         {
-            foreach (BaseActor actor in _levelMaster.AllActors)
+            if (_levelMaster.AllActors[i].ActionRowInst.HasActions())
             {
-                CurrentAction = actor.ReturnFirstActionInRow();
-                if (CurrentAction != null)
-                {
-                    yield return ProcessAction(actor);
-                }
-            }
-
-            _noActionsLeft = true;
-            foreach (BaseActor actor in _levelMaster.AllActors)
-            {
-                if (actor.ReturnFirstActionInRow() != null)
-                {
-                    _noActionsLeft = false;
-                }
+                _enemies = CreateEnemies();
+                yield return RunOneIteration(_enemies);
+                i = -1;
             }
         }
+    }
+
+    private IEnumerator RunOneIteration(Queue<BaseActor> enemies)
+    {
+        while (enemies.Count > 0)
+        {
+            BaseActor enemy = enemies.Dequeue();
+            if (!enemy.ActionRowInst.HasActions())
+            {
+                continue;
+            }
+            if (_levelMaster.Player.ActionRowInst.HasActions())
+            {
+                yield return ProcessAction(_levelMaster.Player);
+            }
+            yield return ProcessAction(enemy);
+        }
+        RemoveDeadActors();
     }
 
     private IEnumerator AfterIteration()
@@ -83,10 +89,21 @@ public class TurnProcessor : MonoBehaviour
         }
     }
 
-    private void PutPlayerOnTop()
+    private Queue<BaseActor> CreateEnemies()
     {
-        _levelMaster.AllActors.Remove(_levelMaster.Player);
-        _levelMaster.AllActors.Insert(0, _levelMaster.Player);
+        Queue<BaseActor> enemies = new();
+        foreach (BaseActor actor in _levelMaster.AllActors)
+        {
+            if (actor is PlayerActor)
+            {
+                continue;
+            }
+            else
+            {
+                enemies.Enqueue(actor);
+            }
+        }
+        return enemies;
     }
 
     private void RemoveDeadActors()
@@ -99,7 +116,7 @@ public class TurnProcessor : MonoBehaviour
         {
             if (_levelMaster.AllActors[i].IsDead)
             {
-                Destroy(_levelMaster.AllActors[i] as BaseActor);
+                Destroy(_levelMaster.AllActors[i]);
                 _levelMaster.AllActors.RemoveAt(i);
             }
         }

@@ -5,7 +5,6 @@ public class SwamperSummonPatternPicker : BasePatternPicker
 {
     private List<BaseAction> _strike;
     private List<BaseAction> _sacrifice;
-
     private int _turnsTillSacrifice;
 
     public override void FillActionRowOrBelt()
@@ -16,15 +15,13 @@ public class SwamperSummonPatternPicker : BasePatternPicker
         {
             _actor.ActionRowInst.Actions = CopyActionSet(_strike, _actor.ActionRowInst.Panel);
             _turnsTillSacrifice -= 1;
+            return;
         }
         else
         {
             _actor.ActionRowInst.Actions = CopyActionSet(_sacrifice, _actor.ActionRowInst.Panel);
+            return;
         }
-
-        Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
-        _actor.ActionRowInst.Actions = null;
-        return;
     }
 
     public override void InitializeChild()

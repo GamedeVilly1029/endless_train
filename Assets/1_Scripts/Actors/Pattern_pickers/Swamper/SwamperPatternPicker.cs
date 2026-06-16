@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class SwamperPatternPicker : BasePatternPicker
     private List<BaseAction> _spawnLeft;
     private List<BaseAction> _spawnRight;
     private List<BaseAction> _spawnBoth;
+    private List<BaseAction> _empower;
 
     public override void FillActionRowOrBelt()
     {
@@ -35,7 +37,7 @@ public class SwamperPatternPicker : BasePatternPicker
 
 
         Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
-        _actor.ActionRowInst.Actions = null;
+        _actor.ActionRowInst.Actions.Clear();
         return;
     }
 
@@ -44,6 +46,7 @@ public class SwamperPatternPicker : BasePatternPicker
         _spawnLeft = InitializeSpawnLeft();
         _spawnRight = InitializeSpawnRight();
         _spawnBoth = InitializeSpawnBoth();
+        _empower = InitializeEmpower();
     }
 
     private List<BaseAction> InitializeSpawnLeft()
@@ -78,7 +81,18 @@ public class SwamperPatternPicker : BasePatternPicker
         
         BaseAction spawnRight = new SummonRight(_actor as Summoner, Resources.Load<EnemyInstantiationInfo>("Summon/Swamper/Right"));
         spawnRight.Initialize(_actor, _turnProcessor, _levelMaster, 0, "SkillActionUI/Summon/SummonRight");
+
         actions.Add(spawnRight);
+
+        return actions;
+    }
+
+    private List<BaseAction> InitializeEmpower()
+    {
+        List<BaseAction> actions = new();
+
+        BaseAction empowerAll = new AllSummonDMGIncrease(_actor as Summoner);
+        empowerAll.Initialize(_actor, _turnProcessor, _levelMaster, 0, "SkillActionUI/Summon/SummonerSkill/SummonNextAttackDMGIncrease");
 
         return actions;
     }

@@ -1,26 +1,33 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class HealSummoner : BaseAction 
+public class AllSummonDMGIncrease : BaseAction
 {
-    public Summoner Summoner;
+    private Summoner _summoner;
 
-    public HealSummoner(Summoner summoner)
+    public AllSummonDMGIncrease(Summoner summoner)
     {
-        Summoner = summoner;
+        _summoner = summoner;
     }
 
     public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new HealOtherConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Skill, 5, Summoner)
+            new AllSummonDMGIncreaseConcrete
+            (
+                TurnProcessorInst, 
+                LevelMasterInst, 
+                this, 
+                null, 
+                ActionConcreteTag.Skill,
+                _summoner
+            )
         };
     }
 
     public override BaseAction CreateClone(Transform transform)
     {
-        HealSummoner actionClone = new(Summoner)
+        AllSummonDMGIncrease actionClone = new(_summoner)
         {
             TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,

@@ -206,15 +206,4 @@ public class MechanicPatternPicker : BasePatternPicker
 
         return actions;
     }
-
-    private List<BaseAction> CopyActionSet(List<BaseAction> set, RectTransform UIPanel)
-    {
-        List<BaseAction> copies = new();
-        foreach (BaseAction action in set)
-        {
-           BaseAction copy = action.CloneAndInstantiateUI(UIPanel, action);
-           copies.Add(copy);
-        }
-        return copies;
-    }
 }

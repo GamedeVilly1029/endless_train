@@ -3,17 +3,15 @@ using System.Collections.Generic;
 
 public class BasePatternPicker : MonoBehaviour
 {
-    [SerializeField] protected BaseActor _actor;
+    protected BaseActor _actor;
     protected TurnProcessor _turnProcessor;
     protected LevelMaster _levelMaster;
 
-    public void Initialize()
+    public void Initialize(BaseActor actor)
     {
-        if(_actor != null)
-        {
-            _turnProcessor = _actor.TurnProcessorInst;
-            _levelMaster = _actor.LevelMasterInst;
-        }
+        _actor = actor;
+        _turnProcessor = _actor.TurnProcessorInst;
+        _levelMaster = _actor.LevelMasterInst;
         InitializeChild();
     }
 

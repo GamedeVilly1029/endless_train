@@ -29,13 +29,13 @@ public class StepOneCellForwardConcrete : BaseConcrete
         }
         else if (!cellAheadIsEmpty.Execute())
         {
-            Debug.Log("Cell ahead isn't empty");
+            // Debug.Log("Cell ahead isn't empty");
             yield break;
         }
         else
         {
             yield return MovementLowLevelConcrete.StepForwardOrBackwards(LevelMasterInst, _actorToMove, Resources.Load<MoveData>("StepData"), true);
-            Debug.Log("StepOneCellForwardConcrete - stepped forward");
+            // Debug.Log("StepOneCellForwardConcrete - stepped forward");
         }
         yield return GlobalLowLevelConcrete.Pause;
     }

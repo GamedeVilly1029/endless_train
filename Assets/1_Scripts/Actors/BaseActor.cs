@@ -9,7 +9,7 @@ public class BaseActor : MonoBehaviour
     [HideInInspector] public LevelMaster LevelMasterInst;
     [HideInInspector] public int MaxHP;
     [HideInInspector] public int CurrentHP;
-    [HideInInspector] public int PositionCellIndex;
+    public int PositionCellIndex;
     [HideInInspector] public bool IsDead = false;
     [HideInInspector] public int Defense;
 
@@ -51,8 +51,6 @@ public class BaseActor : MonoBehaviour
         TurnProcessorInst = turnProcessor;
         LevelMasterInst = levelMaster;
 
-        PatternPicker.Initialize();
-
         StatusEffectsDuringTurn = new();
         StatusEffectsBeforeTurn = new();
         StatusEffectsBeforeTakingDamage = new();
@@ -62,6 +60,7 @@ public class BaseActor : MonoBehaviour
     {
         BaseInitialize(turnProcessor, levelMaster);
         InitializeChild(cellIndex, YRotation, HP);
+        PatternPicker.Initialize(this);
     }
 
     public void Update()
@@ -148,7 +147,7 @@ public class BaseActor : MonoBehaviour
         }
     }
 
-    public IEnumerator TriggerTurnBasedStatusEffects()
+    public IEnumerator RunDuringTurnStatuses()
     {
         List<IStatusEffect> effectsToDestroy = new();
 

@@ -50,4 +50,9 @@ public class ActionRow : MonoBehaviour
             Panel.sizeDelta -= new Vector2(0, 120);
         }
     }
+
+    public bool HasActions()
+    {
+        return Actions != null && Actions.Count > 0;
+    }
 }

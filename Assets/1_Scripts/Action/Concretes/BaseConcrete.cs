@@ -41,6 +41,7 @@ public class BaseConcrete : IConcrete
             {
                 if (!condition.Execute())
                 {
+                    Debug.Log($"Violates: {condition}");
                     yield return DeclinedConcrete();
                     yield break;
                 }

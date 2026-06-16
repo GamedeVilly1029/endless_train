@@ -11,9 +11,9 @@ public class Swamper : Summoner
         CurrentHP = MaxHP;
         GraphicTransform.rotation = Quaternion.Euler(0f, YRotation, 0f);
 
-        BaseStatusEffect regen = new RegenerateEffect();
-        regen.Initialize(TurnProcessorInst, LevelMasterInst, this);
-        StatusEffectsBeforeTurn.Add(regen);
+        // BaseStatusEffect regen = new RegenerateEffect();
+        // regen.Initialize(TurnProcessorInst, LevelMasterInst, this);
+        // StatusEffectsBeforeTurn.Add(regen);
 
         Traits.Add(new UnPushAbleTrait());
     }

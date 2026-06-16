@@ -221,7 +221,6 @@ GameObject:
   - component: {fileID: 222536642}
   - component: {fileID: 222536643}
   - component: {fileID: 222536645}
-  - component: {fileID: 222536644}
   - component: {fileID: 222536646}
   m_Layer: 0
   m_Name: Dungeon_Master
@@ -259,23 +258,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonMaster
   _turnMaster: {fileID: 222536645}
-  _actionMaster: {fileID: 222536644}
   _levelMaster: {fileID: 222536646}
   CurrentActor: {fileID: 0}
---- !u!114 &222536644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 222536641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9386ff80a60730edbcde7f27264459f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActionMaster
-  _turnProcessor: {fileID: 222536643}
-  _levelMaster: {fileID: 222536646}
 --- !u!114 &222536645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +274,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TurnMaster
   _turnProcessor: {fileID: 222536643}
   _levelMaster: {fileID: 222536646}
-  _actionMaster: {fileID: 222536644}
   _uIMaster: {fileID: 429850711}
   OnEndTurn:
     m_PersistentCalls:
@@ -822,7 +805,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 462409a14565d047889fb258a166e77c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerActionManager
-  _actor: {fileID: 386429601}
 --- !u!1 &392940031
 GameObject:
   m_ObjectHideFlags: 0
@@ -3772,7 +3754,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7c02c3880416431abd5e0624d54256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwamperSummonPatternPicker
-  _actor: {fileID: 2117395540798715041}
 --- !u!114 &107061398226593135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3785,7 +3766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fabbdc9785187db6b923c685eece122d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechanicPatternPicker
-  _actor: {fileID: 0}
 --- !u!1 &179459941324985068
 GameObject:
   m_ObjectHideFlags: 0
@@ -4311,7 +4291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf92c991e94e2dbf2ba6cd76312f4a9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpiderPatternPicker
-  _actor: {fileID: 0}
 --- !u!212 &1867913950612647471
 SpriteRenderer:
   serializedVersion: 2
@@ -4636,7 +4615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d54f22e5eb0e9aa897e222e31f8bff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FattyPatternPicker
-  _actor: {fileID: 6720215532843190129}
 --- !u!1 &2594561501133246680
 GameObject:
   m_ObjectHideFlags: 0
@@ -4668,7 +4646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf892457f82784e18886fded2313846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwamperPatternPicker
-  _actor: {fileID: 3103822821839586754}
 --- !u!114 &2613988598049329900
 MonoBehaviour:
   m_ObjectHideFlags: 0
