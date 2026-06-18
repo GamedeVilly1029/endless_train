@@ -20,10 +20,7 @@ public class DieConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
-        _suicider.IsDead = true;
-        _suicider.ActionRowInst.Actions.Clear();
-        _suicider.LevelMasterInst.Cells[_suicider.PositionCellIndex].EnityOccupyingThisCell = null;
-        _suicider.gameObject.SetActive(false); 
+        _suicider.Die();
         yield break;
     }
 

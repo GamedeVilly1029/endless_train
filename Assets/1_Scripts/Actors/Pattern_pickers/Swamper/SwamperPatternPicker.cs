@@ -8,6 +8,7 @@ public class SwamperPatternPicker : BasePatternPicker
     private List<BaseAction> _spawnRight;
     private List<BaseAction> _spawnBoth;
     private List<BaseAction> _empower;
+    private List<BaseAction> _defend;
 
     public override void FillActionRowOrBelt()
     {
@@ -35,6 +36,17 @@ public class SwamperPatternPicker : BasePatternPicker
             return;
         }
 
+        int random = UnityEngine.Random.Range(1, 3);
+        if (random == 1)
+        {
+            _actor.ActionRowInst.Actions = CopyActionSet(_empower, _actor.ActionRowInst.Panel);
+            return;
+        }
+        else if (random == 2)
+        {
+            _actor.ActionRowInst.Actions = CopyActionSet(_empower, _actor.ActionRowInst.Panel);
+            return;
+        }
 
         Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
         _actor.ActionRowInst.Actions.Clear();
@@ -47,6 +59,7 @@ public class SwamperPatternPicker : BasePatternPicker
         _spawnRight = InitializeSpawnRight();
         _spawnBoth = InitializeSpawnBoth();
         _empower = InitializeEmpower();
+        _defend = InitializeDefend();
     }
 
     private List<BaseAction> InitializeSpawnLeft()
@@ -93,6 +106,18 @@ public class SwamperPatternPicker : BasePatternPicker
 
         BaseAction empowerAll = new AllSummonDMGIncrease(_actor as Summoner);
         empowerAll.Initialize(_actor, _turnProcessor, _levelMaster, 0, "SkillActionUI/Summon/SummonerSkill/SummonNextAttackDMGIncrease");
+        actions.Add(empowerAll);
+
+        return actions;
+    }
+
+    private List<BaseAction> InitializeDefend()
+    {
+        List<BaseAction> actions = new();
+
+        BaseAction defend = new BasicDefend();
+        defend.Initialize(_actor, _turnProcessor, _levelMaster, 0, "DefenseActionUI/BasicDefend");
+        actions.Add(defend);
 
         return actions;
     }

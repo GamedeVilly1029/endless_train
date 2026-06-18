@@ -26,7 +26,7 @@ public class SummonDMGIncreaseConcrete : BaseConcrete
         IStatusEffect dmgUp = new NextAttackDmgUpEffect();
         dmgUp.Initialize(TurnProcessorInst, LevelMasterInst, _summon);
         _summon.StatusEffectsDuringTurn.Add(dmgUp);
-        new GraphicTransformColorLerpConcrete(_summon, Color.red, 0.5f);
+        new GraphicTransformColorLerpConcrete(_summon, Color.red, 0.5f).Execute();
 
         yield return GlobalLowLevelConcrete.Pause;
     }

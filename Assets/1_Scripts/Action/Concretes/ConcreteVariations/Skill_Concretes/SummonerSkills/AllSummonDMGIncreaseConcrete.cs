@@ -23,7 +23,7 @@ public class AllSummonDMGIncreaseConcrete : BaseConcrete
     {
         foreach (Summon summon in _summoner.Summons)
         {
-            yield return new SummonDMGIncreaseConcrete(TurnProcessorInst, LevelMasterInst, ActionOfThisConcrete, null, ActionConcreteTag.Skill, _summoner, summon);
+            yield return new SummonDMGIncreaseConcrete(TurnProcessorInst, LevelMasterInst, ActionOfThisConcrete, null, ActionConcreteTag.Skill, _summoner, summon).Execute();
         }
     }
 

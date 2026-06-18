@@ -25,7 +25,6 @@ public static class StatusEffectLowLevelFunctionality
                 }
             }
         }
-        Debug.Log("None of provided actions contains Concrete with Attack tag");
         return null;
     }
 }

@@ -21,12 +21,19 @@ public class HealOtherConcrete : ValueConcrete
 
     public override IEnumerator ChildExecute()
     {
-        Debug.Log(_toHeal);
         _toHeal.CurrentHP += Value;
         new HealAudioCommand(UnityEngine.Object.FindAnyObjectByType<AudioMaster>()).Execute();
         new PlayHealParticlesGraphicConcrete(_toHeal).Execute();
-        new GraphicTransformColorLerpConcrete(_toHeal, Color.green, 0.5f).Execute();
+        new GraphicTransformColorLerpConcrete(_toHeal, Color.green, 0.25f).Execute();
         yield return GlobalLowLevelConcrete.Pause;
+    }
+
+    public override List<IConditionCommand> CreateBaseConditionList()
+    {
+        return new List<IConditionCommand>()
+        {
+            new ActorIsNotNullCondition(TurnProcessorInst, LevelMasterInst, _toHeal)
+        };
     }
 
     public override IConcrete Clone(BaseAction clonedAction)

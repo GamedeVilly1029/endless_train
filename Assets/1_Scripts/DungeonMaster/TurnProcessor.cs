@@ -47,7 +47,7 @@ public class TurnProcessor : MonoBehaviour
     {
         for (int i = 0; i < _levelMaster.AllActors.Count; i++)
         {
-            if (_levelMaster.AllActors[i].ActionRowInst.HasActions())
+            if (_levelMaster.AllActors[i].ActionRowInst.CanExecuteActions())
             {
                 _enemies = CreateEnemies();
                 yield return RunOneIteration(_enemies);
@@ -61,15 +61,18 @@ public class TurnProcessor : MonoBehaviour
         while (enemies.Count > 0)
         {
             BaseActor enemy = enemies.Dequeue();
-            if (!enemy.ActionRowInst.HasActions())
+            if (enemy.IsDead)
             {
                 continue;
             }
-            if (_levelMaster.Player.ActionRowInst.HasActions())
+            if (_levelMaster.Player.ActionRowInst.CanExecuteActions())
             {
                 yield return ProcessAction(_levelMaster.Player);
             }
-            yield return ProcessAction(enemy);
+            if (enemy.ActionRowInst.CanExecuteActions())
+            {
+                yield return ProcessAction(enemy);
+            }
         }
         RemoveDeadActors();
     }
@@ -116,7 +119,7 @@ public class TurnProcessor : MonoBehaviour
         {
             if (_levelMaster.AllActors[i].IsDead)
             {
-                Destroy(_levelMaster.AllActors[i]);
+                Destroy(_levelMaster.AllActors[i].gameObject);
                 _levelMaster.AllActors.RemoveAt(i);
             }
         }

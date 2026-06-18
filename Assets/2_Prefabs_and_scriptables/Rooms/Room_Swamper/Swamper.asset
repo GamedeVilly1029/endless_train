@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Swamper
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInstantiationInfo
   ActorPrefab: {fileID: 5863542824499413795, guid: 32188ba1de47d0598b3a498cd1da9850, type: 3}
-  CellIndex: 6
+  CellIndex: 4
   HP: 20
   RotationAngle: 0

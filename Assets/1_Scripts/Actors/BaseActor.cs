@@ -43,7 +43,12 @@ public class BaseActor : MonoBehaviour
 
     public virtual void InitializeChild(int cellIndex, float YRotation, int HP)
     {
-        Debug.LogError("Base class child Initialization version was called - call concrete class initialization instead");
+        TransformReference.position = LevelMasterInst.Cells[cellIndex].CellPosition;
+        LevelMasterInst.Cells[cellIndex].EnityOccupyingThisCell = this;
+        PositionCellIndex = cellIndex;
+        MaxHP = HP;
+        CurrentHP = MaxHP;
+        GraphicTransform.rotation = Quaternion.Euler(0f, YRotation, 0f);
     }
 
     private void BaseInitialize(TurnProcessor turnProcessor, LevelMaster levelMaster)
@@ -74,11 +79,16 @@ public class BaseActor : MonoBehaviour
     {
         if (CurrentHP <= 0)
         {
-            IsDead = true;
-            ActionRowInst.Actions.Clear();
-            LevelMasterInst.Cells[PositionCellIndex].EnityOccupyingThisCell = null;
-            gameObject.SetActive(false);
+            Die();
         }
+    }
+
+    public virtual void Die()
+    {
+        IsDead = true;
+        ActionRowInst.Actions.Clear();
+        LevelMasterInst.Cells[PositionCellIndex].EnityOccupyingThisCell = null;
+        gameObject.SetActive(false);
     }
 
     public void AddActionToFightHistory()

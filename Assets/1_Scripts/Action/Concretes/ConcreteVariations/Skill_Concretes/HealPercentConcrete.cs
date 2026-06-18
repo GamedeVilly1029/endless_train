@@ -26,18 +26,17 @@ public class HealPercentConcrete : ValueConcrete
         if (HP + HP/100*Value <= _caster.MaxHP)
         {
             _caster.CurrentHP += Mathf.RoundToInt(HP/100*Value);
-            Debug.Log("Healed by 15 percent");
             yield return null;
         }
         else
         {
             _caster.CurrentHP = _caster.MaxHP;
-            Debug.Log("Healed to full");
             yield return null;
         }
-        new HealAudioCommand(UnityEngine.Object.FindFirstObjectByType<AudioMaster>()).Execute();
+        new HealAudioCommand(UnityEngine.Object.FindAnyObjectByType<AudioMaster>()).Execute();
         new PlayHealParticlesGraphicConcrete(_caster).Execute();
-        new GraphicTransformColorLerpConcrete(_caster, Color.green, 0.5f).Execute();
+        new GraphicTransformColorLerpConcrete(_caster, Color.green, 0.25f).Execute();
+        yield return GlobalLowLevelConcrete.Pause;
     }
 
     public override IConcrete Clone(BaseAction clonedAction)

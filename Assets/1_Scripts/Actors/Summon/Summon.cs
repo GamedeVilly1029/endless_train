@@ -7,6 +7,17 @@ public class Summon : BaseActor
     public void InitializeSummon(Summoner summoner)
     {
         SummonerInst = summoner;
-        Debug.Log($"{this.SummonerInst}");
+    }
+
+    public override void Die()
+    {
+        if (SummonerInst != null)
+        {
+            if (SummonerInst.Summons.Contains(this))
+            {
+                SummonerInst.Summons.Remove(this);
+            }
+        }
+        base.Die();
     }
 }

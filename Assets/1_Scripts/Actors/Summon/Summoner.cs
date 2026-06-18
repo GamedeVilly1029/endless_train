@@ -3,5 +3,14 @@ using UnityEngine;
 
 public class Summoner : BaseActor
 {
-    [HideInInspector] public List<Summon> Summons = new();
+    public List<Summon> Summons = new();
+
+    public override void Die()
+    {
+        foreach (Summon summon in Summons)
+        {
+            summon.SummonerInst = null;
+        }
+        base.Die();
+    }
 }

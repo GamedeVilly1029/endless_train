@@ -10,11 +10,6 @@ public class PlayerActor : BaseActor
 
     public override void InitializeChild(int cellIndex, float YRotation, int HP)
     {
-        TransformReference.position = LevelMasterInst.Cells[cellIndex].CellPosition;
-        LevelMasterInst.Cells[cellIndex].EnityOccupyingThisCell = this;
-        PositionCellIndex = cellIndex;
-        MaxHP = HP;
-        CurrentHP = MaxHP - 30;
-        GraphicTransform.rotation = Quaternion.Euler(0f, YRotation, 0f);
+        base.InitializeChild(cellIndex, YRotation, HP);
     } 
 }

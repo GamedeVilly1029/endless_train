@@ -41,6 +41,8 @@ public class SummonConcrete : BaseConcrete
     {
         List<IConditionCommand> baseConditions = new()
         {
+            new CellAtIdxExists(TurnProcessorInst, LevelMasterInst, _idx),
+            new CellAtIdxIsEmpty(TurnProcessorInst, LevelMasterInst, _idx),
             new IsSummonCondition(TurnProcessorInst, LevelMasterInst, _info.ActorPrefab)
         };
 

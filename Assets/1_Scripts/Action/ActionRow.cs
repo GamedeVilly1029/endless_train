@@ -51,8 +51,8 @@ public class ActionRow : MonoBehaviour
         }
     }
 
-    public bool HasActions()
+    public bool CanExecuteActions()
     {
-        return Actions != null && Actions.Count > 0;
+        return !_actor.IsDead && Actions != null && Actions.Count > 0;
     }
 }
