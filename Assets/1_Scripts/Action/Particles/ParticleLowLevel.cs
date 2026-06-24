@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public static class ParticleLowLevel
@@ -14,6 +15,22 @@ public static class ParticleLowLevel
         RotateVelocityIfNeeded(particles, actor);
 
         particles.gameObject.name = nameToAssign;
+    }
+
+    public static IEnumerator ActorStartRenderParticlesAndWaitTillEnd(BaseActor actor, string pathToParticles, string nameToAssign)
+    {
+        ParticleInfoContainer info = Resources.Load<ParticleInfoContainer>(pathToParticles);
+        ParticleSystem particles = Object.Instantiate(info.Particles, actor.GraphicTransform.transform);
+
+        float duration = particles.main.startLifetime.constantMax;
+
+        var main = particles.main;
+        ScaleParticles(ref main, actor);
+        RotateIfNeeded(ref main, actor);
+        RotateVelocityIfNeeded(particles, actor);
+
+        particles.gameObject.name = nameToAssign;
+        yield return new WaitForSeconds(duration);
     }
 
     public static void ActorStopRenderParticles(BaseActor actor, string nameToDelete)

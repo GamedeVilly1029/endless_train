@@ -15,10 +15,21 @@ public class BasePatternPicker : MonoBehaviour
         InitializeChild();
     }
 
-    public virtual void FillActionRowOrBelt()
+    public void FillActionRowOrBelt()
     {
-        Debug.LogWarning("Base pattern picker's fill method was called");
+        if (_actor.IsDead)
+        {
+            _actor.ActionRowInst.Actions.Clear();
+            return;
+        }
+        ChildFillActionRowOrBelt();
     }
+
+    public virtual void ChildFillActionRowOrBelt()
+    {
+        Debug.LogWarning("Base pattern picker's ChildFillActionRowOrBelt() method was called");
+    }
+
     public virtual void InitializeChild()
     {
         Debug.LogWarning("Base pattern picker's Initialize() method was called");
@@ -30,7 +41,8 @@ public class BasePatternPicker : MonoBehaviour
         foreach (BaseAction action in set)
         {
             BaseAction copy = action.CloneAndInstantiateUI(UIPanel, action);
-            copies.Add(copy); }
+            copies.Add(copy);
+        }
         return copies;
     }
 }

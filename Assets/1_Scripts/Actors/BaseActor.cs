@@ -10,7 +10,8 @@ public class BaseActor : MonoBehaviour
     [HideInInspector] public int MaxHP;
     [HideInInspector] public int CurrentHP;
     public int PositionCellIndex;
-    [HideInInspector] public bool IsDead = false;
+    public bool IsDead = false;
+    public bool ShouldBeDestroyed;
     [HideInInspector] public int Defense;
 
     public RectTransform ActionRowPanelInstance;
@@ -29,6 +30,7 @@ public class BaseActor : MonoBehaviour
     public List<IStatusEffect> StatusEffectsDuringTurn; 
     public List<IStatusEffect> StatusEffectsBeforeTakingDamage;
     public List<ActorTrait> Traits;
+    public GraphicalCoroutineConcrete DeathPlayer;
 
     public IEnumerator TurnStart()
     {
@@ -60,6 +62,7 @@ public class BaseActor : MonoBehaviour
         StatusEffectsBeforeTurn = new();
         StatusEffectsBeforeTakingDamage = new();
         Traits = new();
+        DeathPlayer = new BaseActorDeathPlayer(this, 1f, 0.5f);
     }
     public void Initialize(int cellIndex, float YRotation, int HP, TurnProcessor turnProcessor, LevelMaster levelMaster)
     {
@@ -70,25 +73,47 @@ public class BaseActor : MonoBehaviour
 
     public void Update()
     {
-        TryToDie(CurrentHP);
+        TryToDie();
         HPBarText.text = CurrentHP.ToString();
         DefenseBarText.text = Defense.ToString();
     }
 
-    public void TryToDie(int HP)
+    public void TryToDie()
     {
-        if (CurrentHP <= 0)
+        if (CurrentHP <= 0 && !IsDead)
         {
             Die();
         }
     }
 
-    public virtual void Die()
+    public void Die()
+    {
+        ManifestDeath();
+        StartCoroutine(PlayDead());
+    }
+
+    private IEnumerator PlayDead()
+    {
+        yield return PlayDeathGraphics();
+        CleanUpAfterDeath();
+    }
+
+    public virtual void ManifestDeath()
     {
         IsDead = true;
         ActionRowInst.Actions.Clear();
         LevelMasterInst.Cells[PositionCellIndex].EnityOccupyingThisCell = null;
+    }
+
+    public virtual IEnumerator PlayDeathGraphics()
+    {
+        yield return DeathPlayer.Execute();
+    }
+
+    public virtual void CleanUpAfterDeath()
+    {
         gameObject.SetActive(false);
+        ShouldBeDestroyed = true;
     }
 
     public void AddActionToFightHistory()
@@ -195,5 +220,12 @@ public class BaseActor : MonoBehaviour
         {
             effect.SelfDestroy(StatusEffectsBeforeTurn);
         }
+    }
+
+    public void MakeInvincible()
+    {
+        SpriteRend.sprite = null;
+        HPBarText.gameObject.SetActive(false);
+        DefenseBarText.gameObject.SetActive(false);
     }
 }

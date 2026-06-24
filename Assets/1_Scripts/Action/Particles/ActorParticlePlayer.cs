@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -16,6 +16,7 @@ public static class ActorParticlePlayer
 
     public static void PlayParticles(BaseActor actor, ParticleType particlType)
     {
+        Debug.Log($"Started to play particles: {actor}, {particlType}");
         ActorTypeForParticle actrType = GetActorType(actor, particlType);
         string actorType = actrType.ToString();
         string particleType = particlType.ToString();
@@ -23,6 +24,18 @@ public static class ActorParticlePlayer
         string path = $"ParticleInfoContainers/{actorType}/{particleType}";
         string name = $"{actorType}{particleType}";
         ParticleLowLevel.ActorStartRenderParticles(actor, path, name);
+    }
+
+    public static IEnumerator PlayParticlesCoroutine(BaseActor actor, ParticleType particlType)
+    {
+        Debug.Log($"Started to play particles: {actor}, {particlType}");
+        ActorTypeForParticle actrType = GetActorType(actor, particlType);
+        string actorType = actrType.ToString();
+        string particleType = particlType.ToString();
+
+        string path = $"ParticleInfoContainers/{actorType}/{particleType}";
+        string name = $"{actorType}{particleType}";
+        yield return ParticleLowLevel.ActorStartRenderParticlesAndWaitTillEnd(actor, path, name);
     }
 
     public static void StopParticles(BaseActor actor, ParticleType particlType)
@@ -53,6 +66,10 @@ public static class ActorParticlePlayer
         else if (actor is Spider)
         {
             return ActorTypeForParticle.Spider;
+        }
+        else if (actor is ShadowBomb)
+        {
+            return ActorTypeForParticle.ShadowBomb;
         }
         else
         {

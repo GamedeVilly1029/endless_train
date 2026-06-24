@@ -7,21 +7,21 @@ public class SwamperSummonPatternPicker : BasePatternPicker
     private List<BaseAction> _sacrifice;
     private int _turnsTillSacrifice;
 
-    public override void FillActionRowOrBelt()
+    public override void ChildFillActionRowOrBelt()
     {
         _actor.ActionRowInst.Actions.Clear();
 
-        if (_turnsTillSacrifice > 0)
-        {
-            _actor.ActionRowInst.Actions = CopyActionSet(_strike, _actor.ActionRowInst.Panel);
-            _turnsTillSacrifice -= 1;
-            return;
-        }
-        else
-        {
+        // if (_turnsTillSacrifice > 0)
+        // {
+        //     _actor.ActionRowInst.Actions = CopyActionSet(_strike, _actor.ActionRowInst.Panel);
+        //     _turnsTillSacrifice -= 1;
+        //     return;
+        // }
+        // else
+        // {
             _actor.ActionRowInst.Actions = CopyActionSet(_sacrifice, _actor.ActionRowInst.Panel);
             return;
-        }
+        // }
     }
 
     public override void InitializeChild()
@@ -51,7 +51,7 @@ public class SwamperSummonPatternPicker : BasePatternPicker
         actions.Add(healSummoner);
 
         BaseAction die = new Die();
-        die.Initialize(_actor, _turnProcessor, _levelMaster, 0, "SkillActionUI/Death");
+        die.Initialize(_actor, _turnProcessor, _levelMaster, 0, "SkillActionUI/Die/Death");
         actions.Add(die);
 
         return actions;

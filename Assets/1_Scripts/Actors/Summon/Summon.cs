@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Summon : BaseActor
@@ -9,8 +10,9 @@ public class Summon : BaseActor
         SummonerInst = summoner;
     }
 
-    public override void Die()
+    public override void ManifestDeath()
     {
+        base.ManifestDeath();
         if (SummonerInst != null)
         {
             if (SummonerInst.Summons.Contains(this))
@@ -18,6 +20,5 @@ public class Summon : BaseActor
                 SummonerInst.Summons.Remove(this);
             }
         }
-        base.Die();
     }
 }

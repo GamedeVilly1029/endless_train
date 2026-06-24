@@ -5,7 +5,7 @@ public class PlayerBeltPatternPicker : BasePatternPicker
 {
     public List<BaseAction> PlayerActionPrototypes;
 
-    public override void FillActionRowOrBelt()
+    public override void ChildFillActionRowOrBelt()
     {
         foreach (BaseAction actionWithUI in _levelMaster.Player.Belt)
         {

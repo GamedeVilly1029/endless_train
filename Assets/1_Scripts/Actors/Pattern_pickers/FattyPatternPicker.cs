@@ -9,7 +9,7 @@ public class FattyPatternPicker : BasePatternPicker
     private List<BaseAction> _shockWave;
     private List<BaseAction> _heal;
 
-    public override void FillActionRowOrBelt()
+    public override void ChildFillActionRowOrBelt()
     {
         _actor.ActionRowInst.Actions.Clear();
 
@@ -140,14 +140,5 @@ public class FattyPatternPicker : BasePatternPicker
         return actions;
     }
 
-    private List<BaseAction> CopyActionSet(List<BaseAction> set, RectTransform UIPanel)
-    {
-        List<BaseAction> copies = new();
-        foreach (BaseAction action in set)
-        {
-            BaseAction copy = action.CloneAndInstantiateUI(UIPanel, action);
-            copies.Add(copy);
-        }
-        return copies;
-    }
+    
 }

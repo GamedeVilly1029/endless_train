@@ -9,7 +9,7 @@ public class SpiderPatternPicker : BasePatternPicker
     private List<BaseAction> _sneakyLeap;
     private List<BaseAction> _stunningShout;
 
-    public override void FillActionRowOrBelt()
+    public override void ChildFillActionRowOrBelt()
     {
         _actor.ActionRowInst.Actions.Clear();
 
@@ -107,16 +107,5 @@ public class SpiderPatternPicker : BasePatternPicker
         actions.Add(stunFirstNextTurn);
 
         return actions;
-    }
-
-    private List<BaseAction> CopyActionSet(List<BaseAction> set, RectTransform UIPanel)
-    {
-        List<BaseAction> copies = new();
-        foreach (BaseAction action in set)
-        {
-            BaseAction copy = action.CloneAndInstantiateUI(UIPanel, action);
-            copies.Add(copy);
-        }
-        return copies;
     }
 }

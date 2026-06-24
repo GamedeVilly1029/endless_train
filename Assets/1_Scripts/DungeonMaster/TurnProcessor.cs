@@ -117,7 +117,7 @@ public class TurnProcessor : MonoBehaviour
         }
         for (int i = _levelMaster.AllActors.Count - 1; i >= 0; i--)
         {
-            if (_levelMaster.AllActors[i].IsDead)
+            if (_levelMaster.AllActors[i].ShouldBeDestroyed)
             {
                 Destroy(_levelMaster.AllActors[i].gameObject);
                 _levelMaster.AllActors.RemoveAt(i);

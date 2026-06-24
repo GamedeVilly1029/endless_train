@@ -7,5 +7,7 @@ public enum ParticleType
     Push,
     BattleCry,
     BasicDefend,
-    Heal
+    Heal,
+    Die,
+    Explode
 }

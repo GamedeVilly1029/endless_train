@@ -14,7 +14,7 @@ public class MechanicPatternPicker : BasePatternPicker
 
     private int _playerWasInCarriageLeft = 0;
     
-    public override void FillActionRowOrBelt()
+    public override void ChildFillActionRowOrBelt()
     {
         _actor.ActionRowInst.Actions.Clear();
 

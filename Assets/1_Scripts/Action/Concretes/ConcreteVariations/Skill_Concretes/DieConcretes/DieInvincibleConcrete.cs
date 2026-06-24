@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DieConcrete : BaseConcrete
+public class DieInvincibleConcrete : BaseConcrete
 {
     BaseActor _suicider;
-    public DieConcrete
+    public DieInvincibleConcrete
     (
         TurnProcessor turnProcessor, 
         LevelMaster levelMaster, 
@@ -20,8 +20,9 @@ public class DieConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
+        yield return GlobalLowLevelConcrete.Pause;
+        _suicider.MakeInvincible();
         _suicider.Die();
-        yield break;
     }
 
     public override IConcrete Clone(BaseAction clonedAction)

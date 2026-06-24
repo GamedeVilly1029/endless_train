@@ -10,7 +10,7 @@ public class SwamperPatternPicker : BasePatternPicker
     private List<BaseAction> _empower;
     private List<BaseAction> _defend;
 
-    public override void FillActionRowOrBelt()
+    public override void ChildFillActionRowOrBelt()
     {
         _actor.ActionRowInst.Actions.Clear();
 
