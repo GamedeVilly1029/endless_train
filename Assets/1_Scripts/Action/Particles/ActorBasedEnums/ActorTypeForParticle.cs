@@ -6,5 +6,6 @@ public enum ActorTypeForParticle
     Mechanic,
     Shared,
     Spider,
-    ShadowBomb
+    ShadowBomb,
+    ShadowCrawler
 }

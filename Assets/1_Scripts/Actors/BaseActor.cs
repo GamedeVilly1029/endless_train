@@ -225,7 +225,7 @@ public class BaseActor : MonoBehaviour
     public void MakeInvincible()
     {
         SpriteRend.sprite = null;
-        HPBarText.gameObject.SetActive(false);
-        DefenseBarText.gameObject.SetActive(false);
+        HPBarText.transform.parent.gameObject.SetActive(false);
+        DefenseBarText.transform.parent.gameObject.SetActive(false);
     }
 }

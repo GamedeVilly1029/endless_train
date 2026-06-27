@@ -35,7 +35,7 @@ public class BasePatternPicker : MonoBehaviour
         Debug.LogWarning("Base pattern picker's Initialize() method was called");
     }
 
-    public List<BaseAction> CopyActionSet(List<BaseAction> set, RectTransform UIPanel)
+    public virtual List<BaseAction> CopyActionSet(List<BaseAction> set, RectTransform UIPanel)
     {
         List<BaseAction> copies = new();
         foreach (BaseAction action in set)

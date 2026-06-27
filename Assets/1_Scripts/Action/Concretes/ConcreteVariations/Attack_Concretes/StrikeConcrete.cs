@@ -21,10 +21,11 @@ public class StrikeConcrete : ValueConcrete
 
     public override IEnumerator ChildExecute()
     {
+        Debug.Log("Strike was called");
         BaseActor actorAhead = GlobalLowLevelConcrete.TryReturnActorAhead(
             TurnProcessorInst,
             LevelMasterInst,
-            TurnProcessorInst.CurrentActor
+            _striker
         );
 
         if (actorAhead != null)
@@ -32,14 +33,14 @@ public class StrikeConcrete : ValueConcrete
             yield return actorAhead.TakeBluntDamage(Value);
             yield return actorAhead.RunBeforeDamageStatuses();
 
-            Object.FindFirstObjectByType<AudioMaster>().PlaySound("swing");
+            Object.FindAnyObjectByType<AudioMaster>().PlaySound("swing");
             ActorParticlePlayer.PlayParticles(_striker, ParticleType.Strike);
             yield return GlobalLowLevelConcrete.Pause;
-            Object.FindFirstObjectByType<AudioMaster>().PlaySound("hit");
+            Object.FindAnyObjectByType<AudioMaster>().PlaySound("hit");
         }
         else
         {
-            Object.FindFirstObjectByType<AudioMaster>().PlaySound("swing");
+            Object.FindAnyObjectByType<AudioMaster>().PlaySound("swing");
             ActorParticlePlayer.PlayParticles(_striker, ParticleType.Strike);
             yield return GlobalLowLevelConcrete.Pause;
         }

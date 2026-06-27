@@ -38,7 +38,6 @@ public class SpawnConcrete : BaseConcrete
         };
 
         return conds;
-
     }
 
     public override IEnumerator ChildExecute()
@@ -46,12 +45,17 @@ public class SpawnConcrete : BaseConcrete
         Spawned = Object.Instantiate(_prefab, LevelMasterInst.InstantiationPlaceForEnemies);
         Spawned.Initialize(_idx, _rotation, _hp, TurnProcessorInst, LevelMasterInst);
         LevelMasterInst.AllActors.Add(Spawned);
-        yield break;
+        yield return GlobalLowLevelConcrete.Pause;
     }
 
     public override IEnumerator DeclinedConcrete()
     {
         Debug.Log("Cell for this idx is either non-empty or non-existing");
-        yield break;
+        yield return null;
+    }
+
+    public override IConcrete Clone(BaseAction clonedAction)
+    {
+        return new SpawnConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ActionPassedConditions, Tag, _idx, _rotation, _prefab, _hp);
     }
 }

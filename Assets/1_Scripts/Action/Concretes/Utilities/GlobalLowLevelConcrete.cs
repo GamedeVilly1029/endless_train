@@ -35,10 +35,33 @@ public static class GlobalLowLevelConcrete
         }
         else
         {
-            // Debug.Log("Cell ahead isn't exists");
             return null;
         }
     }
-  
 
+    public static BaseActor TryReturnFirstActorOnCellsAhead(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actor)
+    {
+        if (actor.IsFacingRight())
+        {
+            for (int i = actor.PositionCellIndex + 1; i < levelMaster.Cells.Count; i++)
+            {
+                if (!new CellAtIdxIsEmpty(turnProcessor, levelMaster, i).Execute())
+                {
+                    return levelMaster.Cells[i].EnityOccupyingThisCell;
+                }
+            }
+            return null;
+        }
+        else
+        {
+            for (int i = actor.PositionCellIndex - 1; i >= 0; i--)
+            {
+                if (!new CellAtIdxIsEmpty(turnProcessor, levelMaster, i).Execute())
+                {
+                    return levelMaster.Cells[i].EnityOccupyingThisCell;
+                }
+            }
+            return null;
+        }
+    }
 }

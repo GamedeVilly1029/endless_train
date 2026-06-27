@@ -16,7 +16,6 @@ public static class ActorParticlePlayer
 
     public static void PlayParticles(BaseActor actor, ParticleType particlType)
     {
-        Debug.Log($"Started to play particles: {actor}, {particlType}");
         ActorTypeForParticle actrType = GetActorType(actor, particlType);
         string actorType = actrType.ToString();
         string particleType = particlType.ToString();
@@ -28,7 +27,6 @@ public static class ActorParticlePlayer
 
     public static IEnumerator PlayParticlesCoroutine(BaseActor actor, ParticleType particlType)
     {
-        Debug.Log($"Started to play particles: {actor}, {particlType}");
         ActorTypeForParticle actrType = GetActorType(actor, particlType);
         string actorType = actrType.ToString();
         string particleType = particlType.ToString();
@@ -70,6 +68,10 @@ public static class ActorParticlePlayer
         else if (actor is ShadowBomb)
         {
             return ActorTypeForParticle.ShadowBomb;
+        }
+        else if (actor is ShadowCrawler)
+        {
+            return ActorTypeForParticle.ShadowCrawler;
         }
         else
         {

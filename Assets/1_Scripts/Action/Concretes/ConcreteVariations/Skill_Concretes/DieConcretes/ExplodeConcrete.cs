@@ -21,12 +21,12 @@ public class ExplodeConcrete : ValueConcrete
 
     public override IEnumerator ChildExecute()
     {
-        yield return DamageOneSide(1);
-        yield return DamageOneSide(-1);
-
         _exploder.DeathPlayer = new ParticleActorExplodePlayer(_exploder);
 
         yield return new DieInvincibleConcrete(TurnProcessorInst, LevelMasterInst, ActionOfThisConcrete, null, ActionConcreteTag.Skill, _exploder).Execute();
+        yield return DamageOneSide(1);
+        yield return DamageOneSide(-1);
+
         yield return GlobalLowLevelConcrete.Pause;
     }
 

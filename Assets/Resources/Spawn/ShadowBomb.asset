@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ShadowBomb
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInstantiationInfo
   ActorPrefab: {fileID: 963715702871044242, guid: 5cbbac849cd4545728c87d7d20dbe28c, type: 3}
-  CellIndex: 2
+  CellIndex: 0
   HP: 10
-  RotationAngle: -180
+  RotationAngle: 0

@@ -1,25 +1,24 @@
 using UnityEngine;
 
-public class TeleportBehind : BaseAction 
+public class PlantBombBehind : BaseAction
 {
-    private BaseActor _teleportBehindThis;
+    private EnemyInstantiationInfo _info;
 
-    public TeleportBehind(BaseActor teleportBehindThis)
+    public PlantBombBehind(EnemyInstantiationInfo info)
     {
-        _teleportBehindThis = teleportBehindThis;
+        _info = info;
     }
-
     public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new TeleportBehindConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Move, Actor, _teleportBehindThis)
+            new SpawnBehindConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Skill, _info, Actor)
         };
     }
 
     public override BaseAction CreateClone(Transform transform)
     {
-        TeleportBehind actionClone = new(_teleportBehindThis)
+        PlantBombBehind actionClone = new(_info)
         {
             TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShadowSneaker : BaseActor
+public class ShadowCrawler : BaseActor
 {
     public override void InitializeChild(int cellIndex, float YRotation, int HP)
     {

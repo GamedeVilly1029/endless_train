@@ -11,7 +11,7 @@ public class CellAheadExistsCondition : BaseConditionCommand
     public override bool Execute()
     {
         int currentCellIndex = _actorToCheckFrom.PositionCellIndex;
-        if (TurnProcessorInst.CurrentActor.IsFacingRight())
+        if (_actorToCheckFrom.IsFacingRight())
         {
             return currentCellIndex + 1 < LevelMasterInst.Cells.Count;
         }
