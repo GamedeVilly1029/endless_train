@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class Strike : BaseAction 
+public class Slingshot : BaseAction 
 {
     public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 20, Actor)
+            new SlingshotConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 10, Actor, 0.5f, 1f, 2f)
         };
     }
 
     public override BaseAction CreateClone(Transform transform)
     {
-        Strike actionClone = new()
+        Slingshot actionClone = new()
         {
             TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,

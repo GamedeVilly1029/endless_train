@@ -16,7 +16,6 @@ public class TransparencyLerpGraphicConcrete : GraphicalCoroutineConcrete
 
     public override IEnumerator Execute()
     {
-        Debug.Log($"Duration: {_duration} sec");
         float timePassed = 0;
         Color c = _sprite.color;
         float start = c.a;

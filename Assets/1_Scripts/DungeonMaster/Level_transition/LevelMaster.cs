@@ -13,6 +13,8 @@ public class LevelMaster : MonoBehaviour
     public PlayerActor Player;
     public List<BaseActor> AllActors = new();
     private Queue<RoomInstantiationInfo> _roomQueue;
+    private int _initialRoomCount;
+    public Queue<int> PlayerAddActionIdxQueue;
 
     private void Start()
     {
@@ -20,6 +22,8 @@ public class LevelMaster : MonoBehaviour
         CreateCellPositionsDictionary();
 
         FillRoomQueue();
+        _initialRoomCount = Rooms.Count;
+        PlayerAddActionIdxQueue = GenerateAdditionalActionSequenceIndexes();
         LoadNextRoom();
     }
 
@@ -27,7 +31,14 @@ public class LevelMaster : MonoBehaviour
     {
         RoomInstantiationInfo room = _roomQueue.Dequeue();
         Cells[Player.PositionCellIndex].EnityOccupyingThisCell = null;
-        Player.Initialize(room.PlayerCellIndex, room.PlayerRotation, 99, _turnProcessor, this);
+        if (_roomQueue.Count == _initialRoomCount - 1)
+        {
+            Player.Initialize(room.PlayerCellIndex, room.PlayerRotation, 99, _turnProcessor, this);
+        }
+        else
+        {
+            Player.SetupInNewRoom(room.PlayerCellIndex, room.PlayerRotation);
+        }
         LoadEnemies(room);
     }
 
@@ -68,12 +79,24 @@ public class LevelMaster : MonoBehaviour
         return false;
     }
 
-   private void FillRoomQueue()
+    private void FillRoomQueue()
     {
         _roomQueue = new();
         foreach(RoomInstantiationInfo room in Rooms)
         {
             _roomQueue.Enqueue(room);
         }
+    }
+
+    private Queue<int> GenerateAdditionalActionSequenceIndexes()
+    {
+        int[] indexes = Enumerable.Range(0, Rooms.Count - 1).ToArray();
+        for (int i = indexes.Length - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            (indexes[j], indexes[i]) = (indexes[i], indexes[j]);
+        }
+
+        return new(indexes);
     }
 }

@@ -11,7 +11,8 @@ public static class ActorParticlePlayer
         ParticleType.Push,
         ParticleType.BattleCry,
         ParticleType.BasicDefend,
-        ParticleType.Heal
+        ParticleType.Heal,
+        ParticleType.KickBack
     };
 
     public static void PlayParticles(BaseActor actor, ParticleType particlType)

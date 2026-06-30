@@ -296,8 +296,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelMaster
   _turnProcessor: {fileID: 222536643}
   Rooms:
-  - {fileID: 11400000, guid: 8f38576878623ec9aa3e236c8126f467, type: 2}
   - {fileID: 11400000, guid: 42a387a238e7b022fbb4ca5ab97add8c, type: 2}
+  - {fileID: 11400000, guid: 8f38576878623ec9aa3e236c8126f467, type: 2}
   - {fileID: 11400000, guid: e8a0ab063d8e9a3ae9d410e6d40d54d5, type: 2}
   - {fileID: 11400000, guid: b429febba395b3056b728ddf303e57c5, type: 2}
   - {fileID: 11400000, guid: 60e89a1e57d683090a9b2963a2eb674f, type: 2}

@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-public class StrikeConcrete : ValueConcrete
+public class StrikeBackwardsConcrete: ValueConcrete
 {
     BaseActor _striker;
-    public StrikeConcrete(
+    public StrikeBackwardsConcrete(
     TurnProcessor turnProcessor,
     LevelMaster levelMaster,
     BaseAction actionOfThisConcrete,
@@ -21,32 +20,32 @@ public class StrikeConcrete : ValueConcrete
 
     public override IEnumerator ChildExecute()
     {
-        BaseActor actorAhead = GlobalLowLevelConcrete.TryReturnActorAhead(
+        BaseActor actorBehind = GlobalLowLevelConcrete.TryReturnActorBehind(
             TurnProcessorInst,
             LevelMasterInst,
             _striker
         );
 
-        if (actorAhead != null)
+        if (actorBehind != null)
         {
-            yield return actorAhead.TakeBluntDamage(Value);
-            yield return actorAhead.RunBeforeDamageStatuses();
+            yield return actorBehind.TakeBluntDamage(Value);
+            yield return actorBehind.RunBeforeDamageStatuses();
 
             Object.FindAnyObjectByType<AudioMaster>().PlaySound("swing");
-            ActorParticlePlayer.PlayParticles(_striker, ParticleType.Strike);
+            ActorParticlePlayer.PlayParticles(_striker, ParticleType.KickBack);
             yield return GlobalLowLevelConcrete.Pause;
             Object.FindAnyObjectByType<AudioMaster>().PlaySound("hit");
         }
         else
         {
             Object.FindAnyObjectByType<AudioMaster>().PlaySound("swing");
-            ActorParticlePlayer.PlayParticles(_striker, ParticleType.Strike);
+            ActorParticlePlayer.PlayParticles(_striker, ParticleType.KickBack);
             yield return GlobalLowLevelConcrete.Pause;
         }
     }
 
     public override IConcrete Clone(BaseAction clonedAction)
     {
-        return new StrikeConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, _striker);
+        return new StrikeBackwardsConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, _striker);
     }
 }

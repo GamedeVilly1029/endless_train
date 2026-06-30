@@ -23,7 +23,7 @@ public class Tantrum : BaseAction
 
         conditions = new()
         {
-            new ConcreteHistoryIsEmptyCondition(TurnProcessorInst, LevelMasterInst)
+            new ConcreteHistoryIsEmptyCondition(TurnProcessorInst, LevelMasterInst, this)
         };
 
         TantrumStrikeConcrete tanStrike = new (TurnProcessorInst, LevelMasterInst, this, conditions, ActionConcreteTag.Attack, 5, Actor);

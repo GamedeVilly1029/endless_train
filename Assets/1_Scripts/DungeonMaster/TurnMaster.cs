@@ -52,6 +52,7 @@ public class TurnMaster : MonoBehaviour
 
     private void EndFight()
     {
+        _levelMaster.Player.BeltPatternPicker.AdditionalActionIndexes.Add(_levelMaster.PlayerAddActionIdxQueue.Dequeue());
         Debug.Log("Fight ended - displaying 'Start new fight button'");
         _uIMaster.PlayerUIManagerInst.TurnUIOff();
         _uIMaster.NewFightUIStarterInst.StartFightButtonAppear();

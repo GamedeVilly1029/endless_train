@@ -1,18 +1,19 @@
 using UnityEngine;
 
-public class Strike : BaseAction 
+public class KickPush : BaseAction 
 {
     public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 20, Actor)
+            new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 5, Actor),
+            new PushConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, Actor)
         };
     }
 
     public override BaseAction CreateClone(Transform transform)
     {
-        Strike actionClone = new()
+        KickPush actionClone = new()
         {
             TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,

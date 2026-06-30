@@ -8,4 +8,5 @@ public class RoomInstantiationInfo : ScriptableObject
     public List<EnemyInstantiationInfo> EnemiesToInstantiate;
     public int PlayerCellIndex;
     public int PlayerRotation;
+    [HideInInspector] public int AdditionalActionIndex;
 }

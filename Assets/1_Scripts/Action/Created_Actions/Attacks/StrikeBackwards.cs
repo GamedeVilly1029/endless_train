@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class Strike : BaseAction 
+public class StrikeBackwards : BaseAction 
 {
     public override void InitializeConstruct()
     {
         ActionConstruct = new()
         {
-            new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 20, Actor)
+            new StrikeBackwardsConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 7, Actor)
         };
     }
 
     public override BaseAction CreateClone(Transform transform)
     {
-        Strike actionClone = new()
+        StrikeBackwards actionClone = new()
         {
             TurnProcessorInst = TurnProcessorInst,
             Actor = Actor,

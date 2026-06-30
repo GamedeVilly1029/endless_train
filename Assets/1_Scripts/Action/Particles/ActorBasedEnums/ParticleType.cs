@@ -4,6 +4,7 @@ public enum ParticleType
 {
     BePushed,
     Strike,
+    KickBack,
     Push,
     BattleCry,
     BasicDefend,

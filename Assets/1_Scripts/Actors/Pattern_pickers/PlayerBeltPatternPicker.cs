@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBeltPatternPicker : BasePatternPicker 
+public class PlayerBeltPatternPicker : BasePatternPicker
 {
     public List<BaseAction> PlayerActionPrototypes;
+    public List<int> AdditionalActionIndexes;
 
     public override void ChildFillActionRowOrBelt()
     {
@@ -22,8 +23,7 @@ public class PlayerBeltPatternPicker : BasePatternPicker
             }
             else
             {
-                BaseAction action = PlayerActionPrototypes[i].CloneAndInstantiateUI(_levelMaster.Player.BeltPanel, PlayerActionPrototypes[i]);
-                action.Actor = _levelMaster.Player;
+                BaseAction action = PlayerActionPrototypes[i].CloneAndInstantiateUI(_levelMaster.Player.BeltPanel, PlayerActionPrototypes[i]); action.Actor = _levelMaster.Player;
                 _levelMaster.Player.Belt.Add(action);
             }
         }
@@ -61,7 +61,44 @@ public class PlayerBeltPatternPicker : BasePatternPicker
         basicDefend.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "DefenseActionUI/BasicDefend");
         actions.Add(basicDefend);
 
+        BaseAction legKick = new LegKick();
+        legKick.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "AttackActionUI/Kick");
+        actions.Add(legKick);
+
+        LoadAdditionalActions(actions);
+
         return actions;
+    }
+
+    public void LoadAdditionalActions(List<BaseAction> actions)
+    {
+        foreach (int idx in AdditionalActionIndexes)
+        {
+            if (idx == 0)
+            {
+                BaseAction strikeBack = new StrikeBackwards();
+                strikeBack.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "AttackActionUI/KickBack");
+                actions.Add(strikeBack);
+            }
+            else if (idx == 1)
+            {
+                BaseAction sling = new Slingshot();
+                sling.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "AttackActionUI/SlingShot");
+                actions.Add(sling);
+            }
+            else if (idx == 2)
+            {
+                BaseAction kickpush = new KickPush();
+                kickpush.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "AttackActionUI/KneeKick");
+                actions.Add(kickpush);
+            }
+            else if (idx == 3)
+            {
+                BaseAction legKick = new LegKick();
+                legKick.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "AttackActionUI/Kick");
+                actions.Add(legKick);
+            }
+        }
     }
 
     public void DecreaseCooldown(List<BaseAction> exceptions)

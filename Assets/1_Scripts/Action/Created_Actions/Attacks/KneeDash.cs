@@ -25,7 +25,7 @@ public class KneeDash : BaseAction
             this,
             new List<IConditionCommand>()
             {
-                new ConcreteHistoryIsEmptyCondition(TurnProcessorInst, LevelMasterInst)
+                new ConcreteHistoryIsEmptyCondition(TurnProcessorInst, LevelMasterInst, this)
             },
             ActionConcreteTag.Attack,
             5,

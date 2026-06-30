@@ -64,4 +64,38 @@ public static class GlobalLowLevelConcrete
             return null;
         }
     }
+
+    public static BaseActor TryReturnActorBehind(TurnProcessor turnProcessor, LevelMaster levelMaster, BaseActor actor)
+    {
+        IConditionCommand cellAheadExists = new CellBehindExistsCondition(turnProcessor , levelMaster, actor);
+        if (cellAheadExists.Execute())
+        {
+            if (actor.IsFacingRight())
+            {
+                if (levelMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell != null)
+                {
+                    return levelMaster.Cells[actor.PositionCellIndex - 1].EnityOccupyingThisCell;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (levelMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell != null)
+                {
+                    return levelMaster.Cells[actor.PositionCellIndex + 1].EnityOccupyingThisCell;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
