@@ -16,6 +16,7 @@ public class StunFirstPlayerActionNextTurnConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
+        ActorParticlePlayer.PlayParticles(ActionOfThisConcrete.Actor, ParticleType.Stun);
         IStatusEffect stunFirstAction = new StunFirstActionEffect();
         stunFirstAction.Initialize(TurnProcessorInst, LevelMasterInst, LevelMasterInst.Player);
         LevelMasterInst.Player.StatusEffectsBeforeTurn.Add(stunFirstAction);

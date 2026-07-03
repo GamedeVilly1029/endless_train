@@ -8,6 +8,7 @@ public class LegKick : BaseAction
         ActionConstruct = new();
         List<IConditionCommand> conds = new()
         {
+            new TurnActionHistoryIsEmpty(TurnProcessorInst, LevelMasterInst, Actor),
             new ActionRowHasOnly1Action(TurnProcessorInst, LevelMasterInst, Actor)
         };
         BaseConcrete strongStrike = new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, conds, ActionConcreteTag.Attack, 10, Actor);
@@ -20,6 +21,7 @@ public class LegKick : BaseAction
         BaseConcrete strike = new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, conds, ActionConcreteTag.Attack, 5, Actor);
         ActionConstruct.Add(strike);
     }
+
 
     public override BaseAction CreateClone(Transform transform)
     {

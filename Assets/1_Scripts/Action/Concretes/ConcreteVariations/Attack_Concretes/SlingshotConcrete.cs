@@ -36,6 +36,7 @@ public class SlingshotConcrete : ValueConcrete
         _target = GlobalLowLevelConcrete.TryReturnFirstActorOnCellsAhead(TurnProcessorInst, LevelMasterInst, _caster);
         if (new ActorIsNotNullCondition(TurnProcessorInst, LevelMasterInst, _target).Execute())
         {
+            yield return new BeforeHitSwing(_caster, 0.5f).Execute();
             yield return new ThrowTransformObjectConcrete(rock.transform, _target.TransformReference.position, _throwDuration).Execute();
 
             yield return _target.TakeBluntDamage(Value);
@@ -49,6 +50,8 @@ public class SlingshotConcrete : ValueConcrete
             if (_caster.IsFacingRight())
             {
                 Vector2 targetPos = new(LevelMasterInst.Cells[^1].CellPosition.x + 3, LevelMasterInst.Cells[^1].CellPosition.y);
+
+                yield return new BeforeHitSwing(_caster, 0.5f).Execute();
                 yield return new ThrowTransformObjectConcrete(rock.transform, targetPos, _throwDuration).Execute();
 
                 _caster.StartCoroutine(new TransformFallConcrete(rock.transform, _fallDuration).Execute());
@@ -58,6 +61,7 @@ public class SlingshotConcrete : ValueConcrete
             else
             {
                 Vector2 targetPos = new(LevelMasterInst.Cells[0].CellPosition.x - 3, LevelMasterInst.Cells[0].CellPosition.y);
+                yield return new BeforeHitSwing(_caster, 0.5f).Execute();
                 yield return new ThrowTransformObjectConcrete(rock.transform, targetPos, _throwDuration).Execute();
 
                 _caster.StartCoroutine(new TransformFallConcrete(rock.transform, _fallDuration).Execute());

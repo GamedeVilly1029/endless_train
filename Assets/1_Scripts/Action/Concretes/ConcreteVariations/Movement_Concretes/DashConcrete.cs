@@ -57,7 +57,7 @@ public class DashConcrete : ValueConcrete
             int maxCheckPos = _caller.PositionCellIndex - chargeRange;
             for (int i = _caller.PositionCellIndex - 2; i >= maxCheckPos; i--)
             {
-                if (i > 0)
+                if (i >= 0)
                 {
                     if (LevelMasterInst.Cells[i].EnityOccupyingThisCell != null)
                     {
@@ -75,8 +75,6 @@ public class DashConcrete : ValueConcrete
                 }
             }
         }
-
-        yield return MovementLowLevelConcrete.StepForwardOrBackwards(LevelMasterInst, _caller, Resources.Load<MoveData>("StepData"), _caller.IsFacingRight());
         yield return GlobalLowLevelConcrete.Pause;
     }
 

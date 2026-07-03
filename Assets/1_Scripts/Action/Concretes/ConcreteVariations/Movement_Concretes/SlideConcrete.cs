@@ -31,9 +31,8 @@ public class SlideConcrete : BaseConcrete
         _actor.PositionCellIndex = _destinationCellIDX;
 
         ActorParticlePlayer.PlayParticles(_actor, ParticleType.BePushed);
-        Object.FindFirstObjectByType<AudioMaster>().PlaySound("slide");
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("slide");
         yield return MovementLowLevelConcrete.StepFlat(_actor, start, end, 0.2f);
-        _actor.TransformReference.position = end;
         ActorParticlePlayer.StopParticles(_actor, ParticleType.BePushed);
     }
 

@@ -8,11 +8,16 @@ public class BeltUIController : MonoBehaviour, IPointerDownHandler
     [SerializeField] private TurnProcessor _turnProcessor;
     [SerializeField] private LevelMaster _levelMaster;
     [SerializeField] private ActionRow _playerActionRow;
+    [SerializeField] private UIMaster _UIMaster;
 
     private GameObject _objectWasClicked;
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (_UIMaster.InteractionBlock)
+        {
+            return;
+        }
         if (eventData.pointerCurrentRaycast.gameObject.CompareTag("UIActionIcon"))
         {
             _objectWasClicked = eventData.pointerCurrentRaycast.gameObject;
@@ -26,7 +31,7 @@ public class BeltUIController : MonoBehaviour, IPointerDownHandler
                 {
                     FromBeltToRow();
                     _playerActionRow.OnActionAdd.Invoke();
-                    FindFirstObjectByType<AudioMaster>().PlaySound("equipAction");
+                    FindAnyObjectByType<AudioMaster>().PlaySound("equipAction");
                     _player.ActionInRowCount += 1;
                 }
             }
@@ -34,7 +39,7 @@ public class BeltUIController : MonoBehaviour, IPointerDownHandler
             {
                 FromRowToBelt();
                 _playerActionRow.OnActionRemove.Invoke();
-                FindFirstObjectByType<AudioMaster>().PlaySound("unequipAction");
+                FindAnyObjectByType<AudioMaster>().PlaySound("unequipAction");
                 _player.ActionInRowCount -= 1;
             }
         }

@@ -30,6 +30,7 @@ public static class MovementLowLevelConcrete
             timePast += Time.deltaTime;
             yield return null;
         }
+        actor.TransformReference.position = end;
     }
 
 

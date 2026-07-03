@@ -35,7 +35,7 @@ public class HealPercentConcrete : ValueConcrete
         }
         new HealAudioCommand(UnityEngine.Object.FindAnyObjectByType<AudioMaster>()).Execute();
         new PlayHealParticlesGraphicConcrete(_caster).Execute();
-        new GraphicTransformColorLerpConcrete(_caster, Color.green, 0.25f).Execute();
+        _caster.StartCoroutine(new GraphicTransformColorLerpConcrete(_caster, Color.green, 0.25f).Execute());
         yield return GlobalLowLevelConcrete.Pause;
     }
 

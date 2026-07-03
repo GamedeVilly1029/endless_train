@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class GraphicTransformColorLerpConcrete : GraphicalConcrete
+public class GraphicTransformColorLerpConcrete : GraphicalCoroutineConcrete
 {
     private BaseActor _caster;
     private Color _targetColor;
@@ -19,12 +19,12 @@ public class GraphicTransformColorLerpConcrete : GraphicalConcrete
         _duration = duration;
     }
 
-    public override void Execute()
+    public override IEnumerator Execute()
     {
         SpriteRenderer sprt = _caster.GraphicTransform.GetComponent<SpriteRenderer>();
         Color startColor = sprt.color;
 
-        _caster.StartCoroutine(Interpolate(sprt, startColor, _targetColor, _duration));
+        yield return Interpolate(sprt, startColor, _targetColor, _duration);
     }
 
     private IEnumerator Interpolate(SpriteRenderer sprt, Color start, Color target, float duration)

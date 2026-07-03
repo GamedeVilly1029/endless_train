@@ -52,15 +52,20 @@ public class TurnMaster : MonoBehaviour
 
     private void EndFight()
     {
-        _levelMaster.Player.BeltPatternPicker.AdditionalActionIndexes.Add(_levelMaster.PlayerAddActionIdxQueue.Dequeue());
-        Debug.Log("Fight ended - displaying 'Start new fight button'");
+        int addActionIdx = _levelMaster.PlayerAddActionIdxQueue.Dequeue();
+        _levelMaster.Player.BeltPatternPicker.AdditionalActionIndexes.Add(addActionIdx);
         _uIMaster.PlayerUIManagerInst.TurnUIOff();
+        _uIMaster.NewFightUIStarterInst.DescriptiveText.text = _uIMaster.NewFightUIStarterInst.GenerateDescription(addActionIdx);
+        _uIMaster.NewFightUIStarterInst.DescriptiveText.gameObject.SetActive(true);
         _uIMaster.NewFightUIStarterInst.StartFightButtonAppear();
     }
 
     private IEnumerator EndTurn()
     {
+        _uIMaster.InteractionBlock = true;
         yield return _turnProcessor.StartCoroutine(_turnProcessor.ProcessTurn());
+
+        _uIMaster.InteractionBlock = false;
         StartTurn();
     }
 }

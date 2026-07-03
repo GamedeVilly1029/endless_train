@@ -34,7 +34,7 @@ public class SummonConcrete : BaseConcrete
         _summoner.Summons.Add(Summon);
         LevelMasterInst.AllActors.Add(Summon);
 
-        yield return GlobalLowLevelConcrete.Pause;
+        yield return new SpawnGrowEffect(Summon, 0.25f).Execute();
     }
 
     public override List<IConditionCommand> CreateBaseConditionList()

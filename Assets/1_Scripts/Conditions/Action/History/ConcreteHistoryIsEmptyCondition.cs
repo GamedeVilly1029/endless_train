@@ -11,7 +11,11 @@ public class ConcreteHistoryIsEmptyCondition : BaseConditionCommand
 
     public override bool Execute()
     {
-        Debug.Log(_action.TurnTemporarySuccessfulConcreteHistory.Count == 0);
-        return _action.TurnTemporarySuccessfulConcreteHistory.Count == 0;
+        // Debug.Log($"_action.TurnTemporarySuccessfulConcreteHistory is null: {_action.TurnTemporarySuccessfulConcreteHistory == null}");
+        // Debug.Log(_action.TurnTemporarySuccessfulConcreteHistory.Count == 0);
+        // return _action.TurnTemporarySuccessfulConcreteHistory.Count == 0;
+
+
+        return TurnProcessorInst.CurrentAction.TurnTemporarySuccessfulConcreteHistory.Count == 0;
     }
 }

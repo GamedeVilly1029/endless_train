@@ -13,10 +13,10 @@ public class BaseConcrete : IConcrete
     public ActionConcreteTag Tag;
 
     public BaseConcrete(
-    TurnProcessor turnProcessor, 
-    LevelMaster levelMaster, 
-    BaseAction actionOfThisConcrete, 
-    List<IConditionCommand> actionPassedConditions, 
+    TurnProcessor turnProcessor,
+    LevelMaster levelMaster,
+    BaseAction actionOfThisConcrete,
+    List<IConditionCommand> actionPassedConditions,
     ActionConcreteTag tag
     )
     {
@@ -30,6 +30,7 @@ public class BaseConcrete : IConcrete
     public IEnumerator Execute()
     {
         ConditionCalc();
+
         if (ExtraConditions == null)
         {
             ActionOfThisConcrete.TurnTemporarySuccessfulConcreteHistory.Add(this);
@@ -70,6 +71,11 @@ public class BaseConcrete : IConcrete
 
     private void ConditionCalc()
     {
+        // foreach (var cond in ActionPassedConditions)
+        // {
+        //     Debug.Log($"ActionPassedCondition: {cond.GetType()}");
+        // }
+
         ExtraConditions = new();
         List<IConditionCommand> builtInConditions = CreateBaseConditionList();
         AddToExtraConditions(builtInConditions);

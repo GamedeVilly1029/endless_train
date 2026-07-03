@@ -40,12 +40,13 @@ public class TeleportBehindConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
+        Vector3 startScale = _caster.GraphicTransform.localScale;
         IConditionCommand targetRight = new TargetIsRightFromCaster(TurnProcessorInst, LevelMasterInst, _caster, _target);
 
         float rotation = _caster.IsFacingRight() ? 180 : 0;
         int idx = targetRight.Execute() ? _target.PositionCellIndex + 1 : _target.PositionCellIndex - 1;
 
-        yield return GlobalLowLevelConcrete.Pause;
+        yield return new ScaleLerpUtility(0.25f, _caster.GraphicTransform, startScale, Vector3.zero).Execute();
 
         LevelMasterInst.Cells[_caster.PositionCellIndex].EnityOccupyingThisCell = null;
         _caster.TransformReference.position = LevelMasterInst.Cells[idx].CellPosition;
@@ -54,6 +55,6 @@ public class TeleportBehindConcrete : BaseConcrete
         _caster.PositionCellIndex = idx;
         LevelMasterInst.Cells[_caster.PositionCellIndex].EnityOccupyingThisCell = _caster;
 
-        yield return GlobalLowLevelConcrete.Pause;
+        yield return new ScaleLerpUtility(0.25f, _caster.GraphicTransform, Vector3.zero, startScale).Execute();
     }
 }

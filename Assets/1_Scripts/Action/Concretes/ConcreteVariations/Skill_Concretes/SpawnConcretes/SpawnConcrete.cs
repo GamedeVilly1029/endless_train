@@ -45,7 +45,7 @@ public class SpawnConcrete : BaseConcrete
         Spawned = Object.Instantiate(_prefab, LevelMasterInst.InstantiationPlaceForEnemies);
         Spawned.Initialize(_idx, _rotation, _hp, TurnProcessorInst, LevelMasterInst);
         LevelMasterInst.AllActors.Add(Spawned);
-        yield return GlobalLowLevelConcrete.Pause;
+        yield return new SpawnGrowEffect(Spawned, 0.25f).Execute();
     }
 
     public override IEnumerator DeclinedConcrete()

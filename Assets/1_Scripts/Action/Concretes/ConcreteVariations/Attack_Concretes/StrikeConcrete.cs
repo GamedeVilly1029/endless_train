@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class StrikeConcrete : ValueConcrete
@@ -29,12 +28,13 @@ public class StrikeConcrete : ValueConcrete
 
         if (actorAhead != null)
         {
-            yield return actorAhead.TakeBluntDamage(Value);
-            yield return actorAhead.RunBeforeDamageStatuses();
-
             Object.FindAnyObjectByType<AudioMaster>().PlaySound("swing");
+            _striker.StartCoroutine(new BeforeHitSwing(_striker, 0.5f).Execute());
             ActorParticlePlayer.PlayParticles(_striker, ParticleType.Strike);
             yield return GlobalLowLevelConcrete.Pause;
+
+            yield return actorAhead.RunBeforeDamageStatuses();
+            yield return actorAhead.TakeBluntDamage(Value);
             Object.FindAnyObjectByType<AudioMaster>().PlaySound("hit");
         }
         else
@@ -47,6 +47,6 @@ public class StrikeConcrete : ValueConcrete
 
     public override IConcrete Clone(BaseAction clonedAction)
     {
-        return new StrikeConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value, _striker);
+        return new StrikeConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ActionPassedConditions, Tag, Value, _striker);
     }
 }

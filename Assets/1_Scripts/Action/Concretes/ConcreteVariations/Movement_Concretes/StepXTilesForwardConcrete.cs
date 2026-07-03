@@ -22,7 +22,7 @@ public class StepXTilesForwardConcrete : ValueConcrete
         int stepsToSubtract = Value;
         while (stepsToSubtract > 0)
         {
-            Object.FindFirstObjectByType<AudioMaster>().PlaySound("step");
+            Object.FindAnyObjectByType<AudioMaster>().PlaySound("step");
             yield return new StepOneCellForwardConcrete(TurnProcessorInst, LevelMasterInst, ActionOfThisConcrete, null, ActionConcreteTag.Move, _actorToMove).Execute();
 
             stepsToSubtract--;
@@ -31,6 +31,6 @@ public class StepXTilesForwardConcrete : ValueConcrete
 
     public override IConcrete Clone(BaseAction clonedAction)
     {
-        return new StepXTilesForwardConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, Value,_actorToMove);
+        return new StepXTilesForwardConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ActionPassedConditions, Tag, Value,_actorToMove);
     }
 }

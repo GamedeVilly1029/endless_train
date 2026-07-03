@@ -20,7 +20,9 @@ public class PushConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
+        yield return new BeforeHitSwing(_pusher, 0.5f).Execute();
         ActorParticlePlayer.PlayParticles(_pusher, ParticleType.Push);
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("push");
 
         if (new CellAheadExistsCondition(TurnProcessorInst, LevelMasterInst, TurnProcessorInst.CurrentActor).Execute())
         {
@@ -41,7 +43,6 @@ public class PushConcrete : BaseConcrete
             }
         }
 
-        Object.FindAnyObjectByType<AudioMaster>().PlaySound("push");
         yield return GlobalLowLevelConcrete.Pause;
     }
 
@@ -67,6 +68,6 @@ public class PushConcrete : BaseConcrete
 
     public override IConcrete Clone(BaseAction clonedAction)
     {
-        return new PushConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _pusher);
+        return new PushConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ActionPassedConditions, Tag, _pusher);
     }
 }

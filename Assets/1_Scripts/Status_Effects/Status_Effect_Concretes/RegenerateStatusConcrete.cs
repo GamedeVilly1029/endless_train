@@ -16,7 +16,7 @@ public class RegenerateStatusConcrete : ValueStatusConcrete
     public override IEnumerator ChildExecute()
     {
         Actor.CurrentHP += Value;
-        new GraphicTransformColorLerpConcrete(Actor, Color.green, 0.5f).Execute();
+        Actor.StartCoroutine(new GraphicTransformColorLerpConcrete(Actor, Color.green, 0.5f).Execute());
         new PlayHealParticlesGraphicConcrete(Actor).Execute();
         yield return null;
     }

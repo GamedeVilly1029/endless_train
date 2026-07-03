@@ -16,9 +16,7 @@ public class BeStunnedConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
-        yield return GlobalLowLevelConcrete.Pause;
-        Debug.Log("Stunned!");
-        yield return GlobalLowLevelConcrete.Pause;
+        yield return new ConfusionEffect(ActionOfThisConcrete.Actor, 0.5f).Execute();
     }
 
     public override IConcrete Clone(BaseAction clonedAction)

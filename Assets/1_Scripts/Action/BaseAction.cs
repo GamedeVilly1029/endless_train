@@ -88,12 +88,13 @@ public class BaseAction
 
     public IEnumerator ExecuteAction()
     {
-        TurnTemporarySuccessfulConcreteHistory = new();
+        TurnTemporarySuccessfulConcreteHistory = new(); 
         foreach (IConcrete element in ActionConstruct)
         {
             yield return element.Execute();
         }
         Actor.PositionCellIndexHistory.Push(Actor.PositionCellIndex);
+        Actor.TurnBasedActionHistory.Add(this);
         ActionManipulationMethods.RemoveFromActionRowAndShrinkIt(this);
         SetCooldown();
     }

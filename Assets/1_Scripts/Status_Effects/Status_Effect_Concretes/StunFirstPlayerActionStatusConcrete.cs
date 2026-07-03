@@ -17,8 +17,6 @@ public class StunFirstPlayerActionStatusConcrete : ActionAddStatusConcrete
 
     public override IEnumerator ChildExecute()
     {
-        yield return GlobalLowLevelConcrete.Pause;
-
         if (LevelMasterInst.Player.ActionRowInst.Actions.Count > 0)
         {
             ActionManipulationMethods.RemoveFromActionRowAndShrinkIt(LevelMasterInst.Player.ActionRowInst.Actions[0]);
@@ -27,7 +25,6 @@ public class StunFirstPlayerActionStatusConcrete : ActionAddStatusConcrete
         BaseAction createdAction = _stunAction.CloneAndInstantiateUI(LevelMasterInst.Player.ActionRowInst.Panel, ActionToAssign);
         createdAction.UIRepresentation.transform.SetSiblingIndex(0);
         LevelMasterInst.Player.ActionRowInst.Actions.Insert(0, createdAction);
-
-        yield return GlobalLowLevelConcrete.Pause;
+        yield return null;
     }
 }

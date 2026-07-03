@@ -20,8 +20,6 @@ public class ChangeNextActionOfPlayerConcrete : ActionAddConcrete
 
     public override IEnumerator ChildExecute()
     {
-        yield return GlobalLowLevelConcrete.Pause;
-
         BaseAction createdAction = ActionToAdd.CloneAndInstantiateUI(
             LevelMasterInst.Player.ActionRowInst.Panel,
             ActionToAdd

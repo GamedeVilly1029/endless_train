@@ -42,6 +42,6 @@ public class StepOneCellForwardConcrete : BaseConcrete
 
     public override IConcrete Clone(BaseAction clonedAction)
     {
-        return new StepOneCellForwardConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ExtraConditions, Tag, _actorToMove);
+        return new StepOneCellForwardConcrete(TurnProcessorInst, LevelMasterInst, clonedAction, ActionPassedConditions, Tag, _actorToMove);
     }
 }

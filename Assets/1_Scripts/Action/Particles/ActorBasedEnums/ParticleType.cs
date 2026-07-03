@@ -10,5 +10,6 @@ public enum ParticleType
     BasicDefend,
     Heal,
     Die,
-    Explode
+    Explode,
+    Stun
 }

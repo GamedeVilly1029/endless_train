@@ -26,6 +26,7 @@ public class BaseActor : MonoBehaviour
     public Transform TransformReference{get{return transform;}set{}}
     public Stack<int> PositionCellIndexHistory;
     public List<BaseAction> FightBasedActionHistory;
+    public List<BaseAction> TurnBasedActionHistory;
     public List<IStatusEffect> StatusEffectsBeforeTurn;
     public List<IStatusEffect> StatusEffectsDuringTurn; 
     public List<IStatusEffect> StatusEffectsBeforeTakingDamage;
@@ -36,6 +37,7 @@ public class BaseActor : MonoBehaviour
     {
         InitializeCellIndexHistories();
         yield return RunBeforeTurnStatuses();
+        TurnBasedActionHistory = new();
     }
 
     public IEnumerator TurnEnd()
@@ -146,6 +148,7 @@ public class BaseActor : MonoBehaviour
             int leftDamage = damageToTake - Defense;
             yield return CurrentHP -= leftDamage;
             Defense = 0;
+            yield return new TakeDamageEffect(this, 0.125f).Execute();
         }
         else if (damageToTake < Defense)
         {
@@ -160,6 +163,7 @@ public class BaseActor : MonoBehaviour
     public IEnumerator TakePiercingDamage(int damageToTake)
     {
         yield return CurrentHP -= damageToTake;
+        yield return new TakeDamageEffect(this, 0.125f).Execute();
     }
 
 

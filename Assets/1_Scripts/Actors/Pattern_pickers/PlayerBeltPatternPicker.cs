@@ -61,10 +61,6 @@ public class PlayerBeltPatternPicker : BasePatternPicker
         basicDefend.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "DefenseActionUI/BasicDefend");
         actions.Add(basicDefend);
 
-        BaseAction legKick = new LegKick();
-        legKick.Initialize(_levelMaster.Player, _turnProcessor, _levelMaster, 0, "AttackActionUI/Kick");
-        actions.Add(legKick);
-
         LoadAdditionalActions(actions);
 
         return actions;

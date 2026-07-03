@@ -27,17 +27,17 @@ public class SpiderPatternPicker : BasePatternPicker
 
         // if (new CurrentHPIsMoreThanXPercentCondition(_turnProcessor, _levelMaster, SpiderInstance.MaxHP, SpiderInstance.CurrentHP, 30f).Execute())
         // {
-            int randomInt = UnityEngine.Random.Range(1, 4);
-            if (randomInt == 1)
-            {
-                _actor.ActionRowInst.Actions = CopyActionSet(_sneakyLeap, _actor.ActionRowInst.Panel);
-                return;
-            }
-            else
-            {
+            // int randomInt = UnityEngine.Random.Range(1, 4);
+            // if (randomInt == 1)
+            // {
+                // _actor.ActionRowInst.Actions = CopyActionSet(_sneakyLeap, _actor.ActionRowInst.Panel);
+                // return;
+            // }
+            // else
+            // {
                 _actor.ActionRowInst.Actions = CopyActionSet(_stunningShout, _actor.ActionRowInst.Panel);
                 return;
-            }
+            // }
         // }
 
         // Debug.LogError("Bad enemy AI - none of the predefined actions was selected");

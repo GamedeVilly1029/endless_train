@@ -24,7 +24,7 @@ public class HealOtherConcrete : ValueConcrete
         _toHeal.CurrentHP += Value;
         new HealAudioCommand(UnityEngine.Object.FindAnyObjectByType<AudioMaster>()).Execute();
         new PlayHealParticlesGraphicConcrete(_toHeal).Execute();
-        new GraphicTransformColorLerpConcrete(_toHeal, Color.green, 0.25f).Execute();
+        _toHeal.StartCoroutine(new GraphicTransformColorLerpConcrete(_toHeal, Color.green, 0.25f).Execute()) ;
         yield return GlobalLowLevelConcrete.Pause;
     }
 
