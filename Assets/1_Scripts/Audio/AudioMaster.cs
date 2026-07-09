@@ -4,6 +4,7 @@ using UnityEngine;
 public class AudioMaster : MonoBehaviour
 {
     public Sound[] Sounds;
+    [SerializeField] private AudioDataTransfer _transfer;
 
     private void Awake()
     {
@@ -18,7 +19,10 @@ public class AudioMaster : MonoBehaviour
 
     private void Start()
     {
-        // PlaySound("ambience");
+        if (_transfer.ToggleAudio)
+        {
+            PlaySound("ambience");
+        }
     }
 
     public void PlaySound(string name)

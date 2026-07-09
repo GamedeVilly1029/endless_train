@@ -3160,9 +3160,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioMaster
   Sounds:
   - Name: ambience
-    Clip: {fileID: 8300000, guid: a4716ecfd4b0a995ea494c4c54577693, type: 3}
+    Clip: {fileID: 8300000, guid: 58d36d0b05d008e99b7de3319f371850, type: 3}
     Loop: 1
-    Volume: 1
+    Volume: 0.104
     Source: {fileID: 0}
   - Name: hit
     Clip: {fileID: 8300000, guid: 21470f4414104b5ee9149dff7f7d08ad, type: 3}
@@ -3259,6 +3259,7 @@ MonoBehaviour:
     Loop: 0
     Volume: 0.5
     Source: {fileID: 0}
+  _transfer: {fileID: 11400000, guid: 6742fcb4a45fdf3618f17c2d98738b2b, type: 2}
 --- !u!1 &1883963557
 GameObject:
   m_ObjectHideFlags: 0

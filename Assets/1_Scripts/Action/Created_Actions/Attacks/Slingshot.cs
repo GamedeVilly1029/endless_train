@@ -6,7 +6,7 @@ public class Slingshot : BaseAction
     {
         ActionConstruct = new()
         {
-            new SlingshotConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 10, Actor, 0.5f, 1f, 2f)
+            new SlingshotConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 5, Actor, 0.5f, 1f, 2f)
         };
     }
 

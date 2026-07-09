@@ -9,6 +9,7 @@ TagManager:
   - StartNewFight
   - QuitGame
   - StartGame
+  - ToggleCheckBox
   layers:
   - Default
   - TransparentFX
