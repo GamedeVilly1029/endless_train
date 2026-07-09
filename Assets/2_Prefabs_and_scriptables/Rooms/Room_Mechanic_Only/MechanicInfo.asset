@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: MechanicInfo
   m_EditorClassIdentifier: Assembly-CSharp::EnemeyInstantiationInfo
   ActorPrefab: {fileID: 7522039980220785142, guid: 5d591358bd31fdcde8f6356409569030, type: 3}
-  CellIndex: 6
+  CellIndex: 5
   HP: 50
   RotationAngle: -180

@@ -13,39 +13,26 @@ public class MechanicPatternPicker : BasePatternPicker
     private List<BaseAction> _retreat;
 
     private int _playerWasInCarriageLeft = 0;
-    
+
     public override void ChildFillActionRowOrBelt()
     {
         _actor.ActionRowInst.Actions.Clear();
 
-        IConditionCommand playerOnCellsAhead = new ActorIsOnCellsAheadCondition(_turnProcessor, 
-        _levelMaster, 
-        _levelMaster.Player, 
+        IConditionCommand playerOnCellsAhead = new ActorIsOnCellsAheadCondition(_turnProcessor,
+        _levelMaster,
+        _levelMaster.Player,
         _actor);
 
-        IConditionCommand playerKeepsDistance = new ActorInRangeOfXCellsFromOtherActorCondition(_turnProcessor, 
-        _levelMaster, 
-        _levelMaster.Player, 
-        _actor, 
+        IConditionCommand playerKeepsDistance = new ActorInRangeOfXCellsFromOtherActorCondition(_turnProcessor,
+        _levelMaster,
+        _levelMaster.Player,
+        _actor,
         2);
-
-        IConditionCommand HPMoreThan30Percent = new CurrentHPIsMoreThanXPercentCondition(_turnProcessor, 
-        _levelMaster, 
-        _actor.MaxHP,
-        _actor.CurrentHP,
-        30);
 
         IConditionCommand playerInTheCarriageLeft = new ActorInRangeOfCellsCondition(_turnProcessor, _levelMaster, _levelMaster.Player, 0, 3);
 
         IConditionCommand mechanicInTheCarriageLeft = new ActorInRangeOfCellsCondition(_turnProcessor, _levelMaster, _actor, 0, 3);
 
-        // Func<float, float, float, bool> HPmoreThan30Percent = HPBasedCondition.CurrentHPIsMoreThanXPercent;
-        // Func<TurnProcessor, IActor, IActor, int, bool> PlayerKeepsDistance = CellBasedCondition.ActorInRangeOfXCellsFromOtherActor;
-        // Func<TurnProcessor, IActor, IActor, bool> PlayerAhead = CellBasedCondition.ActorIsOnCellsAhead;
-
-        // Func<TurnProcessor, IActor, int, int, bool> ActorInTheCarriageLeft = CellBasedCondition.ActorInRangeOfCells;
-
-        // if (!PlayerAhead(TurnProcessorInst, LevelMasterInst.Player, MechanicInstance)){}
         if (!playerOnCellsAhead.Execute())
         {
             _actor.ActionRowInst.Actions = CopyActionSet(_rotate, _actor.ActionRowInst.Panel);
@@ -68,28 +55,21 @@ public class MechanicPatternPicker : BasePatternPicker
             return;
         }
 
-        if (HPMoreThan30Percent.Execute())
+
+        int randomInt = UnityEngine.Random.Range(1, 4);
+        if (randomInt == 1)
         {
-            int randomInt = UnityEngine.Random.Range(1, 4);
-            if (randomInt == 1)
-            {
-                _actor.ActionRowInst.Actions = CopyActionSet(_chase, _actor.ActionRowInst.Panel);
-                return;
-            }
-            else if (randomInt == 2)
-            {
-                _actor.ActionRowInst.Actions = CopyActionSet(_heavyPunch, _actor.ActionRowInst.Panel);
-                return;
-            }
-            else if (randomInt == 3)
-            {
-                _actor.ActionRowInst.Actions = CopyActionSet(_chasingPunch, _actor.ActionRowInst.Panel);
-                return;
-            }
+            _actor.ActionRowInst.Actions = CopyActionSet(_chase, _actor.ActionRowInst.Panel);
+            return;
         }
-        else
+        else if (randomInt == 2)
         {
-            _actor.ActionRowInst.Actions = CopyActionSet(_tantrums, _actor.ActionRowInst.Panel);
+            _actor.ActionRowInst.Actions = CopyActionSet(_heavyPunch, _actor.ActionRowInst.Panel);
+            return;
+        }
+        else if (randomInt == 3)
+        {
+            _actor.ActionRowInst.Actions = CopyActionSet(_chasingPunch, _actor.ActionRowInst.Panel);
             return;
         }
 
@@ -134,7 +114,7 @@ public class MechanicPatternPicker : BasePatternPicker
         actions.Add(rotate);
 
         return actions;
-    } 
+    }
 
     private List<BaseAction> InitializeChase()
     {
@@ -165,7 +145,7 @@ public class MechanicPatternPicker : BasePatternPicker
     private List<BaseAction> InitializeChasingPunch()
     {
         List<BaseAction> actions = new();
-        
+
         BaseAction heavyWalk = new HeavyWalk();
         heavyWalk.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/HeavyWalk");
         actions.Add(heavyWalk);

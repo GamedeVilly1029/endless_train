@@ -6,7 +6,6 @@ public static class ParticleLowLevel
     public static void ActorStartRenderParticles(BaseActor actor, string pathToParticles, string nameToAssign)
     {
         ParticleInfoContainer info = Resources.Load<ParticleInfoContainer>(pathToParticles);
-        Debug.Log(pathToParticles);
         ParticleSystem particles = Object.Instantiate(info.Particles, actor.GraphicTransform.transform);
 
         var main = particles.main;

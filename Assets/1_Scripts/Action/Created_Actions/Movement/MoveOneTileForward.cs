@@ -6,7 +6,7 @@ public class MoveOneTileForward : BaseAction
     {
         ActionConstruct = new()
         {
-            new StepOneCellForwardConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Move, Actor)
+            new StepXTilesForwardConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Move, 1, Actor)
         };
     }
 

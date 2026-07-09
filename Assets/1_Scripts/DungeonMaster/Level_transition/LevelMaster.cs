@@ -33,7 +33,7 @@ public class LevelMaster : MonoBehaviour
         Cells[Player.PositionCellIndex].EnityOccupyingThisCell = null;
         if (_roomQueue.Count == _initialRoomCount - 1)
         {
-            Player.Initialize(room.PlayerCellIndex, room.PlayerRotation, 99, _turnProcessor, this);
+            Player.Initialize(room.PlayerCellIndex, room.PlayerRotation, 50, _turnProcessor, this);
         }
         else
         {

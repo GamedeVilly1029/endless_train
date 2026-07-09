@@ -16,6 +16,7 @@ public class BeStunnedConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("ticking");
         yield return new ConfusionEffect(ActionOfThisConcrete.Actor, 0.5f).Execute();
     }
 

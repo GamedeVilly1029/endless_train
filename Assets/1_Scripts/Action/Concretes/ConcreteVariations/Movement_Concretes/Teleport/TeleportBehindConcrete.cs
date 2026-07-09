@@ -46,6 +46,8 @@ public class TeleportBehindConcrete : BaseConcrete
         float rotation = _caster.IsFacingRight() ? 180 : 0;
         int idx = targetRight.Execute() ? _target.PositionCellIndex + 1 : _target.PositionCellIndex - 1;
 
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("teleport");
+
         yield return new ScaleLerpUtility(0.25f, _caster.GraphicTransform, startScale, Vector3.zero).Execute();
 
         LevelMasterInst.Cells[_caster.PositionCellIndex].EnityOccupyingThisCell = null;

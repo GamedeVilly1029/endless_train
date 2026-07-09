@@ -21,21 +21,15 @@ public class StepOneCellForwardConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
-        IConditionCommand cellAheadExists = new CellAheadExistsCondition(TurnProcessorInst, LevelMasterInst, _actorToMove);
         IConditionCommand cellAheadIsEmpty = new CellAheadIsEmptyCondition(TurnProcessorInst, LevelMasterInst, _actorToMove);
-        if (!cellAheadExists.Execute())
+
+        if (!cellAheadIsEmpty.Execute())
         {
-            yield break;
-        }
-        else if (!cellAheadIsEmpty.Execute())
-        {
-            // Debug.Log("Cell ahead isn't empty");
             yield break;
         }
         else
         {
             yield return MovementLowLevelConcrete.StepForwardOrBackwards(LevelMasterInst, _actorToMove, Resources.Load<MoveData>("StepData"), true);
-            // Debug.Log("StepOneCellForwardConcrete - stepped forward");
         }
         yield return GlobalLowLevelConcrete.Pause;
     }

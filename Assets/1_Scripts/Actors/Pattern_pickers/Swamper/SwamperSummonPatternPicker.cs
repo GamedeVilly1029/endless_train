@@ -11,17 +11,17 @@ public class SwamperSummonPatternPicker : BasePatternPicker
     {
         _actor.ActionRowInst.Actions.Clear();
 
-        // if (_turnsTillSacrifice > 0)
-        // {
-        //     _actor.ActionRowInst.Actions = CopyActionSet(_strike, _actor.ActionRowInst.Panel);
-        //     _turnsTillSacrifice -= 1;
-        //     return;
-        // }
-        // else
-        // {
+        if (_turnsTillSacrifice > 0)
+        {
+            _actor.ActionRowInst.Actions = CopyActionSet(_strike, _actor.ActionRowInst.Panel);
+            _turnsTillSacrifice -= 1;
+            return;
+        }
+        else
+        {
             _actor.ActionRowInst.Actions = CopyActionSet(_sacrifice, _actor.ActionRowInst.Panel);
             return;
-        // }
+        }
     }
 
     public override void InitializeChild()
@@ -38,6 +38,9 @@ public class SwamperSummonPatternPicker : BasePatternPicker
         BaseAction strike = new Strike();
         strike.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/Strike");
         actions.Add(strike);
+        BaseAction strike2 = new Strike();
+        strike2.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/Strike");
+        actions.Add(strike2);
 
         return actions;
     }

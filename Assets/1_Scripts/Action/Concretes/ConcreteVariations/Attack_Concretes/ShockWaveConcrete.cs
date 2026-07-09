@@ -30,22 +30,21 @@ public class ShockWaveConcrete : ValueConcrete
             LevelMasterInst.Cells[_caster.PositionCellIndex].CellPosition,
             LevelMasterInst.Cells[_caster.PositionCellIndex].CellPosition
         );
-        Object.FindFirstObjectByType<AudioMaster>().PlaySound("step");
-        Object.FindFirstObjectByType<AudioMaster>().PlaySound("shockWaveLarge");
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("shockWave");
         for (int i = 1; i < 4; i++)
         {
             if (new CellXDistanceFromCasterToLeftExists(TurnProcessorInst, LevelMasterInst, i, _caster.PositionCellIndex).Execute())
             {
                 Cell existingCell = LevelMasterInst.Cells[_caster.PositionCellIndex - i];
                 int distance = i;
-                PlayParticlesAndSoundBasedOnDistance(existingCell, distance, false);
+                PlayParticlesBasedOnDistance(existingCell, distance, false);
                 yield return DamageActorOnCell(existingCell);
             }
             if (new CellXDistanceFromCasterToRightExists(TurnProcessorInst, LevelMasterInst, i, _caster.PositionCellIndex).Execute())
             {
                 Cell existingCell = LevelMasterInst.Cells[_caster.PositionCellIndex + i];
                 int distance = i;
-                PlayParticlesAndSoundBasedOnDistance(existingCell, distance, true);
+                PlayParticlesBasedOnDistance(existingCell, distance, true);
                 yield return DamageActorOnCell(existingCell);
             }
 
@@ -55,24 +54,21 @@ public class ShockWaveConcrete : ValueConcrete
         yield return GlobalLowLevelConcrete.Pause;
     }
 
-    private void PlayParticlesAndSoundBasedOnDistance(Cell cell, int distance, bool toRight)
+    private void PlayParticlesBasedOnDistance(Cell cell, int distance, bool toRight)
     {
         WaveDirection direction = toRight ? WaveDirection.Right : WaveDirection.Left;
         WaveSize size;
         if (distance == 1)
         {
             size = WaveSize.Small;
-            // Object.FindFirstObjectByType<AudioMaster>().PlaySound("shockWaveSmall");
         }  
         else if (distance == 2)
         {
             size = WaveSize.Medium;
-            // Object.FindFirstObjectByType<AudioMaster>().PlaySound("shockWaveMedium");
         }
         else
         {
             size = WaveSize.Large;
-            // Object.FindFirstObjectByType<AudioMaster>().PlaySound("shockWaveLarge");
         } 
         CellParticlePlayer.StartWave(cell, direction, size);
     }

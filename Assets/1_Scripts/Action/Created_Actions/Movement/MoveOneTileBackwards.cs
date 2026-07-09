@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class MoveOneTileBackwards : BaseAction
@@ -7,7 +6,8 @@ public class MoveOneTileBackwards : BaseAction
     {
         ActionConstruct = new()
         {
-            new StepOneCellBackwardsConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Move, Actor)
+            // new StepOneCellBackwardsConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Move, Actor)
+            new StepXTilesBackwardConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Move, 1, Actor)
         };
     }
     public override BaseAction CreateClone(Transform transform)

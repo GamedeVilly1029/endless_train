@@ -24,7 +24,7 @@ public class FattyPatternPicker : BasePatternPicker
         _actor,
         2);
 
-        
+
         if (!playerOnCellsAhead.Execute())
         {
             _actor.ActionRowInst.Actions = CopyActionSet(_rotate, _actor.ActionRowInst.Panel);
@@ -140,5 +140,5 @@ public class FattyPatternPicker : BasePatternPicker
         return actions;
     }
 
-    
+
 }

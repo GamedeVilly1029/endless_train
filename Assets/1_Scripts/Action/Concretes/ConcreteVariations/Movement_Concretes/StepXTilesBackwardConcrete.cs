@@ -24,7 +24,7 @@ public class StepXTilesBackwardConcrete : ValueConcrete
         int stepsToSubtract = Value;
         while (stepsToSubtract > 0)
         {
-            Object.FindFirstObjectByType<AudioMaster>().PlaySound("step");
+            Object.FindAnyObjectByType<AudioMaster>().PlaySound("step");
             yield return new StepOneCellBackwardsConcrete(
                 TurnProcessorInst,
                 LevelMasterInst,
@@ -32,7 +32,7 @@ public class StepXTilesBackwardConcrete : ValueConcrete
                 null,
                 ActionConcreteTag.Move,
                 _actorToMove
-            );
+            ).Execute();
 
             stepsToSubtract--;
         }

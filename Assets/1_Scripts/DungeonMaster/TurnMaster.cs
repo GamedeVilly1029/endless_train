@@ -52,12 +52,20 @@ public class TurnMaster : MonoBehaviour
 
     private void EndFight()
     {
-        int addActionIdx = _levelMaster.PlayerAddActionIdxQueue.Dequeue();
-        _levelMaster.Player.BeltPatternPicker.AdditionalActionIndexes.Add(addActionIdx);
-        _uIMaster.PlayerUIManagerInst.TurnUIOff();
-        _uIMaster.NewFightUIStarterInst.DescriptiveText.text = _uIMaster.NewFightUIStarterInst.GenerateDescription(addActionIdx);
-        _uIMaster.NewFightUIStarterInst.DescriptiveText.gameObject.SetActive(true);
-        _uIMaster.NewFightUIStarterInst.StartFightButtonAppear();
+        if (_levelMaster.PlayerAddActionIdxQueue.Count > 0)
+        {
+            int addActionIdx = _levelMaster.PlayerAddActionIdxQueue.Dequeue();
+            _levelMaster.Player.BeltPatternPicker.AdditionalActionIndexes.Add(addActionIdx);
+            _uIMaster.PlayerUIManagerInst.TurnUIOff();
+            _uIMaster.NewFightUIStarterInst.DescriptiveText.text = _uIMaster.NewFightUIStarterInst.GenerateDescription(addActionIdx);
+            _uIMaster.NewFightUIStarterInst.DescriptiveText.gameObject.SetActive(true);
+            _uIMaster.NewFightUIStarterInst.StartFightButtonAppear();
+        }
+        else
+        {
+            _uIMaster.PlayerUIManagerInst.TurnUIOff();
+            StartCoroutine(_uIMaster.RestarterUIInst.LoadMainMenu());
+        }
     }
 
     private IEnumerator EndTurn()

@@ -39,7 +39,7 @@ public class TurnProcessor : MonoBehaviour
         {
             _playerActions.Add(CurrentAction.PrototypeAction);
         }
-        // Debug.Log($"{CurrentActor}: executed {CurrentAction}");
+        Debug.Log($"{CurrentActor}: executed {CurrentAction}");
         yield return CurrentAction.ExecuteAction();
         actor.AddActionToFightHistory();
     }
@@ -50,11 +50,41 @@ public class TurnProcessor : MonoBehaviour
         {
             if (_levelMaster.AllActors[i].ActionRowInst.CanExecuteActions())
             {
+                if (OnlyPlayerHasActions())
+                {
+                    for (int j = 0; j < _levelMaster.Player.ActionRowInst.Actions.Count; j++)
+                    {
+                        yield return ProcessAction(_levelMaster.Player);
+                    }
+                    RemoveDeadActors();
+                }
                 _enemies = CreateEnemies();
                 yield return RunOneIteration(_enemies);
                 i = -1;
             }
         }
+    }
+
+    private bool OnlyPlayerHasActions()
+    {
+        List<BaseActor> capableActors = new();
+        for (int i = _levelMaster.AllActors.Count - 1; i >= 0; i--)
+        {
+            if (_levelMaster.AllActors[i].ActionRowInst.CanExecuteActions())
+            {
+                capableActors.Add(_levelMaster.AllActors[i]);
+            }
+            if (capableActors.Count > 1)
+            {
+                return false;
+            }
+        }
+        Debug.Log(capableActors.Count);
+        if (capableActors[0] is PlayerActor)
+        {
+            return true;
+        }
+        return false;
     }
 
     private IEnumerator RunOneIteration(Queue<BaseActor> enemies)
@@ -64,7 +94,7 @@ public class TurnProcessor : MonoBehaviour
             BaseActor enemy = enemies.Dequeue();
             if (enemy.IsDead)
             {
-                // Debug.Log($"{enemy} isDead => skipping him");
+                Debug.Log($"{enemy} isDead => skipping him");
                 continue;
             }
             if (_levelMaster.Player.ActionRowInst.CanExecuteActions())
@@ -77,7 +107,7 @@ public class TurnProcessor : MonoBehaviour
             }
             else
             {
-                // ThoroughDeclindeDebug(enemy);
+                ThoroughDeclindeDebug(enemy);
             }
         }
         RemoveDeadActors();
@@ -114,7 +144,7 @@ public class TurnProcessor : MonoBehaviour
             }
             else
             {
-                // Debug.Log($"Adding {actor} into the enemies queue for following execution cycle");
+                Debug.Log($"Adding {actor} into the enemies queue for following execution cycle");
                 enemies.Enqueue(actor);
             }
         }

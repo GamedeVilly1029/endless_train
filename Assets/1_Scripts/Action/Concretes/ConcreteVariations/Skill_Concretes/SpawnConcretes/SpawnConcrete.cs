@@ -45,6 +45,8 @@ public class SpawnConcrete : BaseConcrete
         Spawned = Object.Instantiate(_prefab, LevelMasterInst.InstantiationPlaceForEnemies);
         Spawned.Initialize(_idx, _rotation, _hp, TurnProcessorInst, LevelMasterInst);
         LevelMasterInst.AllActors.Add(Spawned);
+
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("spawn");
         yield return new SpawnGrowEffect(Spawned, 0.25f).Execute();
     }
 

@@ -19,15 +19,10 @@ public class StepOneCellBackwardsConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
-        IConditionCommand cellBehindExists = new CellBehindExistsCondition(TurnProcessorInst, LevelMasterInst, _actorToMove);
         IConditionCommand cellBehindIsEmpty = new CellBehindIsEmptyCondition(TurnProcessorInst, LevelMasterInst, _actorToMove);
-        if (!cellBehindExists.Execute())
+        
+        if (!cellBehindIsEmpty.Execute())
         {
-            yield break;
-        }
-        else if (!cellBehindIsEmpty.Execute())
-        {
-            Debug.Log("Cell ahead isn't empty");
             yield break;
         }
         else

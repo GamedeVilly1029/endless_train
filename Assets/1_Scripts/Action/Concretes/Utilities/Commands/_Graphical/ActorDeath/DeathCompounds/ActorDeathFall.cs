@@ -18,6 +18,7 @@ public class ActorDeathFall : GraphicalCoroutineConcrete
 
     public override IEnumerator Execute()
     {
+
         float timePassed = 0;
         while (timePassed < _fallDuration)
         {
@@ -30,5 +31,6 @@ public class ActorDeathFall : GraphicalCoroutineConcrete
         }
         _actor.GraphicTransform.localPosition = _target.Position;
         _actor.GraphicTransform.localRotation = _target.Rotation;
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("bodyFall");
     }
 }

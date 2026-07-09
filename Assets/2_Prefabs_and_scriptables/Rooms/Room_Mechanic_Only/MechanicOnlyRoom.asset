@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoomInstantiationInfo
   EnemiesToInstantiate:
   - {fileID: 11400000, guid: 5d8b54b4cfb768cb7a5eecea32199aea, type: 2}
-  PlayerCellIndex: 5
+  PlayerCellIndex: 0
   PlayerRotation: 0
+  AdditionalActionIndex: 0

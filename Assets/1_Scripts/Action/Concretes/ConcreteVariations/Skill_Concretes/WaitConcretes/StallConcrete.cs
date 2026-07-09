@@ -17,7 +17,8 @@ public class StallConcrete : BaseConcrete
 
     public override IEnumerator ChildExecute()
     {
-        Debug.Log("Stall...");
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("ticking");
+        yield return new ConfusionEffect(ActionOfThisConcrete.Actor, 0.5f).Execute();
         yield return GlobalLowLevelConcrete.Pause;
     }
 

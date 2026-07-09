@@ -9,6 +9,8 @@ public class SpiderPatternPicker : BasePatternPicker
     private List<BaseAction> _sneakyLeap;
     private List<BaseAction> _stunningShout;
 
+    private int _branchFlipFlop;
+
     public override void ChildFillActionRowOrBelt()
     {
         _actor.ActionRowInst.Actions.Clear();
@@ -25,24 +27,18 @@ public class SpiderPatternPicker : BasePatternPicker
             return;
         }
 
-        // if (new CurrentHPIsMoreThanXPercentCondition(_turnProcessor, _levelMaster, SpiderInstance.MaxHP, SpiderInstance.CurrentHP, 30f).Execute())
-        // {
-            // int randomInt = UnityEngine.Random.Range(1, 4);
-            // if (randomInt == 1)
-            // {
-                // _actor.ActionRowInst.Actions = CopyActionSet(_sneakyLeap, _actor.ActionRowInst.Panel);
-                // return;
-            // }
-            // else
-            // {
-                _actor.ActionRowInst.Actions = CopyActionSet(_stunningShout, _actor.ActionRowInst.Panel);
-                return;
-            // }
-        // }
-
-        // Debug.LogError("Bad enemy AI - none of the predefined actions was selected");
-        // SpiderInstance.ActionRowInst.Actions = null;
-        // return;
+        if (_branchFlipFlop == 0)
+        {
+            _actor.ActionRowInst.Actions = CopyActionSet(_sneakyLeap, _actor.ActionRowInst.Panel);
+            _branchFlipFlop = 1;
+            return;
+        }
+        else
+        {
+            _actor.ActionRowInst.Actions = CopyActionSet(_stunningShout, _actor.ActionRowInst.Panel);
+            _branchFlipFlop = 0;
+            return;
+        }
     }
 
     public override void InitializeChild()
@@ -51,6 +47,8 @@ public class SpiderPatternPicker : BasePatternPicker
         _rotate = InitializeRotate();
         _sneakyLeap = InitializeSneakyLeap();
         _stunningShout = InitializeStunningShout();
+
+        _branchFlipFlop = 0;
     }
 
     private List<BaseAction> InitializeApproach()
@@ -78,7 +76,7 @@ public class SpiderPatternPicker : BasePatternPicker
         actions.Add(rotate);
 
         return actions;
-    } 
+    }
 
     private List<BaseAction> InitializeSneakyLeap()
     {
@@ -88,11 +86,11 @@ public class SpiderPatternPicker : BasePatternPicker
         actions.Add(dash);
 
         BaseAction strike = new Strike();
-        strike.Initialize(_actor, _turnProcessor, _levelMaster,0, "AttackActionUI/Strike");
+        strike.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/Strike");
         actions.Add(strike);
 
         BaseAction moveBack = new MoveOneTileBackwards();
-        moveBack.Initialize(_actor, _turnProcessor, _levelMaster,0, "MovementActionUI/WalkBackwards");
+        moveBack.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkBackwards");
         actions.Add(moveBack);
 
         return actions;
@@ -103,7 +101,7 @@ public class SpiderPatternPicker : BasePatternPicker
         List<BaseAction> actions = new();
 
         BaseAction stunFirstNextTurn = new StunFirstPlayerActionNextTurn();
-        stunFirstNextTurn.Initialize(_actor, _turnProcessor, _levelMaster,0, "SkillActionUI/Stun");
+        stunFirstNextTurn.Initialize(_actor, _turnProcessor, _levelMaster, 0, "SkillActionUI/Stun");
         actions.Add(stunFirstNextTurn);
 
         return actions;

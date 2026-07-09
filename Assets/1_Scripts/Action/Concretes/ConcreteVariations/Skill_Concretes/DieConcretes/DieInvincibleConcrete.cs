@@ -21,6 +21,7 @@ public class DieInvincibleConcrete : BaseConcrete
     public override IEnumerator ChildExecute()
     {
         yield return GlobalLowLevelConcrete.Pause;
+        Object.FindAnyObjectByType<AudioMaster>().PlaySound("explosion");
         _suicider.MakeInvincible();
         _suicider.Die();
     }

@@ -6,7 +6,7 @@ public class Strike : BaseAction
     {
         ActionConstruct = new()
         {
-            new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 20, Actor)
+            new StrikeConcrete(TurnProcessorInst, LevelMasterInst, this, null, ActionConcreteTag.Attack, 5, Actor)
         };
     }
 
