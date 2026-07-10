@@ -192,7 +192,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 5
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
 --- !u!1 &2079004730819268889
@@ -389,7 +389,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 5
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
 --- !u!1 &2684104253469816786
@@ -574,7 +574,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8397144587580468198, guid: 38de44b8043ffd21e9f8d2a7dfef692a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -666,7 +666,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8288105518992296876, guid: c127fe710cda923ccac88578eceb7424, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -734,6 +734,7 @@ MonoBehaviour:
   CurrentHP: 0
   PositionCellIndex: 0
   IsDead: 0
+  ShouldBeDestroyed: 0
   Defense: 0
   ActionRowPanelInstance: {fileID: 5424787313218557863}
   HPBarText: {fileID: 1109583730781082127}
@@ -754,7 +755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fabbdc9785187db6b923c685eece122d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechanicPatternPicker
-  _actor: {fileID: 7522039980220785142}
 --- !u!114 &5883788885055124994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -856,7 +856,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 732735905288520518, guid: f64501362b908f469be8af60e344ca3a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

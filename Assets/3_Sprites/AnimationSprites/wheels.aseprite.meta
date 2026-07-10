@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 335ea969d48d6a3d4bbd8b698b0c76be
+guid: c0464ec7fa0eb70ec9b7cf7a20cdefc1
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639102191195186620
+  platformSettingsDirtyTick: 639192684895314950
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,7 +127,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Vagon_with_wheels
+  - name: Frame_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 512
-      height: 240
-    spriteID: 312f2343fd7cda1ada5ed6f82dac1432
+      width: 530
+      height: 93
+    spriteID: f7afc5968fbefbb64b2de3b3907266c9
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -148,30 +148,210 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
+  - name: Frame_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 105
+      width: 530
+      height: 93
+    spriteID: 8f9b7621760731683adb17b4be58286e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 105}
+  - name: Frame_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 206
+      width: 530
+      height: 93
+    spriteID: ab84509c5b98884d2a8a0d21e0adf80e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 206}
+  - name: Frame_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 307
+      width: 530
+      height: 93
+    spriteID: d3e1c230ccaf97399b3cd7402563cba9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 307}
+  - name: Frame_4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 408
+      width: 530
+      height: 93
+    spriteID: ece0209f8b421f5a4bd5d7f4f6cf8043
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 408}
+  - name: Frame_5
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 509
+      width: 530
+      height: 93
+    spriteID: e50f59dd0bbdd61f49eae54547bc6c72
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 509}
+  - name: Frame_6
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 610
+      width: 530
+      height: 93
+    spriteID: 2d8d3a55d893c8ac680030b69bbff8a7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 610}
   spriteSheetImportData: []
   tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 2153137199
+      value0: 1776617666
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Vagon_with_wheels
+    name: wheels
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Vagon_with_wheels
+    - name: Frame_0
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 85
-        y: 75
-        width: 512
-        height: 240
-      spriteId: 312f2343fd7cda1ada5ed6f82dac1432
+        x: 0
+        y: 0
+        width: 530
+        height: 93
+      spriteId: f7afc5968fbefbb64b2de3b3907266c9
+    - name: Frame_1
+      frameIndex: 1
+      additiveSortOrder: 0
+      cellRect:
+        x: 0
+        y: 0
+        width: 530
+        height: 93
+      spriteId: 8f9b7621760731683adb17b4be58286e
+    - name: Frame_2
+      frameIndex: 2
+      additiveSortOrder: 0
+      cellRect:
+        x: 0
+        y: 0
+        width: 530
+        height: 93
+      spriteId: ab84509c5b98884d2a8a0d21e0adf80e
+    - name: Frame_3
+      frameIndex: 3
+      additiveSortOrder: 0
+      cellRect:
+        x: 0
+        y: 0
+        width: 530
+        height: 93
+      spriteId: d3e1c230ccaf97399b3cd7402563cba9
+    - name: Frame_4
+      frameIndex: 4
+      additiveSortOrder: 0
+      cellRect:
+        x: 0
+        y: 0
+        width: 530
+        height: 93
+      spriteId: ece0209f8b421f5a4bd5d7f4f6cf8043
+    - name: Frame_5
+      frameIndex: 5
+      additiveSortOrder: 0
+      cellRect:
+        x: 0
+        y: 0
+        width: 530
+        height: 93
+      spriteId: e50f59dd0bbdd61f49eae54547bc6c72
+    - name: Frame_6
+      frameIndex: 6
+      additiveSortOrder: 0
+      cellRect:
+        x: 0
+        y: 0
+        width: 530
+        height: 93
+      spriteId: 2d8d3a55d893c8ac680030b69bbff8a7
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -205,5 +385,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 730, y: 400}
-  previousTextureSize: {x: 1024, y: 256}
+  canvasSize: {x: 530, y: 93}
+  previousTextureSize: {x: 1024, y: 1024}

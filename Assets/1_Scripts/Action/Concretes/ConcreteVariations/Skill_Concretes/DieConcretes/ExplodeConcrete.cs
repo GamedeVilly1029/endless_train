@@ -7,14 +7,14 @@ public class ExplodeConcrete : ValueConcrete
     private BaseActor _exploder;
     public ExplodeConcrete
     (
-        TurnProcessor turnProcessor, 
-        LevelMaster levelMaster, 
-        BaseAction actionOfThisConcrete, 
-        List<IConditionCommand> extraConditions, 
-        ActionConcreteTag tag, 
+        TurnProcessor turnProcessor,
+        LevelMaster levelMaster,
+        BaseAction actionOfThisConcrete,
+        List<IConditionCommand> extraConditions,
+        ActionConcreteTag tag,
         int value,
         BaseActor exploder
-    ):base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag, value)
+    ) : base(turnProcessor, levelMaster, actionOfThisConcrete, extraConditions, tag, value)
     {
         _exploder = exploder;
     }
@@ -32,14 +32,13 @@ public class ExplodeConcrete : ValueConcrete
 
     private IEnumerator DamageOneSide(int idx)
     {
-        if (!new CellAtIdxIsEmpty(TurnProcessorInst, LevelMasterInst, _exploder.PositionCellIndex + idx).Execute())
+        if (new CellAtIdxExists(TurnProcessorInst, LevelMasterInst, _exploder.PositionCellIndex + idx).Execute())
         {
-            BaseActor damageTaker = LevelMasterInst.Cells[_exploder.PositionCellIndex + idx].EnityOccupyingThisCell;
-            yield return damageTaker.TakeBluntDamage(Value);
-        }
-        else
-        {
-            Debug.Log($"Cell: {_exploder.PositionCellIndex + idx} is either empty or non existing");
+            if (!new CellAtIdxIsEmpty(TurnProcessorInst, LevelMasterInst, _exploder.PositionCellIndex + idx).Execute())
+            {
+                BaseActor damageTaker = LevelMasterInst.Cells[_exploder.PositionCellIndex + idx].EnityOccupyingThisCell;
+                yield return damageTaker.TakeBluntDamage(Value);
+            }
         }
     }
 

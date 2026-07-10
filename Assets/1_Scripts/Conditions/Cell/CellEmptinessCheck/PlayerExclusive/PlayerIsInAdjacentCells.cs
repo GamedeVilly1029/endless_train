@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class PlayerIsInAdjacentCells : BaseConditionCommand
@@ -6,32 +5,41 @@ public class PlayerIsInAdjacentCells : BaseConditionCommand
     private BaseActor _caster;
     public PlayerIsInAdjacentCells
     (
-        TurnProcessor turnProcessor, 
+        TurnProcessor turnProcessor,
         LevelMaster levelMaster,
         BaseActor caster
-    ):base(turnProcessor, levelMaster)
+    ) : base(turnProcessor, levelMaster)
     {
         _caster = caster;
     }
 
     public override bool Execute()
     {
-        if (!new CellAtIdxIsEmpty(TurnProcessorInst, LevelMasterInst, _caster.PositionCellIndex - 1).Execute())
+        bool existsToRight = false;
+        bool existsToLeft = false;
+
+        if (new CellAtIdxExists(TurnProcessorInst, LevelMasterInst, _caster.PositionCellIndex - 1).Execute())
         {
-            if (LevelMasterInst.Cells[_caster.PositionCellIndex - 1].EnityOccupyingThisCell is PlayerActor)
+            if (!new CellAtIdxIsEmpty(TurnProcessorInst, LevelMasterInst, _caster.PositionCellIndex - 1).Execute())
             {
-                return true;
+                {
+                    Debug.Log("Player stands to the left");
+                    existsToLeft = true;
+                }
             }
-            return false;
         }
-        else if (!new CellAtIdxIsEmpty(TurnProcessorInst, LevelMasterInst, _caster.PositionCellIndex + 1).Execute())
+        if (new CellAtIdxExists(TurnProcessorInst, LevelMasterInst, _caster.PositionCellIndex + 1).Execute())
         {
-            if (LevelMasterInst.Cells[_caster.PositionCellIndex + 1].EnityOccupyingThisCell is PlayerActor)
+            if (!new CellAtIdxIsEmpty(TurnProcessorInst, LevelMasterInst, _caster.PositionCellIndex + 1).Execute())
             {
-                return true;
+                if (LevelMasterInst.Cells[_caster.PositionCellIndex + 1].EnityOccupyingThisCell is PlayerActor)
+                {
+                    Debug.Log("Player stands to the right");
+                    existsToRight = true;
+                }
             }
-            return false;
         }
-        return false; 
+        Debug.Log($"Hence, {existsToLeft || existsToRight}");
+        return existsToLeft || existsToRight;
     }
 }

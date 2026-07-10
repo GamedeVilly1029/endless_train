@@ -12,8 +12,10 @@ public class CellAtIdxIsEmpty : BaseConditionCommand
     {
         if (new CellAtIdxExists(TurnProcessorInst, LevelMasterInst, _idx).Execute())
         {
+            // Debug.Log($"cell {_idx} exists");
             return LevelMasterInst.Cells[_idx].EnityOccupyingThisCell == null;
         }
+        // Debug.Log($"cell {_idx} doesn't exists");
         return false;
     }
 }

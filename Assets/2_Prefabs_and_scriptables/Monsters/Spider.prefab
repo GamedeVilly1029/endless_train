@@ -183,7 +183,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 732735905288520518, guid: f64501362b908f469be8af60e344ca3a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -389,7 +389,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 5
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
 --- !u!1 &1966691981797660194
@@ -472,7 +472,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8288105518992296876, guid: c127fe710cda923ccac88578eceb7424, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -563,7 +563,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 1642277364401408445, guid: 4b4035c2fe469b19f87b7bfbccc5d676, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -767,7 +767,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 5
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
 --- !u!1 &6504191451026759467
@@ -826,6 +826,7 @@ MonoBehaviour:
   CurrentHP: 0
   PositionCellIndex: 0
   IsDead: 0
+  ShouldBeDestroyed: 0
   Defense: 0
   ActionRowPanelInstance: {fileID: 3176665045459986030}
   HPBarText: {fileID: 5790244511975772083}
@@ -867,7 +868,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf92c991e94e2dbf2ba6cd76312f4a9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpiderPatternPicker
-  _actor: {fileID: 7505665625940839799}
 --- !u!1 &8796047987613088432
 GameObject:
   m_ObjectHideFlags: 0

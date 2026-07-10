@@ -39,7 +39,7 @@ public class TurnProcessor : MonoBehaviour
         {
             _playerActions.Add(CurrentAction.PrototypeAction);
         }
-        Debug.Log($"{CurrentActor}: executed {CurrentAction}");
+        // Debug.Log($"{CurrentActor}: executed {CurrentAction}");
         yield return CurrentAction.ExecuteAction();
         actor.AddActionToFightHistory();
     }
@@ -79,7 +79,7 @@ public class TurnProcessor : MonoBehaviour
                 return false;
             }
         }
-        Debug.Log(capableActors.Count);
+        // Debug.Log(capableActors.Count);
         if (capableActors[0] is PlayerActor)
         {
             return true;
@@ -115,7 +115,7 @@ public class TurnProcessor : MonoBehaviour
 
     private void ThoroughDeclindeDebug(BaseActor enemy)
     {
-        Debug.Log($"{enemy} can't execute actions because: it's dead: {enemy.IsDead}, Actions are null: {enemy.ActionRowInst.Actions == null}, Actions count is zero: {enemy.ActionRowInst.Actions.Count == 0}");
+        // Debug.Log($"{enemy} can't execute actions because: it's dead: {enemy.IsDead}, Actions are null: {enemy.ActionRowInst.Actions == null}, Actions count is zero: {enemy.ActionRowInst.Actions.Count == 0}");
     }
 
     private IEnumerator AfterIteration()
@@ -144,7 +144,7 @@ public class TurnProcessor : MonoBehaviour
             }
             else
             {
-                Debug.Log($"Adding {actor} into the enemies queue for following execution cycle");
+                // Debug.Log($"Adding {actor} into the enemies queue for following execution cycle");
                 enemies.Enqueue(actor);
             }
         }
