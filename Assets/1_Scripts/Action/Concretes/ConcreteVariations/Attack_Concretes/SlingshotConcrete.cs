@@ -39,9 +39,9 @@ public class SlingshotConcrete : ValueConcrete
             yield return new BeforeHitSwing(_caster, 0.5f).Execute();
             yield return new ThrowTransformObjectConcrete(rock.transform, _target.TransformReference.position, _throwDuration).Execute();
 
+            Object.FindAnyObjectByType<AudioMaster>().PlaySound("hit");
             yield return _target.TakeBluntDamage(Value);
 
-            Object.FindAnyObjectByType<AudioMaster>().PlaySound("hit");
             _caster.StartCoroutine(new TransformFallConcrete(rock.transform, _fallDuration).Execute());
             SpriteRenderer rend = rock.GetComponent<SpriteRenderer>();
             _caster.StartCoroutine(new TransparencyLerpGraphicConcrete(0, rend, _fadeDuration).Execute());

@@ -53,7 +53,6 @@ public class ShadowCrawlerPatternPicker : BasePatternPicker
         if
         (
             new DistanceToActorAheadIsLessThanX(_turnProcessor, _levelMaster, 1, _actor).Execute() 
-            // new DistanceToActorAheadIsMoreThanX(_turnProcessor, _levelMaster, 0, _actor).Execute()
         )
         {
             if (new CellAfterFirstActorAheadIsEmpty(_turnProcessor, _levelMaster, _actor).Execute())
@@ -80,8 +79,6 @@ public class ShadowCrawlerPatternPicker : BasePatternPicker
             return;
         }
 
-        // _actor.ActionRowInst.Actions = CopyActionSet(_stepBackwards, _actor.ActionRowInst.Panel);
-        // return;
     }
 
     public override void InitializeChild()
@@ -174,6 +171,10 @@ public class ShadowCrawlerPatternPicker : BasePatternPicker
         BaseAction move = new MoveOneTileBackwards();
         move.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkBackwards");
         actions.Add(move);
+
+        BaseAction push = new Push();
+        push.Initialize(_actor, _turnProcessor, _levelMaster, 0, "PushActionUI/Push");
+        actions.Add(push);
 
         return actions;
     }

@@ -100,12 +100,6 @@ public class FattyPatternPicker : BasePatternPicker
         List<BaseAction> actions = new();
 
         BaseAction stepForward = new MoveOneTileForward();
-        stepForward.Initialize(_actor, _turnProcessor, _levelMaster, 0, "MovementActionUI/WalkForward");
-        actions.Add(stepForward);
-
-        BaseAction block = new BasicDefend();
-        block.Initialize(_actor, _turnProcessor, _levelMaster, 0, "DefenseActionUI/BasicDefend");
-        actions.Add(block);
 
         BaseAction block1 = new BasicDefend();
         block1.Initialize(_actor, _turnProcessor, _levelMaster, 0, "DefenseActionUI/BasicDefend");
@@ -115,12 +109,19 @@ public class FattyPatternPicker : BasePatternPicker
         block2.Initialize(_actor, _turnProcessor, _levelMaster, 0, "DefenseActionUI/BasicDefend");
         actions.Add(block2);
 
+        BaseAction strike = new Strike();
+        strike.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/Strike");
+
         return actions;
     }
 
     private List<BaseAction> InitializeWave()
     {
         List<BaseAction> actions = new();
+        BaseAction push = new Push();
+        push.Initialize(_actor, _turnProcessor, _levelMaster, 0, "PushActionUI/Push");
+        actions.Add(push);
+
 
         BaseAction wave = new ShockWave();
         wave.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/ShockWave");
@@ -136,6 +137,9 @@ public class FattyPatternPicker : BasePatternPicker
         BaseAction heal = new Heal();
         heal.Initialize(_actor, _turnProcessor, _levelMaster, 0, "SkillActionUI/Heal");
         actions.Add(heal);
+
+        BaseAction strike = new Strike();
+        strike.Initialize(_actor, _turnProcessor, _levelMaster, 0, "AttackActionUI/Strike");
 
         return actions;
     }

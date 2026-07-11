@@ -61,19 +61,19 @@ public class NewFightUIStarter : MonoBehaviour, IPointerClickHandler
     {
         if (idx == 0)
         {
-            return "You've got: 'Kick back' action! \n It strikes behind you current view direction and deals 7 damage if enemy is presented";
+            return "You've got: 'Kick back' action! \n It strikes behind you for 7 dmg";
         }
         else if (idx == 1)
         {
-            return "You've got: 'Slingshot' action! \n It launches a rock into you current view direction and deals 10 damage if enemy is presented";
+            return "You've got: 'Slingshot' action! \n It launches a rock deals 10 damage";
         }
         else if (idx == 2)
         {
-            return "You've got: 'Kick push' action! \n It stikes ahead of you dealing 5 dmg and then pushes the enemy one cell by your view direction";
+            return "You've got: 'Kick push' action! \n It strikes for 5 dmg & pushes the enemy for 1 cell";
         }
         else if (idx == 3)
         {
-            return "You've got: 'Leg kick' action! \n It stikes ahead of you dealing 5 dmg, X2 if that's your only action in turn";
+            return "You've got: 'Leg kick' action! \n It strikes for 5 dmg. \n X2 if that's your only action that turn";
         }
         else
         {

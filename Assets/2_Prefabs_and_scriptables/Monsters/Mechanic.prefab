@@ -768,7 +768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionRowUI
   _actor: {fileID: 7522039980220785142}
-  offsetOfThePanel: 250
+  offsetOfThePanel: 225
   Panel: {fileID: 5424787313218557863}
   OnActionAdd:
     m_PersistentCalls:
